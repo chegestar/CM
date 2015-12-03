@@ -16,9 +16,12 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
   if (!in_str) {
     throw 1;
   }
+  x_=y_=0;
   level_type=0;
   width=32;
   height=32;
+  window_width = window.getSize().y;
+  window_height = window.getSize().x;
   in_str>>rows>>cols;
   std::string key;
   max_depth=0;
@@ -39,11 +42,24 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
     int isPrefix=0;
     int end=0;
     int end2=0;
-    //Level Options 
+    //Level Options
+    if (key=="NORMAL_LEVEL") {
+      assert(!actors.size());
+    }
     if (key=="ZOOMED_LEVEL") {
-      level_type=0;
-      width=window.getSize().y/cols;
-      height=window.getSize().x/rows;
+      assert(!actors.size());
+      level_type=1;
+      width=window_width/cols;
+      height=window_height/rows;
+    }
+    else if (key=="GRID_LEVEL") {
+      level_type=2;
+      in_str>>y>>x;
+      grows=y;
+      gcols=x;
+      width = window.getSize().y/x;
+      height = window.getSize().x/y;
+      assert(rows/y==int(rows/y)&&cols/x==int(cols/x));
     }
     //Prefix Options
     if (key=="row") {
@@ -213,6 +229,14 @@ void Level::act() {
     }
     itr++;
   }
+  if (level_type==2) {
+    std::cout<<bob->getY1();
+    if (bob->getY1()>window_height)
+      y_ +=32*19;
+    if (bob->getY2()<0)
+      y_-=32*19;
+    
+  } 
 }
 
 Actor** Level::testHitStationary(Actor* actor) {

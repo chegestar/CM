@@ -1,0 +1,33 @@
+20 20
+
+ZOOMED_LEVEL;
+
+start 5 5
+
+check 10 4
+check 10 14
+brow 0
+brow 19
+bcol 0
+bcol 19
+b 10 10
+b 9 3
+b 2 5
+
+
+gemdoor 2 9 14 9 4 
+
+c 2 9
+crow 1 1 4
+ccol 18 1 4
+crect 4 9 5 11
+;
+brow 9
+
+spider V 3 10
+sp H 8 10
+sp H 15 10 
+
+row 16 5 15 block
+col  16 5 15 b
+rect 17 9 18 11 c

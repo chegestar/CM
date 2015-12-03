@@ -16,6 +16,9 @@ class Level {
   typedef  std::map<int,Actor*> ACTORS;
   int level_type;
   int rows,cols;
+  int grows,gcols;
+  float x_,y_;
+  float window_width,window_height;
   float width,height;
   Actor*** stationary;
   Collectable*** gems;
@@ -30,6 +33,8 @@ class Level {
   Level(std::string filename,sf::RenderWindow& window);
   ~Level();
 
+  float getX() const {return x_;}
+  float getY() const {return y_;}
   float getWidth() const {return width;}
   float getHeight() const {return height;}
   Bob* getBob() const {return bob;}

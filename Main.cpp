@@ -14,7 +14,7 @@ int main() {
   int height = 20*32;
   sf::RenderWindow window(sf::VideoMode(width, height), "CM Version 0.0");
   window.setFramerateLimit(60);
-  Level* level = new Level("level.txt",window);
+  Level* level = new Level("grid_level.txt",window);
   while (window.isOpen()) {
     sf::Event event;
     while (window.pollEvent(event)) {

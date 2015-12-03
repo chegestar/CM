@@ -1,5 +1,5 @@
 #include "Actor.h"
-
+#include <Level.h>
 
 Actor::Actor(Level* l, float x_,float y_,float w,float h) {
   level = l;
@@ -10,7 +10,7 @@ Actor::Actor(Level* l, float x_,float y_,float w,float h) {
   isDead=false;
 }
 
-float Actor::getX1() const {return x;}
+float Actor::getX1() const {return x-level->getX();}
 float Actor::getX2() const {return getX1()+width;}
-float Actor::getY1() const {return y;}
+float Actor::getY1() const {return y-level->getY();}
 float Actor::getY2() const {return getY1()+height;}
