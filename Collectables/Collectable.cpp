@@ -21,7 +21,7 @@ void Collectable::act() {
 
 void Collectable::render(sf::RenderWindow& window) {
   sf::CircleShape shape(width/2);
-  shape.setPosition(x,y);
+  shape.setPosition(getX1(),getY1());
   shape.setFillColor(sf::Color(0,0,255));
   window.draw(shape);
 }

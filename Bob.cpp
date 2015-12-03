@@ -30,18 +30,18 @@ void Bob::act() {
     if (dynamic_cast<Block*>(bs[i])) {
       int dir = getApproachDir(this,bs[i]);
       if (dir==0&&getLastX1()!=bs[i]->getX2()&&getLastX2()!=bs[i]->getX1()) {
-	setPosition(x,bs[i]->getY2());
+	setPosition(getX1(),bs[i]->getY2());
       }
       else if (dir==1)
-	setPosition(bs[i]->getX1()-width,y);
+	setPosition(bs[i]->getX1()-width,getY1());
       else if (dir==2&&getLastX1()!=bs[i]->getX2()&&getLastX2()!=bs[i]->getX1())
-	setPosition(x,bs[i]->getY1()-height);
+	setPosition(getX1(),bs[i]->getY1()-height);
       else if (dir==3)
-	setPosition(bs[i]->getX2(),y);
+	setPosition(bs[i]->getX2(),getY1());
     }
     else if (dynamic_cast<CheckPoint*>(bs[i])) {
-      startx = bs[i]->getX1();
-      starty = bs[i]->getY1();
+      startx = bs[i]->getX1()+level->getX();
+      starty = bs[i]->getY1()+level->getY();
     }
   }
   delete [] bs;
@@ -57,7 +57,7 @@ void Bob::act() {
 
 void Bob::render(sf::RenderWindow& window) {
   sf::RectangleShape shape(sf::Vector2f(width,height));
-  shape.setPosition(x,y);
+  shape.setPosition(getX1(),getY1());
   shape.setFillColor(sf::Color(255,255,0));
   window.draw(shape);
 }

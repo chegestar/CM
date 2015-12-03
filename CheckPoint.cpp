@@ -6,7 +6,7 @@ CheckPoint::CheckPoint(Level* l, float x_,float y_) :
 
 void CheckPoint::render(sf::RenderWindow& window) {
   sf::CircleShape shape(width/2);
-  shape.setPosition(x,y);
+  shape.setPosition(getX1(),getY1());
   shape.setFillColor(sf::Color(0,255,0));
   window.draw(shape);
 

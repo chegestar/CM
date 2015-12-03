@@ -6,9 +6,9 @@ Mover::Mover(Level* l, float x_,float y_,float w,float h) : Actor(l,x_,y_,w,h) {
   lastx=lasty=0;
 }
 
-float Mover::getLastX1() const {return lastx-level->getX();}
+float Mover::getLastX1() const {return lastx;}
 float Mover::getLastX2() const {return lastx+width;}
-float Mover::getLastY1() const {return lasty-level->getY();}
+float Mover::getLastY1() const {return lasty;}
 float Mover::getLastY2() const {return lasty+height;}
 
 

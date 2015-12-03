@@ -14,3 +14,8 @@ float Actor::getX1() const {return x-level->getX();}
 float Actor::getX2() const {return getX1()+width;}
 float Actor::getY1() const {return y-level->getY();}
 float Actor::getY2() const {return getY1()+height;}
+
+void Actor::setPosition(float x_, float y_,bool keepLast) {
+  x=x_+level->getX();
+  y=y_+level->getY();
+}

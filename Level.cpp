@@ -214,13 +214,13 @@ void Level::act() {
     itr->second->act();
     if (itr->second->getDead()) {
       if (dynamic_cast<Collectable*>(itr->second)) {
-	int r = itr->second->getY1()/height;
-	int c = itr->second->getX1()/width;
+	int r = (getY()+itr->second->getY1())/height;
+	int c = (getX()+itr->second->getX1())/width;
 	gems[r][c] = NULL;
       }
       else if (itr->second->isStationary()) {
-	int r = itr->second->getY1()/height;
-	int c = itr->second->getX1()/width;
+	int r = (getY()+itr->second->getY1())/height;
+	int c = (getX()+itr->second->getX1())/width;
 	stationary[r][c] = NULL;
       }
       delete itr->second;
@@ -230,43 +230,53 @@ void Level::act() {
     itr++;
   }
   if (level_type==2) {
-    std::cout<<bob->getY1();
     if (bob->getY1()>window_height)
-      y_ +=32*19;
+      y_ +=height*(grows-1);
     if (bob->getY2()<0)
-      y_-=32*19;
-    
+      y_-=height*(grows-1);
+    if (bob->getX1()>window_width)
+      x_+=width*(gcols-1);
+    if (bob->getX2()<0)
+      x_-=width*(gcols-1);
   } 
 }
 
 Actor** Level::testHitStationary(Actor* actor) {
-  int c = actor->getX1()/width;
-  int r = actor->getY1()/height;
+  int c = (actor->getX1()+x_)/width;
+  int r = (actor->getY1()+y_)/height;
   Actor** bs = new Actor*[4];
   bs[0]=NULL;bs[1]=NULL;bs[2]=NULL;bs[3]=NULL;
-  if (stationary[r][c] && isRectangularHit(actor,stationary[r][c]))
+  if (r>=0&&c>=0&&r<rows&&c<cols&&
+      stationary[r][c] && isRectangularHit(actor,stationary[r][c]))
     bs[0]=stationary[r][c];
-  if (stationary[r+1][c]&&isRectangularHit(actor,stationary[r+1][c]))
+  if (r+1>=0&&c>=0&&r+1<rows&&c<cols&&
+      stationary[r+1][c]&&isRectangularHit(actor,stationary[r+1][c]))
     bs[1] =stationary[r+1][c];
-  if (stationary[r][c+1]&&isRectangularHit(actor,stationary[r][c+1]))
+  if (r>=0&&c+1>=0&&r<rows&&c+1<cols&&
+      stationary[r][c+1]&&isRectangularHit(actor,stationary[r][c+1]))
     bs[2] =stationary[r][c+1];
-  if (stationary[r+1][c+1]&&isRectangularHit(actor,stationary[r+1][c+1]))
+  if (r+1>=0&&c+1>=0&&r+1<rows&&c+1<cols&&
+      stationary[r+1][c+1]&&isRectangularHit(actor,stationary[r+1][c+1]))
     bs[3] =stationary[r+1][c+1];
   return bs;
 }
 
 Collectable** Level::testHitCollectable(Actor* actor) {
-  int c = actor->getX1()/width;
-  int r = actor->getY1()/height;
+  int c = (actor->getX1()+x_)/width;
+  int r = (actor->getY1()+y_)/height;
   Collectable** bs = new Collectable*[4];
   bs[0]=NULL;bs[1]=NULL;bs[2]=NULL;bs[3]=NULL;
-  if (gems[r][c] && isRectangularHit(actor,gems[r][c]))
+  if (r>=0&&c>=0&&r<rows&&c<cols&&
+      gems[r][c] && isRectangularHit(actor,gems[r][c]))
     bs[0]=gems[r][c];
-  if (gems[r+1][c]&&isRectangularHit(actor,gems[r+1][c]))
+  if (r+1>=0&&c>=0&&r+1<rows&&c<cols&&
+      gems[r+1][c]&&isRectangularHit(actor,gems[r+1][c]))
     bs[1] =gems[r+1][c];
-  if (gems[r][c+1]&&isRectangularHit(actor,gems[r][c+1]))
+  if (r>=0&&c+1>=0&&r<rows&&c+1<cols&&
+      gems[r][c+1]&&isRectangularHit(actor,gems[r][c+1]))
     bs[2] =gems[r][c+1];
-  if (gems[r+1][c+1]&&isRectangularHit(actor,gems[r+1][c+1]))
+  if (r+1>=0&&c+1>=0&&r+1<rows&&c+1<cols&&
+      gems[r+1][c+1]&&isRectangularHit(actor,gems[r+1][c+1]))
     bs[3] =gems[r+1][c+1];
   return bs;
 }

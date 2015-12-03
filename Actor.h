@@ -37,7 +37,7 @@ class Actor {
   virtual void setHeight(float h) {height = h;}
   virtual void shiftX(float dx) {x+=dx;}
   virtual void shiftY(float dy) {y+=dy;}
-  virtual void setPosition(float x_, float y_,bool keepLast=false) {x=x_;y=y_;}
+  virtual void setPosition(float x_, float y_,bool keepLast=false);
   virtual void setColor(int r, int g, int b) {}
 
   virtual void act() {}
