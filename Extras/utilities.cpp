@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "utilities.h"
 #include <fstream>
 #include <cmath>

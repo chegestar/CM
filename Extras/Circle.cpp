@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Circle.h"
 
 Circle::Circle(float x, float y, float r) {

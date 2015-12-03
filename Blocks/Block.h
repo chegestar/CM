@@ -8,7 +8,7 @@ class Block : public Actor{
  private:
 
  public:
-  Block(Level* l,int x,int y) : Actor(l,x,y,32,32) {}
+  Block(Level* l,int x,int y);
   
   void act();
   void render(sf::RenderWindow& window);

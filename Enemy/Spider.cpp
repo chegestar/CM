@@ -13,11 +13,12 @@ Spider::Spider(Level* l, float x, float y, float w, float h,bool d) :
 };
 
 void Spider::act() {
+  Mover::act();
   const int speed = 3;
   if (isVert)
-    y+=dir*speed;
+    y+=dir*getMovementCorrectionY(speed);
   else
-    x+=dir*speed;
+    x+=dir*getMovementCorrectionX(speed);
 
   Actor** bs;
   bs = level->testHitStationary(this);

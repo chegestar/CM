@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Collectable.h"
 #include <utilities.h>
 #include <Level.h>

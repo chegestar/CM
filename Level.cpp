@@ -6,15 +6,17 @@
 #include <Collectable.h>
 #include <utilities.h>
 #include <cassert>
+
 Level::Level() {
   bob=NULL;
 }
 
-Level::Level(std::string filename) {
+Level::Level(std::string filename,sf::RenderWindow& window) {
   std::ifstream in_str(filename.c_str());
   if (!in_str) {
     throw 1;
   }
+  level_type=0;
   width=32;
   height=32;
   in_str>>rows>>cols;
@@ -37,6 +39,12 @@ Level::Level(std::string filename) {
     int isPrefix=0;
     int end=0;
     int end2=0;
+    //Level Options 
+    if (key=="ZOOMED_LEVEL") {
+      level_type=0;
+      width=window.getSize().y/cols;
+      height=window.getSize().x/rows;
+    }
     //Prefix Options
     if (key=="row") {
       isPrefix=1;
@@ -111,7 +119,7 @@ Level::Level(std::string filename) {
       assert(!isPrefix);
       char c;
       in_str>>c>>y>>x;
-      insert(new Spider(this,x*width+3.5,y*height+3.5,25,25,c=='V'));
+      insert(new Spider(this,(x+.1)*width,(y+.1)*height,width*4/5,height*4/5,c=='V'));
     }
 
     //Syntactic Sugar
@@ -152,22 +160,22 @@ Level::Level(std::string filename) {
 	if (c=="crow") {
 	  in_str>>y>>x>>end;
 	  for (int i=x;i<=end;i++)
-	    addGem(new Collectable(this,i*width,y*height,32,32),y,i,doors,num);
+	    addGem(new Collectable(this,i*width,y*height,width,height),y,i,doors,num);
 	}
 	else if (c=="ccol") {
 	  in_str>>x>>y>>end;
 	  for (int i=y;i<=end;i++)
-	    addGem(new Collectable(this,x*width,i*height,32,32),i,x,doors,num);
+	    addGem(new Collectable(this,x*width,i*height,width,height),i,x,doors,num);
 	}
 	else if (c=="crect") {
 	  in_str>>y>>x>>end>>end2;
 	  for (int i=y;i<=end;i++)
 	    for (int j=x;j<=end2;j++)
-	    addGem(new Collectable(this,j*width,i*height,32,32),i,j,doors,num);
+	    addGem(new Collectable(this,j*width,i*height,width,height),i,j,doors,num);
 	}
 	else {
 	  in_str>>y>>x;
-	  addGem(new Collectable(this,x*width,y*height,32,32),y,x,doors,num);
+	  addGem(new Collectable(this,x*width,y*height,width,height),y,x,doors,num);
 	}
       }
     }
@@ -199,16 +207,17 @@ void Level::act() {
 	int c = itr->second->getX1()/width;
 	stationary[r][c] = NULL;
       }
+      delete itr->second;
       actors.erase(itr);
+      itr--;
     }
-    
     itr++;
   }
 }
 
 Actor** Level::testHitStationary(Actor* actor) {
   int c = actor->getX1()/width;
-  int r = actor->getY1()/width;
+  int r = actor->getY1()/height;
   Actor** bs = new Actor*[4];
   bs[0]=NULL;bs[1]=NULL;bs[2]=NULL;bs[3]=NULL;
   if (stationary[r][c] && isRectangularHit(actor,stationary[r][c]))
@@ -224,7 +233,7 @@ Actor** Level::testHitStationary(Actor* actor) {
 
 Collectable** Level::testHitCollectable(Actor* actor) {
   int c = actor->getX1()/width;
-  int r = actor->getY1()/width;
+  int r = actor->getY1()/height;
   Collectable** bs = new Collectable*[4];
   bs[0]=NULL;bs[1]=NULL;bs[2]=NULL;bs[3]=NULL;
   if (gems[r][c] && isRectangularHit(actor,gems[r][c]))

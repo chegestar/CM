@@ -1,5 +1,8 @@
 #include "Block.h"
+#include <Level.h>
 
+Block::Block(Level* l,int x,int y) : 
+  Actor(l,x,y,l->getWidth(),l->getHeight()) {}
 void Block::act() {
 
 }

@@ -14,8 +14,9 @@ class GemDoor;
 class Level {
  private:
   typedef  std::map<int,Actor*> ACTORS;
+  int level_type;
   int rows,cols;
-  int width,height;
+  float width,height;
   Actor*** stationary;
   Collectable*** gems;
   ACTORS actors; 
@@ -26,8 +27,14 @@ class Level {
   void insert(Actor* actor,int depth=-1);
  public:
   Level();
-  Level(std::string filename);
+  Level(std::string filename,sf::RenderWindow& window);
   ~Level();
+
+  float getWidth() const {return width;}
+  float getHeight() const {return height;}
+  Bob* getBob() const {return bob;}
+
+
   void act();
   void render(sf::RenderWindow& window) {ACTORS::iterator itr; 
     for (itr=actors.begin();itr!=actors.end();itr++) {
@@ -37,7 +44,6 @@ class Level {
     bob->render(window);
   }
 
-  Bob* getBob() const {return bob;}
   Actor** testHitStationary(Actor* actor);
   Collectable** testHitCollectable(Actor* actor);
 

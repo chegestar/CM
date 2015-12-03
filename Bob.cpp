@@ -5,16 +5,24 @@
 #include <utilities.h>
 #include <Collectable.h>
 
+Bob::Bob(Level* l,int x_,int y_) : 
+  Actor(l,x_,y_,l->getWidth()*2/3,l->getHeight()*2/3), 
+  Mover(l,x,y,width,height),
+  startx(x), starty(y){
+
+}
+
 void Bob::act() {
   Mover::act();
+  float speed = 3;
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-    y-=3;
+    y-=getMovementCorrectionY(speed);
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-    y+=3;
+    y+=getMovementCorrectionY(speed);
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    x-=3;
+    x-=getMovementCorrectionX(speed);
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    x+=3;
+    x+=getMovementCorrectionX(speed);
   Actor** bs;
   bs = level->testHitStationary(this);
   for (int i=0;i<4;i++) {

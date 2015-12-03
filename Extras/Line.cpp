@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Line.h"
 
 Line::Line(float x1, float x2, float y1, float y2) {
