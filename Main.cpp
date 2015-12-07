@@ -1,4 +1,4 @@
-
+#include <cassert>
 #include <iostream>
 #include <fstream>
 #include <SFML/Graphics.hpp>
@@ -6,15 +6,15 @@
 #include "Level.h"
 void loadInFiles();
 
-int main() {
-  
+int main(int argc, char* argv[]) {
+  assert(argc==2);
   srand(time(NULL));
   //Definition of Window
   int width = 20*32;
   int height = 20*32;
   sf::RenderWindow window(sf::VideoMode(width, height), "CM Version 0.0");
   window.setFramerateLimit(60);
-  Level* level = new Level("grid_level.txt",window);
+  Level* level = new Level(argv[1],window);
   while (window.isOpen()) {
     sf::Event event;
     while (window.pollEvent(event)) {

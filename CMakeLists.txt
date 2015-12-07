@@ -21,6 +21,7 @@ add_subdirectory(Blocks)
 add_subdirectory(Extras)
 add_subdirectory(Enemy)
 add_subdirectory(Collectables)
+add_subdirectory(levels)
 
 
 
