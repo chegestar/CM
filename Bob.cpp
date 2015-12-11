@@ -5,7 +5,7 @@
 #include <utilities.h>
 #include <Collectable.h>
 
-Bob::Bob(Level* l,int x_,int y_) : 
+Bob::Bob(Level* l,float x_,float y_) : 
   Actor(l,x_,y_,l->getWidth()*2/3,l->getHeight()*2/3), 
   Mover(l,x,y,width,height),
   startx(x), starty(y){

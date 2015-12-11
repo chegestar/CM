@@ -1,4 +1,3 @@
-include_directories(..)
 
 add_library(extras 
   utilities.cpp 

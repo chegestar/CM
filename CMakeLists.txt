@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 2.6)
 project (CM)
-option(ENABLE_SF "ENABLE_DEBUG" OFF)
-option(ENABLE_SF "ENABLE_PREVERSION" OFF)
+option(ENABLE_DEBUG "ENABLE_DEBUG" OFF)
+option(ENABLE_PREVERSION "ENABLE_PREVERSION" OFF)
 IF(ENABLE_PREVERSION)
   add_definitions(-DPREVERSION)
 ENDIF()
@@ -10,12 +10,19 @@ IF(ENABLE_DEBUG)
 ENDIF()
 add_definitions(-DCOMPILE_NO_VB)
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/modules")
+find_package(SFML COMPONENTS system window graphics audio)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(Blocks)
 include_directories(Enemy)
 include_directories(Extras)
 include_directories(Collectables)
+if (SFML_FOUND)
+  include_directories(${SFML_INCLUDE_DIR})
+endif()
+
+
 
 add_subdirectory(Blocks)
 add_subdirectory(Extras)
@@ -34,6 +41,7 @@ set(ROOT_SOURCES
    CheckPoint.cpp
 )
 
+
 add_executable(CM ${ROOT_SOURCES})
 
 target_link_libraries(CM extras)
@@ -42,17 +50,8 @@ target_link_libraries(CM collect)
 target_link_libraries(CM enemy)
 
 
-IF (CYGWIN)
-  set(SFML_ROOT E:/)
-  MESSAGE(${SFML_ROOT})
-ELSE()
-  set(SFML_ROOT /home/diamog)
-ENDIF()
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/modules")
-find_package(SFML REQUIRED system window graphics audio)
 
 if (SFML_FOUND)
-  include_directories(${SFML_INCLUDE_DIR})
   target_link_libraries(CM ${SFML_LIBRARIES})
 endif()
 

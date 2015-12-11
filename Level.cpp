@@ -163,7 +163,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       assert(!isPrefix);
       int num;
       in_str>>num;
-      GemDoor* doors[num];
+      GemDoor** doors = new GemDoor*[num];
       for (int i=0;i<num;i++) {
 	int x,y;
 	in_str>>y>>x;
@@ -194,6 +194,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
 	  addGem(new Collectable(this,x*width,y*height,width,height),y,x,doors,num);
 	}
       }
+	  delete[] doors;
     }
   }
 }
@@ -210,11 +211,12 @@ Level::~Level() {
 
 void Level::act() {
   ACTORS::iterator itr=actors.begin(); 
+  std::vector<ACTORS::iterator> to_delete;
   while(itr!=actors.end()) {
     itr->second->act();
     if (itr->second->getDead()) {
       if (dynamic_cast<Collectable*>(itr->second)) {
-	int r = (getY()+itr->second->getY1())/height;
+	      int r = (getY()+itr->second->getY1())/height;
 	int c = (getX()+itr->second->getX1())/width;
 	gems[r][c] = NULL;
       }
@@ -224,11 +226,14 @@ void Level::act() {
 	stationary[r][c] = NULL;
       }
       delete itr->second;
-      actors.erase(itr);
-      itr--;
+      to_delete.push_back(itr);
     }
     itr++;
   }
+  for (size_t i=0;i<to_delete.size();i++) {
+    actors.erase(to_delete[i]);
+  }
+  to_delete.clear();
   if (level_type==2) {
     if (bob->getY1()>window_height)
       y_ +=height*(grows-1);

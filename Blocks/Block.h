@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include <Actor.h>
 
 #ifndef __BLOCK_H__
@@ -8,7 +7,7 @@ class Block : public Actor{
  private:
 
  public:
-  Block(Level* l,int x,int y);
+  Block(Level* l,float x_,float y_);
   
   void act();
   void render(sf::RenderWindow& window);

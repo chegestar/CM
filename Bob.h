@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+
 #include <Actor.h>
 #include <Mover.h>
 
@@ -6,9 +6,9 @@
 #define __BOB__H__
 class Bob : public Mover{
  private:
-  int startx,starty;
+  float startx,starty;
  public:
-  Bob(Level* l,int x_,int y_);
+  Bob(Level* l,float x_,float y_);
   
   void die() {x=startx; y = starty;}
 

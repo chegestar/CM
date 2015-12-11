@@ -1,6 +1,5 @@
 #include <fstream>
 #include <vector>
-#include <SFML/Graphics.hpp>
 #include <Actor.h>
 #include <Bob.h>
 #ifndef __LEVEL__H__

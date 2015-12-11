@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include <Block.h>
 #include <vector>
 

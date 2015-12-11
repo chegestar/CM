@@ -1,6 +1,4 @@
-include_directories(../Extras)
-include_directories(..)
-include_directories(../Enemies)
+
 
 set (SWITCH_SRC
 )

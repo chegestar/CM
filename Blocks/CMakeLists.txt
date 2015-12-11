@@ -1,5 +1,3 @@
-include_directories(..)
-include_directories(Extras)
 
 set(PLATFORM_SRC
   Block.cpp
@@ -7,4 +5,3 @@ set(PLATFORM_SRC
 )
 
 add_library(blocks ${PLATFORM_SRC})
-
