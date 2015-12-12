@@ -39,6 +39,7 @@ set(ROOT_SOURCES
    Bob.cpp
    Level.cpp
    CheckPoint.cpp
+   Exit.cpp
 )
 
 

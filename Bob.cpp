@@ -1,7 +1,7 @@
 #include "Bob.h"
 #include <Block.h>
 #include <Level.h>
-#include <CheckPoint.h>
+#include <Exit.h>
 #include <utilities.h>
 #include <Collectable.h>
 
@@ -38,6 +38,12 @@ void Bob::act() {
 	setPosition(getX1(),bs[i]->getY1()-height);
       else if (dir==3)
 	setPosition(bs[i]->getX2(),getY1());
+    }
+    else if (dynamic_cast<Collectable*>(bs[i])) {
+      bs[i]->activate();
+    }
+    else if (dynamic_cast<Exit*>(bs[i])) {
+
     }
     else if (dynamic_cast<CheckPoint*>(bs[i])) {
       startx = bs[i]->getX1()+level->getX();

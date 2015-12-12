@@ -31,3 +31,6 @@ sp H 15 10
 row 16 5 15 block
 col  16 5 15 b
 rect 17 9 18 11 c
+
+ec 19 15
+exit 10 19
