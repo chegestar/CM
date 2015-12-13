@@ -8,6 +8,8 @@ Actor::Actor(Level* l, float x_,float y_,float w,float h) {
   width = w;
   height = h;
   isDead=false;
+  pointer_to_location=NULL;
+  pointer_to_gem=NULL;
 }
 
 float Actor::getX1() const {return x-level->getX();}

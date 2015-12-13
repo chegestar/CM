@@ -11,7 +11,7 @@ class GemDoor : public Block{
   int num_gems;
 
  public:
-  GemDoor(Level* l,int x,int y) : Block(l,x,y) {}
+  GemDoor(Level* l,int x,int y) : Block(l,x,y) {num_gems=0;}
 
   void addCrystal() {num_gems++;}
   void removeCrystal() {num_gems--; if (num_gems<=0) isDead=true;}

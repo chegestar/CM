@@ -102,11 +102,11 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
         for (int i = y;i<=end;i++)
           for (int j=x;j<=end2;j++)
             addStationary(new Block(this,j*width,i*height),i,j);
-        }
-        else {
-          in_str>>y>>x;
-          addStationary(new Block(this,x*width,y*height),y,x);
-        }
+      }
+      else {
+        in_str>>y>>x;
+        addStationary(new Block(this,x*width,y*height),y,x);
+      }
     }
     else if (key=="c"||key=="check") {
       if (isPrefix==1) {
@@ -123,7 +123,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
         for (int i = y;i<=end;i++)
           for (int j=x;j<=end2;j++)
             addStationary(new CheckPoint(this,j*width,i*height),i,j);
-        }
+      }
       else {
         in_str>>y>>x;
         addStationary(new CheckPoint(this,x*width,y*height),y,x);
@@ -144,7 +144,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
         for (int i = y;i<=end;i++)
           for (int j=x;j<=end2;j++)
             addStationary(new Collectable(this,j*width,i*height,width,height),i,j);
-        }
+      }
       else {
         in_str>>y>>x;
         addStationary(new Collectable(this,x*width,y*height,width,height),y,x);
@@ -165,7 +165,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
         for (int i = y;i<=end;i++)
           for (int j=x;j<=end2;j++)
             addStationary(new Collectable(this,j*width,i*height,width,height),i,j);
-        }
+      }
       else {
         in_str>>y>>x;
         addStationary(new Collectable(this,x*width,y*height,width,height),y,x);
@@ -186,7 +186,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
         for (int i = y;i<=end;i++)
           for (int j=x;j<=end2;j++)
             addStationary(new Exit(this,j*width,i*height),i,j);
-        }
+      }
       else {
         in_str>>y>>x;
         addStationary(new Exit(this,x*width,y*height),y,x);
@@ -206,67 +206,68 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       assert(!isPrefix);
       in_str>>y;
       for (int i=0;i<cols;i++) 
-       if (!stationary[y][i]) {
-         stationary[y][i] = new Block(this,i*width,y*height);
-         insert(stationary[y][i]);
-       }
-     }
-     else if (key=="bcol") {
+        if (!stationary[y][i]) {
+          addStationary(new Block(this,i*width,y*height),y,i);
+        }
+    }
+    else if (key=="bcol") {
       assert(!isPrefix);
       in_str>>x;
       for (int i=0;i<rows;i++) 
-       if (!stationary[i][x]) {
-         stationary[i][x] = new Block(this,x*width,i*height);
-         insert(stationary[i][x]);
-       }
-     }
+        if (!stationary[i][x]) {
+          addStationary( new Block(this,x*width,i*height),i,x);
+        }
+    }
 
     //Block Options
-     else if (key=="gemdoor"||key=="gd") {
+    else if (key=="gemdoor"||key=="gd") {
       assert(!isPrefix);
       int num;
       in_str>>num;
       GemDoor** doors = new GemDoor*[num];
       for (int i=0;i<num;i++) {
-       int x,y;
-       in_str>>y>>x;
-       doors[i] = new GemDoor(this,x*width,y*height);
-       stationary[y][x] = doors[i];
-       insert(doors[i]);
-     }
-     std::string c;
-     while ((in_str>>c)&&(c!=";")) {
-       if (c=="crow") {
-         in_str>>y>>x>>end;
-         for (int i=x;i<=end;i++)
-           addGem(new Collectable(this,i*width,y*height,width,height),y,i,doors,num);
-       }
-       else if (c=="ccol") {
-         in_str>>x>>y>>end;
-         for (int i=y;i<=end;i++)
-           addGem(new Collectable(this,x*width,i*height,width,height),i,x,doors,num);
-       }
-       else if (c=="crect") {
-         in_str>>y>>x>>end>>end2;
-         for (int i=y;i<=end;i++)
-           for (int j=x;j<=end2;j++)
-             addGem(new Collectable(this,j*width,i*height,width,height),i,j,doors,num);
-         }
-         else {
-           in_str>>y>>x;
-           addGem(new Collectable(this,x*width,y*height,width,height),y,x,doors,num);
-         }
-       }
-       delete[] doors;
-     }
-   }
- }
+        int x,y;
+        in_str>>y>>x;
+        doors[i] = new GemDoor(this,x*width,y*height);
+        addStationary(doors[i],y,x);
+      }
+      std::string c;
+      while ((in_str>>c)&&(c!=";")) {
+        if (c=="crow") {
+          in_str>>y>>x>>end;
+          for (int i=x;i<=end;i++)
+            addGem(new Collectable(this,i*width,y*height,width,height),y,i,doors,num);
+        }
+        else if (c=="ccol") {
+          in_str>>x>>y>>end;
+          for (int i=y;i<=end;i++)
+            addGem(new Collectable(this,x*width,i*height,width,height),i,x,doors,num);
+        }
+        else if (c=="crect") {
+          in_str>>y>>x>>end>>end2;
+          for (int i=y;i<=end;i++)
+            for (int j=x;j<=end2;j++)
+              addGem(new Collectable(this,j*width,i*height,width,height),i,j,doors,num);
+        }
+        else {
+          in_str>>y>>x;
+          addGem(new Collectable(this,x*width,y*height,width,height),y,x,doors,num);
+        }
+      }
+      delete[] doors;
+    }
+  }
+}
 
- Level::~Level() {
+Level::~Level() {
   ACTORS::iterator itr;
   for (itr=actors.begin();itr!=actors.end();itr++) {
     delete itr->second;
   }
+  for (int i=0;i<rows;i++)
+    delete [] gems[i];
+  delete [] gems;
+
   for (int i=0;i<rows;i++)
     delete [] stationary[i];
   delete [] stationary;
@@ -274,39 +275,31 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
 
 void Level::act() {
   ACTORS::iterator itr=actors.begin(); 
-  std::vector<ACTORS::iterator> to_delete;
   while(itr!=actors.end()) {
     itr->second->act();
     if (itr->second->getDead()) {
-      if (dynamic_cast<Collectable*>(itr->second)) {
-       int r = (getY()+itr->second->getY1())/height;
-       int c = (getX()+itr->second->getX1())/width;
-       gems[r][c] = NULL;
-      }
-      else if (itr->second->isStationary()) {
-       int r = (getY()+itr->second->getY1())/height;
-       int c = (getX()+itr->second->getX1())/width;
-       stationary[r][c] = NULL;
-      }
+      itr->second->removePosition();
+      int r = (getY()+itr->second->getY1())/height;
+      int c = (getX()+itr->second->getX1())/width;
+
       delete itr->second;
-      to_delete.push_back(itr);
-   }
-   itr++;
- }
- for (size_t i=0;i<to_delete.size();i++) {
-  actors.erase(to_delete[i]);
-}
-to_delete.clear();
-if (level_type==2) {
-  if (bob->getY1()>window_height)
-    y_ +=height*(grows-1);
-  if (bob->getY2()<0)
-    y_-=height*(grows-1);
-  if (bob->getX1()>window_width)
-    x_+=width*(gcols-1);
-  if (bob->getX2()<0)
-    x_-=width*(gcols-1);
-} 
+      
+      ACTORS::iterator temp_itr = itr;
+      itr--;
+      actors.erase(temp_itr);
+    }
+    itr++;
+  }
+  if (level_type==2) {
+    if (bob->getY1()>window_height)
+      y_ +=height*(grows-1);
+    if (bob->getY2()<0)
+      y_-=height*(grows-1);
+    if (bob->getX1()>window_width)
+      x_+=width*(gcols-1);
+    if (bob->getX2()<0)
+      x_-=width*(gcols-1);
+  } 
 }
 
 Actor** Level::testHitStationary(Actor* actor) {
@@ -315,16 +308,16 @@ Actor** Level::testHitStationary(Actor* actor) {
   Actor** bs = new Actor*[4];
   bs[0]=NULL;bs[1]=NULL;bs[2]=NULL;bs[3]=NULL;
   if (r>=0&&c>=0&&r<rows&&c<cols&&
-    stationary[r][c] && isRectangularHit(actor,stationary[r][c]))
+      stationary[r][c] && isRectangularHit(actor,stationary[r][c]))
     bs[0]=stationary[r][c];
   if (r+1>=0&&c>=0&&r+1<rows&&c<cols&&
-    stationary[r+1][c]&&isRectangularHit(actor,stationary[r+1][c]))
+      stationary[r+1][c]&&isRectangularHit(actor,stationary[r+1][c]))
     bs[1] =stationary[r+1][c];
   if (r>=0&&c+1>=0&&r<rows&&c+1<cols&&
-    stationary[r][c+1]&&isRectangularHit(actor,stationary[r][c+1]))
+      stationary[r][c+1]&&isRectangularHit(actor,stationary[r][c+1]))
     bs[2] =stationary[r][c+1];
   if (r+1>=0&&c+1>=0&&r+1<rows&&c+1<cols&&
-    stationary[r+1][c+1]&&isRectangularHit(actor,stationary[r+1][c+1]))
+      stationary[r+1][c+1]&&isRectangularHit(actor,stationary[r+1][c+1]))
     bs[3] =stationary[r+1][c+1];
   return bs;
 }
@@ -335,27 +328,31 @@ Collectable** Level::testHitCollectable(Actor* actor) {
   Collectable** bs = new Collectable*[4];
   bs[0]=NULL;bs[1]=NULL;bs[2]=NULL;bs[3]=NULL;
   if (r>=0&&c>=0&&r<rows&&c<cols&&
-    gems[r][c] && isRectangularHit(actor,gems[r][c]))
+      gems[r][c] && isRectangularHit(actor,gems[r][c]))
     bs[0]=gems[r][c];
   if (r+1>=0&&c>=0&&r+1<rows&&c<cols&&
-    gems[r+1][c]&&isRectangularHit(actor,gems[r+1][c]))
+      gems[r+1][c]&&isRectangularHit(actor,gems[r+1][c]))
     bs[1] =gems[r+1][c];
   if (r>=0&&c+1>=0&&r<rows&&c+1<cols&&
-    gems[r][c+1]&&isRectangularHit(actor,gems[r][c+1]))
+      gems[r][c+1]&&isRectangularHit(actor,gems[r][c+1]))
     bs[2] =gems[r][c+1];
   if (r+1>=0&&c+1>=0&&r+1<rows&&c+1<cols&&
-    gems[r+1][c+1]&&isRectangularHit(actor,gems[r+1][c+1]))
+      gems[r+1][c+1]&&isRectangularHit(actor,gems[r+1][c+1]))
     bs[3] =gems[r+1][c+1];
   return bs;
 }
 void Level::addStationary(Actor* actor,int r, int c) {
   if (!stationary[r][c]) {
     stationary[r][c] = actor;
+    actor->linkPosition(&stationary[r][c]);
     insert(stationary[r][c]);
   }
+  else
+    delete actor;
 }
 
 void Level::addGem(Collectable* g, int r, int c, GemDoor* doors[], int num) {
+  g->linkPosition(&gems[r][c]);
   gems[r][c] = g;
   insert(g);
   for (int i=0;i<num;i++) {

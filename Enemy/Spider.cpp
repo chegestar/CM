@@ -27,7 +27,7 @@ void Spider::act() {
     if (dynamic_cast<Block*>(bs[i]))
       dir*=-1;
   }
-
+  delete [] bs;
   Enemy::act();
 }
 

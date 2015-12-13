@@ -9,6 +9,7 @@
 #include <Circle.h>
 
 class Level;
+class Collectable;
 
 class Actor {
  public:
@@ -39,7 +40,11 @@ class Actor {
   virtual void shiftY(float dy) {y+=dy;}
   virtual void setPosition(float x_, float y_,bool keepLast=false);
   virtual void setColor(int r, int g, int b) {}
-
+  void linkPosition(Actor** location) {pointer_to_location=location;}
+  void linkPosition(Collectable** location) {pointer_to_gem=location;}
+  void removePosition() {if (pointer_to_location) *pointer_to_location=NULL;
+    if (pointer_to_gem) *pointer_to_gem=NULL;
+  }
   virtual void act() {}
   virtual void activate() {}  
   virtual void windowEvent(sf::Event& event) {}
@@ -54,6 +59,8 @@ protected:
   float x,y;
   float width,height;
   bool isDead;
+  Actor** pointer_to_location; 
+  Collectable** pointer_to_gem; 
 };
 
 #endif
