@@ -52,10 +52,10 @@ void Arc::setBounds(float lower,float upper) {
     float pi=3.1415926535;
     for (int j=0;j<pts;j++) {
       if (diff<=0)
-	quadrants[i].setPoint(j+1,sf::Vector2f(0,0));
+        quadrants[i].setPoint(j+1,sf::Vector2f(0,0));
       else
-	quadrants[i].setPoint(j+1,sf::Vector2f(rad*cos(angle*pi/180),
-					       rad*sin(angle*pi/180)));
+        quadrants[i].setPoint(j+1,sf::Vector2f(rad*cos(angle*pi/180),
+                                               rad*sin(angle*pi/180)));
       angle+=diff/(pts-1);
     }
   }

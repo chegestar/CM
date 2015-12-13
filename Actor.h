@@ -31,7 +31,7 @@ class Actor {
     {throw std::runtime_error("NOT IMPLEMENTED");}
   bool getDead() const {return isDead;}
   virtual bool isStationary() const {return true;}
-  virtual bool doesPause() const {return true;}  	
+  virtual bool doesPause() const {return true;} 
 
   virtual void setWidth(float w) {width=w;}
   virtual void setHeight(float h) {height = h;}

@@ -28,10 +28,10 @@ bool testCircles(Actor* circle,Actor* lines);
 void getObjectCenter(Actor* a,float& cx,float& cy);
 
 void setupText(sf::Text& text,sf::Font& f,std::string s,int size, sf::Color c,
-	       double x, double y, int num_chars=-1);
+               double x, double y, int num_chars=-1);
 
 void setupRect(sf::RectangleShape& shape,float x1, float y1, float x2, float y2,
-	       sf::Color col,sf::Color out, int out_size);
+               sf::Color col,sf::Color out, int out_size);
 
 void setRectPos(sf::RectangleShape& s, sf::Text& t);
 

@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
   srand(time(NULL));
   //Definition of Window
   int width = 20*32;
-  int height = 20*32;
+  int height = 15*32;
   sf::RenderWindow window(sf::VideoMode(width, height), "CM Version 0.0");
   window.setFramerateLimit(60);
   Level* level = new Level(argv[1],window);
@@ -27,8 +27,9 @@ int main(int argc, char* argv[]) {
 
       }
       if (event.type==sf::Event::KeyPressed&&
-	  event.key.code == sf::Keyboard::Escape)
-	window.close();
+          event.key.code == sf::Keyboard::Escape)
+        window.close();
+        
     }
     level->act();
     level->render(window);

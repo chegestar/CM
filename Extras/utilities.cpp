@@ -7,9 +7,9 @@ float getPI() {return 3.1415926535f;}
 
 bool isRectangularHit(Actor* a1,Actor* a2) {
   return (a1->getX1()<=a2->getX2() && 
-	  a1->getX2()>=a2->getX1() &&
-	  a1->getY1()<=a2->getY2() && 
-	  a1->getY2()>=a2->getY1());
+          a1->getX2()>=a2->getX1() &&
+          a1->getY1()<=a2->getY2() && 
+          a1->getY2()>=a2->getY1());
 }
 
 bool isLineHit(Line l1, Line l2) {
@@ -113,7 +113,7 @@ void getObjectCenter(Actor* a,float& cx,float& cy) {
 
 
 void setupText(sf::Text& text,sf::Font& f,std::string s,int size, sf::Color c,
-	       float x, float y, int num_chars) {
+               float x, float y, int num_chars) {
   text.setFont(f);
   text.setString(s);
   text.setCharacterSize(size);
@@ -130,7 +130,7 @@ void setupText(sf::Text& text,sf::Font& f,std::string s,int size, sf::Color c,
 }
 
 void setupRect(sf::RectangleShape& shape,float x1, float y1, float x2, float y2,
-	       sf::Color col,sf::Color out, float out_size) {
+               sf::Color col,sf::Color out, float out_size) {
   shape.setPosition(x1,y1);
   shape.setSize(sf::Vector2f(x2-x1,y2-y1));
   shape.setFillColor(col);
@@ -141,7 +141,7 @@ void setupRect(sf::RectangleShape& shape,float x1, float y1, float x2, float y2,
 void setRectPos(sf::RectangleShape& s, sf::Text& t) {
   s.setPosition(t.findCharacterPos(0)-sf::Vector2f(5,0));
   s.setSize(t.findCharacterPos(t.getString().getSize())-t.findCharacterPos(0)+
-	    sf::Vector2f(10,t.getCharacterSize()+10.0f));
+            sf::Vector2f(10,t.getCharacterSize()+10.0f));
   
 }
 

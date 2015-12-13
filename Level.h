@@ -43,7 +43,7 @@ class Level {
   void render(sf::RenderWindow& window) {ACTORS::iterator itr; 
     for (itr=actors.begin();itr!=actors.end();itr++) {
       if (!(dynamic_cast<Bob*>(itr->second)))
-	itr->second->render(window);
+        itr->second->render(window);
     }
     bob->render(window);
   }

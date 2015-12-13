@@ -20,8 +20,8 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
   level_type=0;
   width=32;
   height=32;
-  window_width = window.getSize().y;
-  window_height = window.getSize().x;
+  window_width = window.getSize().x;
+  window_height = window.getSize().y;
   in_str>>rows>>cols;
   std::string key;
   max_depth=0;
