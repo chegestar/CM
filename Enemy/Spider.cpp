@@ -5,8 +5,8 @@
 #include <Block.h>
 
 
-Spider::Spider(Level* l, float x, float y, float w, float h,bool d) : 
-  Actor(l,x,y,w,h), Enemy(l,x,y,w,h) {
+Spider::Spider(Level* l, float x, float y,bool d) : 
+  Actor(l,x,y,32*4.0/5,32*4.0/5), Enemy(l,x,y,width,height) {
 
   isVert=d;
   dir=getRandInt(0,1)*2-1;

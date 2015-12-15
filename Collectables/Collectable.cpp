@@ -4,24 +4,18 @@
 #include <GemDoor.h>
 
 Collectable::Collectable(Level* l, float x_, float y_, float w, float h) : 
-  Actor(l,x_,y_,w,h) {}
+  Actor(l,x_,y_,w,h) {
+  shape = new sf::CircleShape(width/2);
+  static_cast<sf::CircleShape*>(shape)->setFillColor(sf::Color(0,0,255));
+}
 
-void Collectable::activate() {
+int Collectable::activate() {
   isDead=true;
-  for (unsigned int i=0;i<doors.size();i++)
-    doors[i]->removeCrystal();
+  return 0;
 }
 
-void Collectable::act() {
-  /*  if (you->getDead())
-    return;
-  */
-
-}
 
 void Collectable::render(sf::RenderWindow& window) {
-  sf::CircleShape shape(width/2);
-  shape.setPosition(getX1(),getY1());
-  shape.setFillColor(sf::Color(0,0,255));
-  window.draw(shape);
+  static_cast<sf::CircleShape*>(shape)->setPosition(getX1(),getY1());
+  window.draw(*shape);
 }

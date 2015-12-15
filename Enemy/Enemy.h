@@ -9,7 +9,7 @@ class Enemy : public Mover {
  private:
 
  public:
-  Enemy(Level* l, float x, float y, float w, float h) : Actor(l,x,y,w,h), Mover(l,x,y,w,h) {};
+  Enemy(Level* l, float x, float y, float w, float h);
   
   virtual bool hitBob(Bob* b);
   

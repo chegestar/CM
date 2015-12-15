@@ -10,7 +10,7 @@ class Spider : public Enemy {
   int dir;
   bool isVert;
  public:
-  Spider(Level* l, float x, float y, float w, float h,bool d);
+  Spider(Level* l, float x, float y, bool d);
   
   virtual void act();
 };

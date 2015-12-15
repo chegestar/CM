@@ -3,13 +3,21 @@
 
 Actor::Actor(Level* l, float x_,float y_,float w,float h) {
   level = l;
-  x = x_;
-  y = y_;
+  x = x_+(level->getWidth()-w)/2;
+  y = y_+(level->getHeight()-h)/2;
   width = w;
   height = h;
   isDead=false;
   pointer_to_location=NULL;
   pointer_to_gem=NULL;
+  shape=NULL;
+}
+
+Actor::~Actor() {
+  if (shape) delete shape;
+  pointer_to_location=NULL;
+  pointer_to_gem=NULL;
+  shape=NULL;
 }
 
 float Actor::getX1() const {return x-level->getX();}

@@ -13,6 +13,8 @@ add_definitions(-DCOMPILE_NO_VB)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/modules")
 find_package(SFML COMPONENTS system window graphics audio)
 
+file(COPY Fonts DESTINATION ${CMAKE_BINARY_DIR})
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(Blocks)
 include_directories(Enemy)

@@ -3,7 +3,10 @@
 #include <Spider.h>
 #include <GemDoor.h>
 #include <Exit.h>
-#include <Collectable.h>
+#include <Coin.h>
+#include <EpCrystal.h>
+#include <Crystal.h>
+#incldue <Life.h>
 #include <utilities.h>
 #include <cassert>
 
@@ -132,45 +135,66 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
     else if (key=="coin") {
       if (isPrefix==1) {
         for (int i =x;i<=end;i++) {
-          addStationary(new Collectable(this,i*width,y*height,width,height),y,i);
+          addStationary(new Coin(this,i*width,y*height),y,i);
         }
       }
       else if (isPrefix==2) {
         for (int i =y;i<=end;i++) {
-          addStationary(new Collectable(this,x*width,i*height,width,height),i,x);
+          addStationary(new Coin(this,x*width,i*height),i,x);
         }
       }
       else if (isPrefix==3) {
         for (int i = y;i<=end;i++)
           for (int j=x;j<=end2;j++)
-            addStationary(new Collectable(this,j*width,i*height,width,height),i,j);
+            addStationary(new Coin(this,j*width,i*height),i,j);
       }
       else {
         in_str>>y>>x;
-        addStationary(new Collectable(this,x*width,y*height,width,height),y,x);
+        addStationary(new Coin(this,x*width,y*height),y,x);
       }
     }
     else if (key=="ecrystal" || key=="ec") {
       if (isPrefix==1) {
         for (int i =x;i<=end;i++) {
-          addStationary(new Collectable(this,i*width,y*height,width,height),y,i);
+          addStationary(new EpCrystal(this,i*width,y*height),y,i);
         }
       }
       else if (isPrefix==2) {
         for (int i =y;i<=end;i++) {
-          addStationary(new Collectable(this,x*width,i*height,width,height),i,x);
+          addStationary(new EpCrystal(this,x*width,i*height),i,x);
         }
       }
       else if (isPrefix==3) {
         for (int i = y;i<=end;i++)
           for (int j=x;j<=end2;j++)
-            addStationary(new Collectable(this,j*width,i*height,width,height),i,j);
+            addStationary(new EpCrystal(this,j*width,i*height),i,j);
       }
       else {
         in_str>>y>>x;
-        addStationary(new Collectable(this,x*width,y*height,width,height),y,x);
+        addStationary(new EpCrystal(this,x*width,y*height),y,x);
       }
     }
+    else if (key=="life" || key=="l") {
+      if (isPrefix==1) {
+        for (int i =x;i<=end;i++) {
+          addStationary(new Life(this,i*width,y*height),y,i);
+        }
+      }
+      else if (isPrefix==2) {
+        for (int i =y;i<=end;i++) {
+          addStationary(new Life(this,x*width,i*height),i,x);
+        }
+      }
+      else if (isPrefix==3) {
+        for (int i = y;i<=end;i++)
+          for (int j=x;j<=end2;j++)
+            addStationary(new Life(this,j*width,i*height),i,j);
+      }
+      else {
+        in_str>>y>>x;
+        addStationary(new Life(this,x*width,y*height),y,x);
+      }
+    } 
     else if (key=="exit") {
       if (isPrefix==1) {
         for (int i =x;i<=end;i++) {
@@ -198,7 +222,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       assert(!isPrefix);
       char c;
       in_str>>c>>y>>x;
-      insert(new Spider(this,(x+.1)*width,(y+.1)*height,width*4/5,height*4/5,c=='V'));
+      insert(new Spider(this,(x)*width,(y)*height,c=='V'));
     }
 
     //Syntactic Sugar
@@ -236,22 +260,22 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
         if (c=="crow") {
           in_str>>y>>x>>end;
           for (int i=x;i<=end;i++)
-            addGem(new Collectable(this,i*width,y*height,width,height),y,i,doors,num);
+            addGem(new Crystal(this,i*width,y*height,width,height),y,i,doors,num);
         }
         else if (c=="ccol") {
           in_str>>x>>y>>end;
           for (int i=y;i<=end;i++)
-            addGem(new Collectable(this,x*width,i*height,width,height),i,x,doors,num);
+            addGem(new Crystal(this,x*width,i*height,width,height),i,x,doors,num);
         }
         else if (c=="crect") {
           in_str>>y>>x>>end>>end2;
           for (int i=y;i<=end;i++)
             for (int j=x;j<=end2;j++)
-              addGem(new Collectable(this,j*width,i*height,width,height),i,j,doors,num);
+              addGem(new Crystal(this,j*width,i*height,width,height),i,j,doors,num);
         }
         else {
           in_str>>y>>x;
-          addGem(new Collectable(this,x*width,y*height,width,height),y,x,doors,num);
+          addGem(new Crystal(this,x*width,y*height,width,height),y,x,doors,num);
         }
       }
       delete[] doors;
@@ -279,9 +303,6 @@ void Level::act() {
     itr->second->act();
     if (itr->second->getDead()) {
       itr->second->removePosition();
-      int r = (getY()+itr->second->getY1())/height;
-      int c = (getX()+itr->second->getX1())/width;
-
       delete itr->second;
       
       ACTORS::iterator temp_itr = itr;
@@ -351,7 +372,7 @@ void Level::addStationary(Actor* actor,int r, int c) {
     delete actor;
 }
 
-void Level::addGem(Collectable* g, int r, int c, GemDoor* doors[], int num) {
+void Level::addGem(Crystal* g, int r, int c, GemDoor* doors[], int num) {
   g->linkPosition(&gems[r][c]);
   gems[r][c] = g;
   insert(g);

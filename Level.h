@@ -8,6 +8,7 @@
 class Actor;
 class Bob;
 class Collectable;
+class Crystal;
 class GemDoor;
 
 class Level {
@@ -25,7 +26,7 @@ class Level {
   Bob* bob;
   int max_depth;
   void addStationary(Actor* actor,int r, int c);
-  void addGem(Collectable* g, int r, int c, GemDoor* doors[], int num) ;
+  void addGem(Crystal* g, int r, int c, GemDoor* doors[], int num) ;
   void insert(Actor* actor,int depth=-1);
  public:
   Level();

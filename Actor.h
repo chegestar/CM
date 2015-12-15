@@ -14,7 +14,7 @@ class Collectable;
 class Actor {
  public:
   Actor(Level* l,float x_,float y_,float w,float h);
-  virtual ~Actor() {}
+  virtual ~Actor();
 
   virtual float getX1() const;
   virtual float getX2() const;
@@ -46,7 +46,7 @@ class Actor {
     if (pointer_to_gem) *pointer_to_gem=NULL;
   }
   virtual void act() {}
-  virtual void activate() {}  
+  virtual int activate() {return 0;}  
   virtual void windowEvent(sf::Event& event) {}
   virtual void render(sf::RenderWindow& window) {}
 
@@ -61,6 +61,7 @@ protected:
   bool isDead;
   Actor** pointer_to_location; 
   Collectable** pointer_to_gem; 
+  sf::Drawable* shape;
 };
 
 #endif

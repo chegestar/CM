@@ -9,7 +9,13 @@ Bob::Bob(Level* l,float x_,float y_) :
   Actor(l,x_,y_,l->getWidth()*2/3,l->getHeight()*2/3), 
   Mover(l,x,y,width,height),
   startx(x), starty(y){
+  isExit=false;
+  num_lives=3;
+  score=0;
+  specials=0;
 
+  shape = new sf::RectangleShape(sf::Vector2f(width,height));
+  static_cast<sf::RectangleShape*>(shape)->setFillColor(sf::Color(255,255,0));
 }
 
 void Bob::act() {
@@ -40,10 +46,11 @@ void Bob::act() {
         setPosition(bs[i]->getX2(),getY1());
     }
     else if (dynamic_cast<Collectable*>(bs[i])) {
-      bs[i]->activate();
+      int s =bs[i]->activate();
+      score+=s;
     }
     else if (dynamic_cast<Exit*>(bs[i])) {
-
+      isExit=true;
     }
     else if (dynamic_cast<CheckPoint*>(bs[i])) {
       startx = bs[i]->getX1()+level->getX();
@@ -55,15 +62,14 @@ void Bob::act() {
   
   for (int i=0;i<4;i++) {
     if (!bs2[i]) continue;
-    bs2[i]->activate();
+    int s = bs2[i]->activate();
+    score+=s;
   }
   delete [] bs2;
 
 }
 
 void Bob::render(sf::RenderWindow& window) {
-  sf::RectangleShape shape(sf::Vector2f(width,height));
-  shape.setPosition(getX1(),getY1());
-  shape.setFillColor(sf::Color(255,255,0));
-  window.draw(shape);
+  static_cast<sf::RectangleShape*>(shape)->setPosition(getX1(),getY1());
+  window.draw(*shape);
 }
