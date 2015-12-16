@@ -25,6 +25,7 @@ class Level {
   ACTORS actors; 
   Bob* bob;
   int max_depth;
+  Actor* getStationary(std::string key,int x, int y);
   void addStationary(Actor* actor,int r, int c);
   void addGem(Crystal* g, int r, int c, GemDoor* doors[], int num) ;
   void insert(Actor* actor,int depth=-1);

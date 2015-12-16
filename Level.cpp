@@ -15,6 +15,30 @@ Level::Level() {
   bob=NULL;
 }
 
+Actor* Level::getStationary(std::string key, int x, int y) {
+    if (key=="b"||key=="block") {
+      return new Block(this,x*width,y*height);
+    }
+    else if (key=="c"||key=="check") {
+      return new CheckPoint(this,x*width,y*height);
+    }
+    else if (key=="coin") {
+      return new Coin(this,x*width,y*height);
+    }
+    else if (key=="ecrystal" || key=="ec") {
+      return new EpCrystal(this,x*width,y*height);
+    }
+    else if (key=="life" || key=="l") {
+      return new Life(this,x*width,y*height);
+    } 
+    else if (key=="web"||key=="w") {
+      return new Web(this,x*width,y*height);
+    }
+    else if (key=="exit") {
+      return new Exit(this,x*width,y*height);
+    }
+    return NULL;
+}
 Level::Level(std::string filename,sf::RenderWindow& window) {
   std::ifstream in_str(filename.c_str());
   if (!in_str) {
@@ -43,7 +67,6 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
   }
   while (in_str>>key) {
     int x,y;
-    int isPrefix=0;
     int end=0;
     int end2=0;
     //Level Options
@@ -67,181 +90,37 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
     }
     //Prefix Options
     if (key=="row") {
-      isPrefix=1;
       in_str>>y>>x>>end>>key;
       assert(end>=x);
+      for (int i=x;i<=end;i++) {
+        addStationary(getStationary(key,i,y),y,i);
+      }
     }
     else if (key=="col") {
-      isPrefix=2;
       in_str>>x>>y>>end>>key;
       assert(end>=y);
+      for (int i =y;i<=end;i++) {
+        addStationary(getStationary(key,x,i),i,x);
+      }
+  
     }
     else if (key=="rect") {
-      isPrefix=3;
       in_str>>y>>x>>end>>end2>>key;
       assert(end>=y&&end2>=x);
+      for (int i = y;i<=end;i++)
+        for (int j=x;j<=end2;j++)
+          addStationary(getStationary(key,j,i),i,j);
     }
 
     //Bob Option
-    if (key=="start"||key=="s") {
-      assert(!isPrefix);
+    else if (key=="start"||key=="s") {
       in_str>>y>>x;
       bob = new Bob(this,x*height,y*width);
       insert(bob);
     }
 
-    //Stationary Options
-    else if (key=="b"||key=="block") {
-      if (isPrefix==1) {
-        for (int i =x;i<=end;i++) {
-          addStationary(new Block(this,i*width,y*height),y,i);
-        }
-      }
-      else if (isPrefix==2) {
-        for (int i =y;i<=end;i++) {
-          addStationary(new Block(this,x*width,i*height),i,x);
-        }
-      }
-      else if (isPrefix==3) {
-        for (int i = y;i<=end;i++)
-          for (int j=x;j<=end2;j++)
-            addStationary(new Block(this,j*width,i*height),i,j);
-      }
-      else {
-        in_str>>y>>x;
-        addStationary(new Block(this,x*width,y*height),y,x);
-      }
-    }
-    else if (key=="c"||key=="check") {
-      if (isPrefix==1) {
-        for (int i =x;i<=end;i++) {
-          addStationary(new CheckPoint(this,i*width,y*height),y,i);
-        }
-      }
-      else if (isPrefix==2) {
-        for (int i =y;i<=end;i++) {
-          addStationary(new CheckPoint(this,x*width,i*height),i,x);
-        }
-      }
-      else if (isPrefix==3) {
-        for (int i = y;i<=end;i++)
-          for (int j=x;j<=end2;j++)
-            addStationary(new CheckPoint(this,j*width,i*height),i,j);
-      }
-      else {
-        in_str>>y>>x;
-        addStationary(new CheckPoint(this,x*width,y*height),y,x);
-      }
-    }
-    else if (key=="coin") {
-      if (isPrefix==1) {
-        for (int i =x;i<=end;i++) {
-          addStationary(new Coin(this,i*width,y*height),y,i);
-        }
-      }
-      else if (isPrefix==2) {
-        for (int i =y;i<=end;i++) {
-          addStationary(new Coin(this,x*width,i*height),i,x);
-        }
-      }
-      else if (isPrefix==3) {
-        for (int i = y;i<=end;i++)
-          for (int j=x;j<=end2;j++)
-            addStationary(new Coin(this,j*width,i*height),i,j);
-      }
-      else {
-        in_str>>y>>x;
-        addStationary(new Coin(this,x*width,y*height),y,x);
-      }
-    }
-    else if (key=="ecrystal" || key=="ec") {
-      if (isPrefix==1) {
-        for (int i =x;i<=end;i++) {
-          addStationary(new EpCrystal(this,i*width,y*height),y,i);
-        }
-      }
-      else if (isPrefix==2) {
-        for (int i =y;i<=end;i++) {
-          addStationary(new EpCrystal(this,x*width,i*height),i,x);
-        }
-      }
-      else if (isPrefix==3) {
-        for (int i = y;i<=end;i++)
-          for (int j=x;j<=end2;j++)
-            addStationary(new EpCrystal(this,j*width,i*height),i,j);
-      }
-      else {
-        in_str>>y>>x;
-        addStationary(new EpCrystal(this,x*width,y*height),y,x);
-      }
-    }
-    else if (key=="life" || key=="l") {
-      if (isPrefix==1) {
-        for (int i =x;i<=end;i++) {
-          addStationary(new Life(this,i*width,y*height),y,i);
-        }
-      }
-      else if (isPrefix==2) {
-        for (int i =y;i<=end;i++) {
-          addStationary(new Life(this,x*width,i*height),i,x);
-        }
-      }
-      else if (isPrefix==3) {
-        for (int i = y;i<=end;i++)
-          for (int j=x;j<=end2;j++)
-            addStationary(new Life(this,j*width,i*height),i,j);
-      }
-      else {
-        in_str>>y>>x;
-        addStationary(new Life(this,x*width,y*height),y,x);
-      }
-    } 
-    else if (key=="web"||key=="w") {
-      if (isPrefix==1) {
-        for (int i =x;i<=end;i++) {
-          addStationary(new Web(this,i*width,y*height),y,i);
-        }
-      }
-      else if (isPrefix==2) {
-        for (int i =y;i<=end;i++) {
-          addStationary(new Web(this,x*width,i*height),i,x);
-        }
-      }
-      else if (isPrefix==3) {
-        for (int i = y;i<=end;i++)
-          for (int j=x;j<=end2;j++)
-            addStationary(new Web(this,j*width,i*height),i,j);
-      }
-      else {
-        in_str>>y>>x;
-        addStationary(new Web(this,x*width,y*height),y,x);
-      }
-    }
-    else if (key=="exit") {
-      if (isPrefix==1) {
-        for (int i =x;i<=end;i++) {
-          addStationary(new Exit(this,i*width,y*height),y,i);
-        }
-      }
-      else if (isPrefix==2) {
-        for (int i =y;i<=end;i++) {
-          addStationary(new Exit(this,x*width,i*height),i,x);
-        }
-      }
-      else if (isPrefix==3) {
-        for (int i = y;i<=end;i++)
-          for (int j=x;j<=end2;j++)
-            addStationary(new Exit(this,j*width,i*height),i,j);
-      }
-      else {
-        in_str>>y>>x;
-        addStationary(new Exit(this,x*width,y*height),y,x);
-      }
-    }
-
     //Moving Options
     else if (key=="spider"||key=="sp") {
-      assert(!isPrefix);
       char c;
       in_str>>c>>y>>x;
       insert(new Spider(this,(x)*width,(y)*height,c=='V'));
@@ -249,7 +128,6 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
 
     //Syntactic Sugar
     else if (key=="brow") {
-      assert(!isPrefix);
       in_str>>y;
       for (int i=0;i<cols;i++) 
         if (!stationary[y][i]) {
@@ -257,7 +135,6 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
         }
     }
     else if (key=="bcol") {
-      assert(!isPrefix);
       in_str>>x;
       for (int i=0;i<rows;i++) 
         if (!stationary[i][x]) {
@@ -267,7 +144,6 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
 
     //Block Options
     else if (key=="gemdoor"||key=="gd") {
-      assert(!isPrefix);
       int num;
       in_str>>num;
       GemDoor** doors = new GemDoor*[num];
@@ -301,6 +177,12 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
         }
       }
       delete[] doors;
+    }
+    
+    //Let's do all the stationary by calling the getStationary function
+    else {
+      in_str>>x>>y;
+      addStationary(getStationary(key,x,y),y,x);
     }
   }
 }
