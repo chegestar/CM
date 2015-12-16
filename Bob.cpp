@@ -18,8 +18,19 @@ Bob::Bob(Level* l,float x_,float y_) :
   static_cast<sf::RectangleShape*>(shape)->setFillColor(sf::Color(255,255,0));
 }
 
+void Bob::web() {
+  if (!isWeb) {
+    shiftX(-(getX1()-getLastX1())*3/5);
+    shiftY(-(getY1()-getLastY1())*3/5);
+  }
+  isWeb=true;
+}
+
 void Bob::act() {
   Mover::act();
+  
+  isWeb=false;
+
   float speed = 3;
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     y-=getMovementCorrectionY(speed);
@@ -48,6 +59,9 @@ void Bob::act() {
     else if (dynamic_cast<Collectable*>(bs[i])) {
       int s =bs[i]->activate();
       score+=s;
+    }
+    else if (dynamic_cast<Switch*>(bs[i])) {
+      bs[i]->activate();
     }
     else if (dynamic_cast<Exit*>(bs[i])) {
       isExit=true;

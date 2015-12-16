@@ -6,7 +6,8 @@
 #include <Coin.h>
 #include <EpCrystal.h>
 #include <Crystal.h>
-#incldue <Life.h>
+#include <Life.h>
+#include <Web.h>
 #include <utilities.h>
 #include <cassert>
 
@@ -195,6 +196,27 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
         addStationary(new Life(this,x*width,y*height),y,x);
       }
     } 
+    else if (key=="web"||key=="w") {
+      if (isPrefix==1) {
+        for (int i =x;i<=end;i++) {
+          addStationary(new Web(this,i*width,y*height),y,i);
+        }
+      }
+      else if (isPrefix==2) {
+        for (int i =y;i<=end;i++) {
+          addStationary(new Web(this,x*width,i*height),i,x);
+        }
+      }
+      else if (isPrefix==3) {
+        for (int i = y;i<=end;i++)
+          for (int j=x;j<=end2;j++)
+            addStationary(new Web(this,j*width,i*height),i,j);
+      }
+      else {
+        in_str>>y>>x;
+        addStationary(new Web(this,x*width,y*height),y,x);
+      }
+    }
     else if (key=="exit") {
       if (isPrefix==1) {
         for (int i =x;i<=end;i++) {

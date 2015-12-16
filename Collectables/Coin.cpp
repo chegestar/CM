@@ -9,6 +9,7 @@ Coin::Coin(Level* l, float x_, float y_) :
 
 int Coin::activate() {
   Collectable::activate();
+  level->getBob()->earnCoin();
   return 10;
 }
 

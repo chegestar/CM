@@ -1,11 +1,9 @@
 #include "Collectable.h"
 #include <utilities.h>
 #include <Level.h>
-#include <GemDoor.h>
 
 Collectable::Collectable(Level* l, float x_, float y_, float w, float h) : 
-  Actor(l,x_,y_,w,h) {
-  shape = new sf::CircleShape(width/2);
+  Switch(l,x_,y_,w,h) {
   static_cast<sf::CircleShape*>(shape)->setFillColor(sf::Color(0,0,255));
 }
 

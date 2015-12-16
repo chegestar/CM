@@ -1,6 +1,8 @@
 
 
 set (SWITCH_SRC
+  Switch.cpp
+  Web.cpp
 )
 
 set (COLLECTABLE_SRC
