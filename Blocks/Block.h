@@ -3,7 +3,7 @@
 #ifndef __BLOCK_H__
 #define __BLOCK_H__
 
-class Block : public Actor{
+class Block : virtual public Actor{
  private:
 
  public:

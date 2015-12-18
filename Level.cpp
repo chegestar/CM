@@ -2,6 +2,7 @@
 #include <Bob.h>
 #include <Spider.h>
 #include <GemDoor.h>
+#include <Rock.h>
 #include <Exit.h>
 #include <Coin.h>
 #include <EpCrystal.h>
@@ -125,7 +126,12 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       in_str>>c>>y>>x;
       insert(new Spider(this,(x)*width,(y)*height,c=='V'));
     }
-
+    else if (key=="rock") {
+      in_str>>y>>x;
+      Rock* r = new Rock(this,x*width,y*height);
+      insert(r);
+      rocks.push_back(r);
+    }
     //Syntactic Sugar
     else if (key=="brow") {
       in_str>>y;
@@ -181,8 +187,13 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
     
     //Let's do all the stationary by calling the getStationary function
     else {
+      std::cout<<key<<'\n';
       in_str>>x>>y;
-      addStationary(getStationary(key,x,y),y,x);
+      Actor* actor = getStationary(key,x,y); 
+      if (actor)
+        addStationary(actor,y,x);
+      else
+        throw 1;
     }
   }
 }
@@ -227,44 +238,43 @@ void Level::act() {
   } 
 }
 
-Actor** Level::testHitStationary(Actor* actor) {
+void Level::testHitStationary(Actor* actor, std::vector<Actor*>& hits) {
   int c = (actor->getX1()+x_)/width;
   int r = (actor->getY1()+y_)/height;
-  Actor** bs = new Actor*[4];
-  bs[0]=NULL;bs[1]=NULL;bs[2]=NULL;bs[3]=NULL;
   if (r>=0&&c>=0&&r<rows&&c<cols&&
       stationary[r][c] && isRectangularHit(actor,stationary[r][c]))
-    bs[0]=stationary[r][c];
+    hits.push_back(stationary[r][c]);
   if (r+1>=0&&c>=0&&r+1<rows&&c<cols&&
       stationary[r+1][c]&&isRectangularHit(actor,stationary[r+1][c]))
-    bs[1] =stationary[r+1][c];
+    hits.push_back(stationary[r+1][c]);
   if (r>=0&&c+1>=0&&r<rows&&c+1<cols&&
       stationary[r][c+1]&&isRectangularHit(actor,stationary[r][c+1]))
-    bs[2] =stationary[r][c+1];
+    hits.push_back(stationary[r][c+1]);
   if (r+1>=0&&c+1>=0&&r+1<rows&&c+1<cols&&
       stationary[r+1][c+1]&&isRectangularHit(actor,stationary[r+1][c+1]))
-    bs[3] =stationary[r+1][c+1];
-  return bs;
+    hits.push_back(stationary[r+1][c+1]);
+  for (unsigned int i=0;i<rocks.size();i++) {
+    if (isRectangularHit(actor,rocks[i])) {
+      hits.push_back(rocks[i]);
+    }
+  }
 }
 
-Collectable** Level::testHitCollectable(Actor* actor) {
+void Level::testHitCollectable(Actor* actor,std::vector<Collectable*>& hits) {
   int c = (actor->getX1()+x_)/width;
   int r = (actor->getY1()+y_)/height;
-  Collectable** bs = new Collectable*[4];
-  bs[0]=NULL;bs[1]=NULL;bs[2]=NULL;bs[3]=NULL;
   if (r>=0&&c>=0&&r<rows&&c<cols&&
       gems[r][c] && isRectangularHit(actor,gems[r][c]))
-    bs[0]=gems[r][c];
+    hits.push_back(gems[r][c]);
   if (r+1>=0&&c>=0&&r+1<rows&&c<cols&&
       gems[r+1][c]&&isRectangularHit(actor,gems[r+1][c]))
-    bs[1] =gems[r+1][c];
+    hits.push_back(gems[r+1][c]);
   if (r>=0&&c+1>=0&&r<rows&&c+1<cols&&
       gems[r][c+1]&&isRectangularHit(actor,gems[r][c+1]))
-    bs[2] =gems[r][c+1];
+    hits.push_back(gems[r][c+1]);
   if (r+1>=0&&c+1>=0&&r+1<rows&&c+1<cols&&
       gems[r+1][c+1]&&isRectangularHit(actor,gems[r+1][c+1]))
-    bs[3] =gems[r+1][c+1];
-  return bs;
+    hits.push_back(gems[r+1][c+1]);
 }
 void Level::addStationary(Actor* actor,int r, int c) {
   if (!stationary[r][c]) {

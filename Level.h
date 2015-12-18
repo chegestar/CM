@@ -10,6 +10,7 @@ class Bob;
 class Collectable;
 class Crystal;
 class GemDoor;
+class Rock;
 
 class Level {
  private:
@@ -22,6 +23,7 @@ class Level {
   float width,height;
   Actor*** stationary;
   Collectable*** gems;
+  std::vector<Rock*> rocks;
   ACTORS actors; 
   Bob* bob;
   int max_depth;
@@ -39,8 +41,7 @@ class Level {
   float getWidth() const {return width;}
   float getHeight() const {return height;}
   Bob* getBob() const {return bob;}
-
-
+  const std::vector<Rock*>& getRocks() const {return rocks;}
   void act();
   void render(sf::RenderWindow& window) {ACTORS::iterator itr; 
     for (itr=actors.begin();itr!=actors.end();itr++) {
@@ -50,8 +51,8 @@ class Level {
     bob->render(window);
   }
 
-  Actor** testHitStationary(Actor* actor);
-  Collectable** testHitCollectable(Actor* actor);
+  void testHitStationary(Actor* actor, std::vector<Actor*>& hits);
+  void testHitCollectable(Actor* actor, std::vector<Collectable*>& hits);
 
 };
 

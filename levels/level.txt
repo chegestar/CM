@@ -1,36 +1,17 @@
-20 20
+15 20
 
-ZOOMED_LEVEL;
+start 1 1
 
-start 5 5
-
-check 10 4
-check 10 14
-brow 0
-brow 19
 bcol 0
 bcol 19
-b 10 10
-b 9 3
-b 2 5
+brow 0
+brow 14
 
+rect 5 5 10 10 web
 
-gemdoor 2 9 14 9 4 
+row 4 4 8 coin
+row 12 4 8 life
+col 3 4 8 block
+col 18 4 8 exit
 
-c 2 9
-crow 1 1 4
-ccol 18 1 4
-crect 4 9 5 11
-;
-brow 9
-
-spider V 3 10
-sp H 8 10
-sp H 15 10 
-
-row 16 5 15 block
-col  16 5 15 b
-rect 17 9 18 11 c
-
-ec 19 15
-exit 10 19
+rock 3 3

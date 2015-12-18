@@ -1,5 +1,5 @@
 #include "Bob.h"
-#include <Block.h>
+#include <Rock.h>
 #include <Level.h>
 #include <Exit.h>
 #include <utilities.h>
@@ -40,46 +40,61 @@ void Bob::act() {
     x-=getMovementCorrectionX(speed);
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     x+=getMovementCorrectionX(speed);
-  Actor** bs;
-  bs = level->testHitStationary(this);
-  for (int i=0;i<4;i++) {
-    if (!bs[i]) continue;
-    if (dynamic_cast<Block*>(bs[i])) {
-      int dir = getApproachDir(this,bs[i]);
-      if (dir==0&&getLastX1()!=bs[i]->getX2()&&getLastX2()!=bs[i]->getX1()) {
-        setPosition(getX1(),bs[i]->getY2());
+
+  std::vector<Actor*> stationary;
+  level->testHitStationary(this,stationary);
+  for (unsigned int i=0;i<stationary.size();i++) {
+    Actor* actor = stationary[i];
+    if (!actor) continue;
+    int dir = getApproachDir(this,actor);
+    if (dynamic_cast<Rock*>(actor)) {
+      if (dir==0) 
+        actor->shiftY(getY1()-actor->getY2());
+      else if (dir==1)
+        actor->shiftX(getX2()-actor->getX1());
+      else if (dir==2)
+        actor->shiftY(getY2()-actor->getY1());
+      else if (dir==3)
+        actor->shiftX(getX1()-actor->getX2());
+    }
+    else if (dynamic_cast<Block*>(actor)) {
+      int dir = getApproachDir(this,actor);
+      if (dir==0&&getLastX1()!=actor->getX2()&&getLastX2()!=actor->getX1()) {
+        setPosition(getX1(),actor->getY2());
       }
       else if (dir==1)
-        setPosition(bs[i]->getX1()-width,getY1());
-      else if (dir==2&&getLastX1()!=bs[i]->getX2()&&getLastX2()!=bs[i]->getX1())
-        setPosition(getX1(),bs[i]->getY1()-height);
+        setPosition(actor->getX1()-width,getY1());
+      else if (dir==2&&getLastX1()!=actor->getX2()&&getLastX2()!=actor->getX1())
+        setPosition(getX1(),actor->getY1()-height);
       else if (dir==3)
-        setPosition(bs[i]->getX2(),getY1());
+        setPosition(actor->getX2(),getY1());
     }
-    else if (dynamic_cast<Collectable*>(bs[i])) {
-      int s =bs[i]->activate();
+    else if (dynamic_cast<Collectable*>(actor)) {
+      int s =actor->activate();
       score+=s;
     }
-    else if (dynamic_cast<Switch*>(bs[i])) {
-      bs[i]->activate();
+    else if (dynamic_cast<Switch*>(actor)) {
+      actor->activate();
     }
-    else if (dynamic_cast<Exit*>(bs[i])) {
+    else if (dynamic_cast<Exit*>(actor)) {
       isExit=true;
     }
-    else if (dynamic_cast<CheckPoint*>(bs[i])) {
-      startx = bs[i]->getX1()+level->getX();
-      starty = bs[i]->getY1()+level->getY();
+    else if (dynamic_cast<CheckPoint*>(actor)) {
+      startx = actor->getX1()+level->getX();
+      starty = actor->getY1()+level->getY();
     }
   }
-  delete [] bs;
-  Collectable** bs2 = level->testHitCollectable(this);
+
+  std::vector<Collectable*> collects;
+  level->testHitCollectable(this,collects);
   
-  for (int i=0;i<4;i++) {
-    if (!bs2[i]) continue;
-    int s = bs2[i]->activate();
+  for (unsigned int i=0;i<collects.size();i++) {
+    Collectable* collect = collects[i];
+    if (!collect) continue;
+    int s = collect->activate();
     score+=s;
   }
-  delete [] bs2;
+
 
 }
 
