@@ -1,4 +1,5 @@
 #include <fstream>
+#include <list>
 #include <vector>
 #include <Actor.h>
 #include <Bob.h>
@@ -23,7 +24,7 @@ class Level {
   float width,height;
   Actor*** stationary;
   Collectable*** gems;
-  std::vector<Rock*> rocks;
+  std::list<Rock*> rocks;
   ACTORS actors; 
   Bob* bob;
   int max_depth;
@@ -41,7 +42,7 @@ class Level {
   float getWidth() const {return width;}
   float getHeight() const {return height;}
   Bob* getBob() const {return bob;}
-  const std::vector<Rock*>& getRocks() const {return rocks;}
+  const std::list<Rock*>& getRocks() const {return rocks;}
   void act();
   void render(sf::RenderWindow& window) {ACTORS::iterator itr; 
     for (itr=actors.begin();itr!=actors.end();itr++) {

@@ -5,11 +5,13 @@
 #include <stdexcept>
 #include <iostream>
 #include <vector>
+#include <list>
 #include <Line.h>
 #include <Circle.h>
 
 class Level;
 class Collectable;
+class Rock;
 
 class Actor {
  public:
@@ -40,11 +42,11 @@ class Actor {
   virtual void shiftY(float dy) {y+=dy;}
   virtual void setPosition(float x_, float y_,bool keepLast=false);
   virtual void setColor(int r, int g, int b) {}
+  virtual void setDead() {isDead=true;}
   void linkPosition(Actor** location) {pointer_to_location=location;}
   void linkPosition(Collectable** location) {pointer_to_gem=location;}
-  void removePosition() {if (pointer_to_location) *pointer_to_location=NULL;
-    if (pointer_to_gem) *pointer_to_gem=NULL;
-  }
+  void linkPosition(std::list<Rock*>::iterator& itr) {pointer_to_rock = new std::list<Rock*>::iterator(itr);}
+  std::list<Rock*>::iterator* removePosition();
   virtual void act() {}
   virtual int activate() {return 0;}  
   virtual void windowEvent(sf::Event& event) {}
@@ -61,6 +63,7 @@ protected:
   bool isDead;
   Actor** pointer_to_location; 
   Collectable** pointer_to_gem; 
+  std::list<Rock*>::iterator* pointer_to_rock;
   sf::Drawable* shape;
 };
 

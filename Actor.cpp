@@ -10,6 +10,7 @@ Actor::Actor(Level* l, float x_,float y_,float w,float h) {
   isDead=false;
   pointer_to_location=NULL;
   pointer_to_gem=NULL;
+  pointer_to_rock=NULL;
   shape=NULL;
 }
 
@@ -28,4 +29,10 @@ float Actor::getY2() const {return getY1()+height;}
 void Actor::setPosition(float x_, float y_,bool keepLast) {
   x=x_+level->getX();
   y=y_+level->getY();
+}
+
+std::list<Rock*>::iterator* Actor::removePosition() {
+  if (pointer_to_location) *pointer_to_location=NULL;
+  if (pointer_to_gem) *pointer_to_gem=NULL;
+  return pointer_to_rock;
 }

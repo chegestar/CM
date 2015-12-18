@@ -7,11 +7,12 @@ bcol 19
 brow 0
 brow 14
 
-rect 5 5 10 10 web
-
 row 4 4 8 coin
 row 12 4 8 life
 col 3 4 8 block
 col 18 4 8 exit
 
-rock 3 3
+rock 10 10
+spider H 11 14 
+spider V 11 14 
+

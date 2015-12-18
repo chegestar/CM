@@ -4,21 +4,15 @@
 #include <Level.h>
 
 Enemy::Enemy(Level* l, float x, float y, float w, float h) : 
-  Actor(l,x,y,w,h), Mover(l,x,y,w,h) {
-  shape = new sf::CircleShape(width/2);
+  Actor(l,x,y,w,h), Die(l,x,y,w,h), Mover(l,x,y,w,h) {
   static_cast<sf::CircleShape*>(shape)->setFillColor(sf::Color(255,0,0));
 
 
 }
-bool Enemy::hitBob(Bob* b) {
-  return isRectangularHit(b,this);
-    
-}
 
 void Enemy::act() {
-  if (hitBob(level->getBob())) {
-    level->getBob()->die();
-  }
+  Mover::act();
+  Die::act();
 }
 
 void Enemy::render(sf::RenderWindow& window) {

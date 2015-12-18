@@ -9,6 +9,8 @@
 #include <Crystal.h>
 #include <Life.h>
 #include <Web.h>
+#include <Fire.h>
+#include <Pit.h>
 #include <utilities.h>
 #include <cassert>
 
@@ -34,6 +36,12 @@ Actor* Level::getStationary(std::string key, int x, int y) {
     } 
     else if (key=="web"||key=="w") {
       return new Web(this,x*width,y*height);
+    }
+    else if (key=="fire") {
+      return new Fire(this,x*width,y*height);
+    }
+    else if (key=="pit") {
+      return new Pit(this,x*width,y*height);
     }
     else if (key=="exit") {
       return new Exit(this,x*width,y*height);
@@ -131,6 +139,9 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       Rock* r = new Rock(this,x*width,y*height);
       insert(r);
       rocks.push_back(r);
+      std::list<Rock*>::iterator temp = rocks.end();
+      temp--;
+      r->linkPosition(temp);
     }
     //Syntactic Sugar
     else if (key=="brow") {
@@ -217,7 +228,8 @@ void Level::act() {
   while(itr!=actors.end()) {
     itr->second->act();
     if (itr->second->getDead()) {
-      itr->second->removePosition();
+      std::list<Rock*>::iterator* rock_itr = itr->second->removePosition();
+      if (rock_itr) rocks.erase(*rock_itr);
       delete itr->second;
       
       ACTORS::iterator temp_itr = itr;
@@ -253,9 +265,10 @@ void Level::testHitStationary(Actor* actor, std::vector<Actor*>& hits) {
   if (r+1>=0&&c+1>=0&&r+1<rows&&c+1<cols&&
       stationary[r+1][c+1]&&isRectangularHit(actor,stationary[r+1][c+1]))
     hits.push_back(stationary[r+1][c+1]);
-  for (unsigned int i=0;i<rocks.size();i++) {
-    if (isRectangularHit(actor,rocks[i])) {
-      hits.push_back(rocks[i]);
+  std::list<Rock*>::iterator itr;
+  for (itr=rocks.begin();itr!=rocks.end();itr++) {
+    if (isRectangularHit(actor,*itr)) {
+      hits.push_back(*itr);
     }
   }
 }

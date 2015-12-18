@@ -5,7 +5,7 @@ Block::Block(Level* l,float x_,float y_) :
   Actor(l,x_,y_,l->getWidth(),l->getHeight()) {
 
   shape = new sf::RectangleShape(sf::Vector2f(width,height));
-  static_cast<sf::RectangleShape*>(shape)->setFillColor(sf::Color(0,0,0));
+  static_cast<sf::RectangleShape*>(shape)->setFillColor(sf::Color(50,50,50));
 
 }
 

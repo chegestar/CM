@@ -2,6 +2,8 @@
 #include <Level.h>
 #include <utilities.h>
 #include <Bob.h>
+#include <Pit.h>
+
 Rock::Rock(Level* l,float x_,float y_) : 
   Actor(l,x_,y_,l->getWidth(),l->getHeight()), Block(l,x_,y_), Mover(l,x_,y_,width,height){
 
@@ -27,6 +29,12 @@ void Rock::act() {
         setPosition(getX1(),actor->getY1()-height);
       else if (dir==3)
         setPosition(actor->getX2(),getY1());
+    }
+    else if (dynamic_cast<Pit*>(hits[i])) {
+      if (!getDead()) {
+        hits[i]->setDead();
+        setDead();
+      }
     }
   }
   Bob* b =level->getBob();
