@@ -79,6 +79,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
     int end=0;
     int end2=0;
     //Level Options
+    /* For now commented out will be handled later
     if (key=="NORMAL_LEVEL") {
       assert(!actors.size());
     }
@@ -97,6 +98,8 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       height = window.getSize().x/y;
       assert(rows/y==int(rows/y)&&cols/x==int(cols/x));
     }
+*/
+
     //Prefix Options
     if (key=="row") {
       in_str>>y>>x>>end>>key;
@@ -131,7 +134,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
     //Moving Options
     else if (key=="spider"||key=="sp") {
       char c;
-      in_str>>c>>y>>x;
+      in_str>>y>>x>>c;
       insert(new Spider(this,(x)*width,(y)*height,c=='V'));
     }
     else if (key=="rock") {
