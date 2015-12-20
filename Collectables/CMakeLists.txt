@@ -11,6 +11,8 @@ set (COLLECTABLE_SRC
   Coin.cpp
   EpCrystal.cpp
   Life.cpp
+  Item.cpp
+  FireBoot.cpp
 )
 
 add_library(collect ${SWITCH_SRC} ${COLLECTABLE_SRC})

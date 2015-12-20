@@ -9,8 +9,9 @@
 #include <Crystal.h>
 #include <Life.h>
 #include <Web.h>
-#include <Fire.h>
+#include <Lava.h>
 #include <Pit.h>
+#include <FireBoot.h>
 #include <utilities.h>
 #include <cassert>
 
@@ -37,14 +38,17 @@ Actor* Level::getStationary(std::string key, int x, int y) {
     else if (key=="web"||key=="w") {
       return new Web(this,x*width,y*height);
     }
-    else if (key=="fire") {
-      return new Fire(this,x*width,y*height);
+    else if (key=="lava") {
+      return new Lava(this,x*width,y*height);
     }
     else if (key=="pit") {
       return new Pit(this,x*width,y*height);
     }
     else if (key=="exit") {
       return new Exit(this,x*width,y*height);
+    }
+    else if (key=="fireboot") {
+      return new FireBoot(this,x*width,y*height);
     }
     return NULL;
 }
@@ -201,8 +205,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
     
     //Let's do all the stationary by calling the getStationary function
     else {
-      std::cout<<key<<'\n';
-      in_str>>x>>y;
+      in_str>>y>>x;
       Actor* actor = getStationary(key,x,y); 
       if (actor)
         addStationary(actor,y,x);

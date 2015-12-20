@@ -1,7 +1,7 @@
 
 set (ENEMY_SRC
   Die.cpp
-  Fire.cpp
+  Lava.cpp
   Pit.cpp
   Enemy.cpp
   Spider.cpp
