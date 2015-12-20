@@ -32,8 +32,8 @@ Bob::~Bob() {
 
 void Bob::web() {
   if (!isWeb) {
-    shiftX(-(getX1()-getLastX1())*3/5);
-    shiftY(-(getY1()-getLastY1())*3/5);
+    shiftX(-(getX1()-getLastX1())*3.0/5);
+    shiftY(-(getY1()-getLastY1())*3.0/5);
   }
   isWeb=true;
 }
@@ -44,6 +44,10 @@ void Bob::act() {
   isWeb=false;
 
   float speed = 3;
+  if (has_item[0]) {
+    //Have fire boots
+    speed*=3.5/5;
+  }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     y-=getMovementCorrectionY(speed);
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
