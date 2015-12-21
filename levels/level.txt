@@ -2,10 +2,10 @@
 
 start 1 1
 
-bcol 0
-bcol 19
-brow 0
-brow 14
+col 0 0 14 block
+col 19 0 14 block
+row 0 0 19 block
+row 14 0 19 block
 
 row 4 4 8 coin
 row 12 4 8 life
@@ -13,6 +13,15 @@ col 3 4 8 block
 col 18 4 8 exit
 
 rock 10 10
-spider H 11 14 
-spider V 11 14 
+rock 5 10
+spider 11 14 H 
+spider 11 14 V
 
+
+col 17 1 13 pit
+rect 6 5 8 8 lava
+lavapath 6 7
+lavapath 7 7
+lavapath 7 6
+lavapath 8 6
+fireboot 2 2
