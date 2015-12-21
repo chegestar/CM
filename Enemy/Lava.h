@@ -11,6 +11,7 @@ class Lava : public Die {
   
   bool hitBob(Bob* b);
 
+  void act();
   void render(sf::RenderWindow& window);
 };
 

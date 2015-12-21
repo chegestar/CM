@@ -2,6 +2,7 @@
 #include <Actor.h>
 #include <Mover.h>
 #include <queue>
+#include <Codes.h>
 #ifndef __BOB__H__
 #define __BOB__H__
 
@@ -19,11 +20,11 @@ class Bob : public Mover{
   bool isWeb;
 
   //Inventory storage and item affects
-  static const unsigned int max_item=1;
+
   typedef std::queue<Collectable*> INVENTORY;
   INVENTORY inventory;
   bool* has_item;
-  int convertCollectableToIndex(Collectable* item);
+  I_CODE convertCollectableToIndex(Collectable* item);
  public:
   Bob(Level* l,float x_,float y_);
   ~Bob();
@@ -44,7 +45,7 @@ class Bob : public Mover{
 
   bool pushInventory(Collectable* item);
   Collectable* popInventory();
-  bool hasItem(Collectable* c);
+  bool hasItem(I_CODE c);
 };
 
 #endif

@@ -1,6 +1,9 @@
 #include "Lava.h"
 #include <Level.h>
 #include <FireBoot.h>
+#include <Codes.h>
+#include <Rock.h>
+#include <utilities.h>
 
 Lava::Lava(Level* l, float x, float y) : 
   Actor(l,x,y,l->getWidth(),l->getHeight()), Die(l,x,y,width,height) {
@@ -10,13 +13,20 @@ Lava::Lava(Level* l, float x, float y) :
 }
 
 bool Lava::hitBob(Bob* b) {
-  FireBoot* item = new FireBoot(level,0,0);
   bool isHit = false;
-  if (!b->hasItem(item)) {
+  if (!b->hasItem(FIRE_BOOT)) {
     isHit = Die::hitBob(b);
   }
-  delete item;
   return isHit;
+}
+
+void Lava::act() {
+  Die::act();
+  std::list<Rock*> rocks = level->getRocks();
+  std::list<Rock*>::iterator itr;
+  for (itr=rocks.begin();itr!=rocks.end();itr++)
+    if (isRectangularHit(this,*itr))
+      (*itr)->setDead();
 }
 
 void Lava::render(sf::RenderWindow& window) {

@@ -17,8 +17,8 @@ Bob::Bob(Level* l,float x_,float y_) :
   score=0;
   specials=0;
 
-  has_item = new bool[max_item];
-  for (unsigned int i=0;i<max_item;i++)
+  has_item = new bool[MAX_INVENTORY];
+  for (unsigned int i=0;i<MAX_INVENTORY;i++)
     has_item[i]=false;
 
   shape = new sf::RectangleShape(sf::Vector2f(width,height));
@@ -44,8 +44,7 @@ void Bob::act() {
   isWeb=false;
 
   float speed = 3;
-  if (has_item[0]) {
-    //Have fire boots
+  if (has_item[FIRE_BOOT]) {
     speed*=3.5/5;
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
@@ -87,7 +86,6 @@ void Bob::act() {
     }
     else if (dynamic_cast<Item*>(actor)) {
       if (pushInventory(static_cast<Collectable*>(actor))) {
-        assert(hasItem(static_cast<Collectable*>(actor)));
         actor->setDead();
       }
     }
@@ -125,17 +123,18 @@ void Bob::render(sf::RenderWindow& window) {
   window.draw(*shape);
 }
 
-int Bob::convertCollectableToIndex(Collectable* item) {
+I_CODE Bob::convertCollectableToIndex(Collectable* item) {
   if (dynamic_cast<FireBoot*>(item)) 
-    return 0;
+    return FIRE_BOOT;
   else
-    return -1;
+    return NO_ITEM;
 }
 
 bool Bob::pushInventory(Collectable* item) {
-  if (hasItem(item)) {return false;} 
-  int index = convertCollectableToIndex(item);
-  assert(index!=-1);
+
+  I_CODE index = convertCollectableToIndex(item);
+  if (hasItem(index)) {return false;} 
+  assert(index!=NO_ITEM);
   inventory.push(item);
   has_item[index] = true;
   return true;
@@ -143,16 +142,15 @@ bool Bob::pushInventory(Collectable* item) {
 
 Collectable* Bob::popInventory() {
   Collectable* item = inventory.front();
-  int index = convertCollectableToIndex(item);
-  assert(index!=-1);
+  I_CODE index = convertCollectableToIndex(item);
+  assert(index!=NO_ITEM);
   inventory.pop();
   has_item[index]=false;
   return item;
 }
 
-bool Bob::hasItem(Collectable* item) {
-  int index = convertCollectableToIndex(item);
-  assert(index!=-1);
-  assert(index<max_item);
+bool Bob::hasItem(I_CODE index) {
+  assert(index!=NO_ITEM);
+  assert(index<MAX_INVENTORY);
   return has_item[index];
 }
