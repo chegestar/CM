@@ -16,8 +16,10 @@ class Bob : public Mover{
   int num_coins;
   int score;
   int specials;
+  float hp;
 
   bool isWeb;
+  bool isDrain;
 
   //Inventory storage and item affects
 
@@ -35,10 +37,11 @@ class Bob : public Mover{
   int getSpecials() const {return specials;}
 
   void web();
+  void drain();
   void earnEP() {specials++;};
   void earnLife() {num_lives++;};
   void earnCoin() {num_coins++; if (num_coins>=100) {num_coins=0;num_lives++;}}
-  void die() {x=startx; y = starty; num_lives--;}
+  void die() {x=startx; y = starty; num_lives--; hp=100;}
 
   void act();
   void render(sf::RenderWindow& window);

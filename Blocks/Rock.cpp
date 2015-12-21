@@ -5,7 +5,7 @@
 #include <Pit.h>
 
 Rock::Rock(Level* l,float x_,float y_) : 
-  Actor(l,x_,y_,l->getWidth(),l->getHeight()), Block(l,x_,y_), Mover(l,x_,y_,width,height){
+  Actor(l,x_,y_,l->getWidth()*3.5/5,l->getHeight()*3.5/5), Block(l,x_,y_), Mover(l,x_,y_,width,height){
 
   static_cast<sf::RectangleShape*>(shape)->setFillColor(sf::Color(150,150,30));
 

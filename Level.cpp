@@ -41,6 +41,20 @@ Actor* Level::getStationary(std::string key, int x, int y) {
     else if (key=="lava") {
       return new Lava(this,x*width,y*height);
     }
+    else if (key=="lavapath") {
+      if (stationary[y][x]) {
+        if (dynamic_cast<Lava*>(stationary[y][x]))
+          dynamic_cast<Lava*>(stationary[y][x])->setPath();
+        else 
+          std::cerr<<"[WARNING] Location: ("<<y<<','<<x<<") is not lava";
+        return NULL;
+      }
+      else {
+        Lava* l = new Lava(this,x*width,y*height);
+        l->setPath();
+        return l;
+      }
+    }
     else if (key=="pit") {
       return new Pit(this,x*width,y*height);
     }
@@ -202,15 +216,12 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       }
       delete[] doors;
     }
-    
     //Let's do all the stationary by calling the getStationary function
     else {
       in_str>>y>>x;
       Actor* actor = getStationary(key,x,y); 
       if (actor)
         addStationary(actor,y,x);
-      else
-        throw 1;
     }
   }
 }

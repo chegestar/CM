@@ -9,14 +9,14 @@
 #include <cassert>
 
 Bob::Bob(Level* l,float x_,float y_) : 
-  Actor(l,x_,y_,l->getWidth()*2/3,l->getHeight()*2/3), 
+  Actor(l,x_,y_,l->getWidth()*4/8,l->getHeight()*4/8), 
   Mover(l,x,y,width,height),
   startx(x), starty(y){
   isExit=false;
   num_lives=3;
   score=0;
   specials=0;
-
+  hp=100;
   has_item = new bool[MAX_INVENTORY];
   for (unsigned int i=0;i<MAX_INVENTORY;i++)
     has_item[i]=false;
@@ -38,12 +38,24 @@ void Bob::web() {
   isWeb=true;
 }
 
+void Bob::drain() {
+  if (!isDrain) {
+    hp-=.25;
+  }
+  if (hp<=0)
+    die();
+  isDrain=true;
+}
 void Bob::act() {
   Mover::act();
   
   isWeb=false;
+  if (!isDrain) hp+=1;
+  if (hp>100)
+    hp=100;
+  isDrain=false;
 
-  float speed = 3;
+  float speed = 2.5;
   if (has_item[FIRE_BOOT]) {
     speed*=3.5/5;
   }
@@ -120,6 +132,7 @@ void Bob::act() {
 
 void Bob::render(sf::RenderWindow& window) {
   static_cast<sf::RectangleShape*>(shape)->setPosition(getX1(),getY1());
+  static_cast<sf::RectangleShape*>(shape)->setFillColor(sf::Color(255,255,0,hp/100*255));
   window.draw(*shape);
 }
 
