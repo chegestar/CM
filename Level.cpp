@@ -14,7 +14,8 @@
 #include <FireBoot.h>
 #include <utilities.h>
 #include <cassert>
-
+#include <algorithm>
+#include <cmath>
 Level::Level() {
   bob=NULL;
 }
@@ -78,48 +79,61 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
   window_width = window.getSize().x;
   window_height = window.getSize().y;
   in_str>>rows>>cols;
+  grows=gcols=1;
   std::string key;
+  
+  //Level Options
+  int x,y;
+  in_str>>key;
+  if (key=="NORMAL_LEVEL") {
+    assert(!actors.size());
+    level_type=0;
+  }
+  else if (key=="GRID_LEVEL") {
+    level_type=1;
+    in_str>>y>>x;
+    grows=y;
+    gcols=x;
+  }
+  else if (key=="CONTINUOUS_LEVEL") {
+    level_type=3;
+  }
+  else if (key=="AUTOSCROLL_LEVEL") {
+    level_type=4;
+    char c;
+    in_str>>c>>dir;
+    isVertical= (c=='V');
+  }
+
+
   max_depth=0;
-  stationary = new Actor**[rows];
-  for (int i=0;i<rows;i++)  {
-    stationary[i] = new Actor*[cols];
-    for (int j=0;j<cols;j++)
+  max_rows = rows*grows-grows+1;
+  max_cols= cols*gcols-gcols+1;
+  stationary = new Actor**[max_rows];
+  for (int i=0;i<max_rows;i++)  {
+    stationary[i] = new Actor*[max_cols];
+    for (int j=0;j<max_cols;j++)
       stationary[i][j] = NULL;
   }
-  gems = new Collectable**[rows];
-  for (int i=0;i<rows;i++)  {
-    gems[i] = new Collectable*[cols];
-    for (int j=0;j<cols;j++)
+  gems = new Collectable**[max_rows];
+  for (int i=0;i<max_rows;i++)  {
+    gems[i] = new Collectable*[max_cols];
+    for (int j=0;j<max_cols;j++)
       gems[i][j] = NULL;
   }
+
   while (in_str>>key) {
-    int x,y;
     int end=0;
     int end2=0;
-    //Level Options
-    /* For now commented out will be handled later
-    if (key=="NORMAL_LEVEL") {
-      assert(!actors.size());
+    //Level options
+    if (key=="WRAPPED") {
+      isWrapped=true;
     }
-    if (key=="ZOOMED_LEVEL") {
-      assert(!actors.size());
-      level_type=1;
-      width=window_width/cols;
-      height=window_height/rows;
+    else if (key=="HALTED") {
+      isHalted=true;
     }
-    else if (key=="GRID_LEVEL") {
-      level_type=2;
-      in_str>>y>>x;
-      grows=y;
-      gcols=x;
-      width = window.getSize().y/x;
-      height = window.getSize().x/y;
-      assert(rows/y==int(rows/y)&&cols/x==int(cols/x));
-    }
-*/
-
     //Prefix Options
-    if (key=="row") {
+    else if (key=="row") {
       in_str>>y>>x>>end>>key;
       assert(end>=x);
       for (int i=x;i<=end;i++) {
@@ -167,14 +181,14 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
     //Syntactic Sugar
     else if (key=="brow") {
       in_str>>y;
-      for (int i=0;i<cols;i++) 
+      for (int i=0;i<max_cols;i++) 
         if (!stationary[y][i]) {
           addStationary(new Block(this,i*width,y*height),y,i);
         }
     }
     else if (key=="bcol") {
       in_str>>x;
-      for (int i=0;i<rows;i++) 
+      for (int i=0;i<max_rows;i++) 
         if (!stationary[i][x]) {
           addStationary( new Block(this,x*width,i*height),i,x);
         }
@@ -255,33 +269,95 @@ void Level::act() {
     }
     itr++;
   }
-  if (level_type==2) {
-    if (bob->getY1()>window_height)
-      y_ +=height*(grows-1);
-    if (bob->getY2()<0)
-      y_-=height*(grows-1);
-    if (bob->getX1()>window_width)
-      x_+=width*(gcols-1);
-    if (bob->getX2()<0)
-      x_-=width*(gcols-1);
-  } 
+  if (level_type==1) {
+    if (getRow()<grows-1&&bob->getY1()>window_height)
+      y_ +=height*(rows-1);
+    if (getRow()>0&&bob->getY2()<0)
+      y_-=height*(rows-1);
+    if (getCol()<gcols-1&&bob->getX1()>window_width)
+      x_+=width*(cols-1);
+    if (getCol()>0&&bob->getX2()<0)
+      x_-=width*(cols-1);
+  }
+  else if (level_type==3&&!isHalted) {
+    const float max_num = 5;
+    if (bob->getY2()>window_height*2/3) {
+      float diff = fabs(bob->getY2()-window_height*2/3);
+      diff = std::min(diff,max_num);
+      y_+=diff;
+      if (y_>32*rows-window_height)
+        y_ = 32*rows-window_height;
+    }      
+    if (bob->getY1()<window_height*1/3) {
+      float diff = fabs(bob->getY1()-window_height*1/3);
+      diff = std::min(diff,max_num);
+      y_-=diff;
+      if (y_<0)
+        y_ = 0;
+    }
+    if (bob->getX2()>window_width) {
+      float diff = fabs(bob->getX2()-window_width*2/3);
+      diff = std::min(diff,max_num);
+      x_+=diff;
+      if (x_>32*cols-window_width)
+        x_ = 32*cols-window_width;
+    }
+    if (bob->getX1()<0) {
+      float diff = fabs(bob->getX1()-window_width*1/3);
+      diff = std::min(diff,max_num);
+      x_-=diff;
+      if (x_<0)
+        x_ = 0;
+    }
+  }
+  else if (level_type==4&&!isHalted) {
+    const int speed=1.5;
+    if (isVertical) {
+      y_ += dir*speed;
+      if (y_>32*rows-window_height)
+        y_ = 32*rows-window_height;
+      if (y_<0)
+        y_ = 0;
+
+    }
+    else {
+      x_ += dir*speed;
+      if (x_>32*cols-window_width)
+        x_ = 32*cols-window_width;
+      if (x_<0)
+        x_ = 0;
+
+    }
+  }
+  if (isWrapped) {
+    if (bob->getY1()>window_height) {
+      bob->shiftY(-max_rows*height);
+      y_=0;
+    }
+    if (bob->getY2()<0) {
+      bob->shiftY(max_rows*height); 
+      y_ = height*max_rows-window_height;
+    }
+    if (bob->getX1()>window_width) {
+      bob->shiftX(-max_cols*width);
+      x_=0;
+    }
+    if (bob->getX2()<0) {
+      bob->shiftX(window_width);
+      x_ = width*max_cols-window_width;
+    }
+  }
+
 }
 
 void Level::testHitStationary(Actor* actor, std::vector<Actor*>& hits) {
-  int c = (actor->getX1()+x_)/width;
-  int r = (actor->getY1()+y_)/height;
-  if (r>=0&&c>=0&&r<rows&&c<cols&&
-      stationary[r][c] && isRectangularHit(actor,stationary[r][c]))
-    hits.push_back(stationary[r][c]);
-  if (r+1>=0&&c>=0&&r+1<rows&&c<cols&&
-      stationary[r+1][c]&&isRectangularHit(actor,stationary[r+1][c]))
-    hits.push_back(stationary[r+1][c]);
-  if (r>=0&&c+1>=0&&r<rows&&c+1<cols&&
-      stationary[r][c+1]&&isRectangularHit(actor,stationary[r][c+1]))
-    hits.push_back(stationary[r][c+1]);
-  if (r+1>=0&&c+1>=0&&r+1<rows&&c+1<cols&&
-      stationary[r+1][c+1]&&isRectangularHit(actor,stationary[r+1][c+1]))
-    hits.push_back(stationary[r+1][c+1]);
+  int c = (actor->getX1())/width+x_/width;
+  int r = (actor->getY1())/height+y_/height;
+  for (int ri = r;ri<=r+1;ri++)
+    for (int ci = c;ci<=c+1;ci++)
+      if (ri>=0&&ci>=0&&ri<max_rows&&ci<max_cols&&
+          stationary[ri][ci] && isRectangularHit(actor,stationary[ri][ci]))
+        hits.push_back(stationary[ri][ci]);
   std::list<Rock*>::iterator itr;
   for (itr=rocks.begin();itr!=rocks.end();itr++) {
     if (isRectangularHit(actor,*itr)) {

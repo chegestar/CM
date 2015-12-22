@@ -1,6 +1,7 @@
 #include <fstream>
 #include <list>
 #include <vector>
+#include <cmath>
 #include <Actor.h>
 #include <Bob.h>
 #ifndef __LEVEL__H__
@@ -15,23 +16,39 @@ class Rock;
 
 class Level {
  private:
+  //Data Structure for the actors
   typedef  std::map<int,Actor*> ACTORS;
+
+  //Level type variables
   int level_type;
-  int rows,cols;
-  int grows,gcols;
+  bool isHalted,isWrapped;
+  bool isVertical;
+  int dir;
+
+  int rows,cols; // number of rows and cols for a single room
+  int grows,gcols; //number of grids spaces of rooms
+  int max_rows,max_cols; //total number of rows and columns in the level
+
+  //Level dimensions
   float x_,y_;
   float window_width,window_height;
   float width,height;
+
+  //Actor containers
   Actor*** stationary;
   Collectable*** gems;
   std::list<Rock*> rocks;
   ACTORS actors; 
   Bob* bob;
+
   int max_depth;
+
   Actor* getStationary(std::string key,int x, int y);
   void addStationary(Actor* actor,int r, int c);
   void addGem(Crystal* g, int r, int c, GemDoor* doors[], int num) ;
   void insert(Actor* actor,int depth=-1);
+  int getRow() {return ceil(y_/window_height);}
+  int getCol() {return ceil(x_/window_width);}
  public:
   Level();
   Level(std::string filename,sf::RenderWindow& window);

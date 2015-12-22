@@ -1,0 +1,19 @@
+20 20
+
+CONTINUOUS_LEVEL
+
+start 1 1
+
+brow 0
+brow 19
+bcol 0
+bcol 19
+
+rect 9 1 11 18 web
+
+rock 5 5
+rock 5 10
+
+row 13 1 18 pit
+
+row 18 1 18 exit 

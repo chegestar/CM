@@ -1,5 +1,5 @@
 15 20
-
+NORMAL_LEVEL
 start 1 1
 
 col 0 0 14 block
