@@ -9,3 +9,5 @@ bcol 0
 bcol 38
 
 coin 5 5
+
+exit 25 30

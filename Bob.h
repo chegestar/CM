@@ -35,6 +35,7 @@ class Bob : public Mover{
   int getLives() const {return num_lives;}
   int getScore() const {return score;}
   int getSpecials() const {return specials;}
+  int getCoins() const {return num_coins;}
 
   void web();
   void drain();
@@ -42,6 +43,8 @@ class Bob : public Mover{
   void earnLife() {num_lives++;};
   void earnCoin() {num_coins++; if (num_coins>=100) {num_coins=0;num_lives++;}}
   void die() {x=startx; y = starty; num_lives--; hp=100;}
+  void setStats(int s,int l, int spe, int c) {specials=spe; num_lives=l;
+    score=s; num_coins=c;}
 
   void act();
   void render(sf::RenderWindow& window);

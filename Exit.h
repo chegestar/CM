@@ -1,4 +1,3 @@
-
 #include "CheckPoint.h"
 
 #ifndef __EXIT__H__
