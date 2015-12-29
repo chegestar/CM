@@ -18,17 +18,19 @@ file(COPY Fonts DESTINATION ${CMAKE_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(Blocks)
 include_directories(Enemy)
+include_directories(Boss1)
 include_directories(Extras)
 include_directories(Collectables)
 if (SFML_FOUND)
   include_directories(${SFML_INCLUDE_DIR})
+else()
+  message("[ERROR] Didn't find SFML")
 endif()
-
-
 
 add_subdirectory(Blocks)
 add_subdirectory(Extras)
 add_subdirectory(Enemy)
+add_subdirectory(Boss1)
 add_subdirectory(Collectables)
 add_subdirectory(levels)
 
@@ -50,7 +52,9 @@ add_executable(CM ${ROOT_SOURCES})
 target_link_libraries(CM extras)
 target_link_libraries(CM blocks)
 target_link_libraries(CM collect)
+target_link_libraries(CM boss1)
 target_link_libraries(CM enemy)
+
 
 
 

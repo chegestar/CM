@@ -1,6 +1,7 @@
 #include "Level.h"
 #include <Bob.h>
 #include <Spider.h>
+#include <SpiderBoss.h>
 #include <GemDoor.h>
 #include <Rock.h>
 #include <Exit.h>
@@ -12,6 +13,7 @@
 #include <Lava.h>
 #include <Pit.h>
 #include <FireBoot.h>
+
 #include <utilities.h>
 #include <cassert>
 #include <algorithm>
@@ -73,7 +75,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
     throw 1;
   }
   x_=y_=0;
-  level_type=0;
+  level_type=NORMAL;
   width=32;
   height=32;
   window_width = window.getSize().x;
@@ -87,19 +89,19 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
   in_str>>key;
   if (key=="NORMAL_LEVEL") {
     assert(!actors.size());
-    level_type=0;
+    level_type=NORMAL;
   }
   else if (key=="GRID_LEVEL") {
-    level_type=1;
+    level_type=GRID;
     in_str>>y>>x;
     grows=y;
     gcols=x;
   }
   else if (key=="CONTINUOUS_LEVEL") {
-    level_type=3;
+    level_type=CONTINUOUS;
   }
   else if (key=="AUTOSCROLL_LEVEL") {
-    level_type=4;
+    level_type=AUTOSCROLL;
     char c;
     in_str>>c>>dir;
     isVertical= (c=='V');
@@ -230,6 +232,17 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       }
       delete[] doors;
     }
+
+    //Bosses
+    else if (key=="spiderboss") {
+      for (int i=0;i<5;i++)
+        insert(new ChaseSpider(this,i));
+      ShooterSpider* boss = new ShooterSpider(this,(max_cols)*width,window_width);
+      insert(boss);
+      SpiderExit* exit = new SpiderExit(this,boss,(max_cols-10)*width);
+      addStationary(exit,13,(max_cols-10));
+    }
+
     //Let's do all the stationary by calling the getStationary function
     else {
       in_str>>y>>x;
@@ -269,7 +282,7 @@ void Level::act() {
     }
     itr++;
   }
-  if (level_type==1) {
+  if (level_type==GRID) {
     if (getRow()<grows-1&&bob->getY1()>window_height)
       y_ +=height*(rows-1);
     if (getRow()>0&&bob->getY2()<0)
@@ -279,7 +292,7 @@ void Level::act() {
     if (getCol()>0&&bob->getX2()<0)
       x_-=width*(cols-1);
   }
-  else if (level_type==3&&!isHalted) {
+  else if (level_type==CONTINUOUS&&!isHalted) {
     const float max_num = 5;
     if (bob->getY2()>window_height*2/3) {
       float diff = fabs(bob->getY2()-window_height*2/3);
@@ -310,24 +323,33 @@ void Level::act() {
         x_ = 0;
     }
   }
-  else if (level_type==4&&!isHalted) {
-    const int speed=1.5;
-    if (isVertical) {
-      y_ += dir*speed;
-      if (y_>32*rows-window_height)
-        y_ = 32*rows-window_height;
-      if (y_<0)
-        y_ = 0;
+  else if (level_type==AUTOSCROLL) {
+    if (!isHalted) {
+      const float speed=1.8;
+      if (isVertical) {
+        y_ += dir*speed;
+        if (y_>32*rows-window_height)
+          y_ = 32*rows-window_height;
+        if (y_<0)
+          y_ = 0;
+      }
+      else {
+        x_ += dir*speed;
+        if (x_>32*cols-window_width)
+          x_ = 32*cols-window_width;
+        if (x_<0)
+          x_ = 0;
 
+      }
     }
-    else {
-      x_ += dir*speed;
-      if (x_>32*cols-window_width)
-        x_ = 32*cols-window_width;
-      if (x_<0)
-        x_ = 0;
-
-    }
+    if (bob->getY1()<0)
+      bob->setY(y_);
+    else if (bob->getY2()>window_height)
+      bob->setY(y_+window_height-bob->getHeight());
+    if (bob->getX1()<0)
+      bob->setX(x_);
+    else if (bob->getX2()>window_width)
+      bob->setX(x_+window_width-bob->getWidth());
   }
   if (isWrapped) {
     if (bob->getY1()>window_height) {
@@ -350,14 +372,45 @@ void Level::act() {
 
 }
 
+void Level::render(sf::RenderWindow& window) {
+  ACTORS::iterator itr; 
+  for (itr=actors.begin();itr!=actors.end();itr++) {
+    if (!(dynamic_cast<Bob*>(itr->second)))
+      itr->second->render(window);
+  }
+  bob->render(window);
+#ifdef COMPILE_DEBUG
+  //render row lines
+  for (int i=1;i<15;i++) {
+    sf::Vertex line[] = {
+      sf::Vertex(sf::Vector2f(0, 32*i),sf::Color(0,0,0)),
+      sf::Vertex(sf::Vector2f(window_width, 32*i),sf::Color(0,0,0))
+    };
+    window.draw(line, 2, sf::Lines);
+  }
+  //render column lines
+  for (int i=1;i<20;i++) {
+    sf::Vertex line[] = {
+      sf::Vertex(sf::Vector2f(32*i, 0),sf::Color(0,0,0)),
+      sf::Vertex(sf::Vector2f(32*i, window_height),sf::Color(0,0,0))
+    };
+    window.draw(line, 2, sf::Lines);
+
+  }
+#endif
+}
+
 void Level::testHitStationary(Actor* actor, std::vector<Actor*>& hits) {
   int c = (actor->getX1())/width+x_/width;
   int r = (actor->getY1())/height+y_/height;
-  for (int ri = r;ri<=r+1;ri++)
-    for (int ci = c;ci<=c+1;ci++)
+  int nc = ceil(actor->getWidth()/width);
+  int nr = ceil(actor->getHeight()/height);
+  for (int ri = r;ri<=r+nr;ri++)
+    for (int ci = c;ci<=c+nc;ci++) {
       if (ri>=0&&ci>=0&&ri<max_rows&&ci<max_cols&&
           stationary[ri][ci] && isRectangularHit(actor,stationary[ri][ci]))
         hits.push_back(stationary[ri][ci]);
+    }
   std::list<Rock*>::iterator itr;
   for (itr=rocks.begin();itr!=rocks.end();itr++) {
     if (isRectangularHit(actor,*itr)) {
@@ -367,20 +420,16 @@ void Level::testHitStationary(Actor* actor, std::vector<Actor*>& hits) {
 }
 
 void Level::testHitCollectable(Actor* actor,std::vector<Collectable*>& hits) {
-  int c = (actor->getX1()+x_)/width;
-  int r = (actor->getY1()+y_)/height;
-  if (r>=0&&c>=0&&r<rows&&c<cols&&
-      gems[r][c] && isRectangularHit(actor,gems[r][c]))
-    hits.push_back(gems[r][c]);
-  if (r+1>=0&&c>=0&&r+1<rows&&c<cols&&
-      gems[r+1][c]&&isRectangularHit(actor,gems[r+1][c]))
-    hits.push_back(gems[r+1][c]);
-  if (r>=0&&c+1>=0&&r<rows&&c+1<cols&&
-      gems[r][c+1]&&isRectangularHit(actor,gems[r][c+1]))
-    hits.push_back(gems[r][c+1]);
-  if (r+1>=0&&c+1>=0&&r+1<rows&&c+1<cols&&
-      gems[r+1][c+1]&&isRectangularHit(actor,gems[r+1][c+1]))
-    hits.push_back(gems[r+1][c+1]);
+
+  int c = (actor->getX1())/width+x_/width;
+  int r = (actor->getY1())/height+y_/height;
+  int nc = ceil(actor->getWidth()/width);
+  int nr = ceil(actor->getHeight()/height);
+  for (int ri = r;ri<=r+nr;ri++)
+    for (int ci = c;ci<=c+nc;ci++)
+      if (ri>=0&&ci>=0&&ri<max_rows&&ci<max_cols&&
+          gems[ri][ci] && isRectangularHit(actor,gems[ri][ci]))
+        hits.push_back(gems[ri][ci]);
 }
 void Level::addStationary(Actor* actor,int r, int c) {
   if (!stationary[r][c]) {
@@ -406,4 +455,16 @@ void Level::insert(Actor* actor,int depth) {
   if (depth==-1) {depth = max_depth; max_depth++;}
   actors.insert(std::make_pair(depth,actor));
 
+}
+
+bool Level::isOutOfBounds(Actor* actor) {
+  if (actor->getX2()+x_<0)
+    return true;
+  if (actor->getY2()+y_<0)
+    return true;
+  if (actor->getX1()+x_>getLevelWidth())
+    return true;
+  if (actor->getY1()+x_>getLevelHeight())
+    return true;
+  return false;
 }

@@ -12,6 +12,19 @@ bool isRectangularHit(Actor* a1,Actor* a2) {
           a1->getY2()>=a2->getY1());
 }
 
+float getAngleTo(Actor* a1,Actor* a2) {
+  float c1x,c1y,c2x,c2y;
+  getObjectCenter(a1,c1x,c1y);
+  getObjectCenter(a2,c2x,c2y);
+  float diffy = c2y-c1y;
+  float diffx = c2x-c1x;
+  float angle = atan(diffy/diffx);
+  if (diffx<0) {
+    angle+=M_PI;
+  }
+  return angle;
+}
+
 bool isLineHit(Line l1, Line l2) {
   float x1 = l1.p1.first;
   float x2 = l2.p1.first;
@@ -107,8 +120,8 @@ int getApproachDir(Actor* a1, Actor* a2) {
 }
 
 void getObjectCenter(Actor* a,float& cx,float& cy) {
-  cx = (a->getX1()+a->getX2())/2;
-  cy = (a->getY1()+a->getY2())/2;
+  cx = a->getX1()+a->getWidth()/2;
+  cy = a->getY1()+a->getHeight()/2;
 }
 
 

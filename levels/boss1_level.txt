@@ -1,0 +1,27 @@
+15 40
+AUTOSCROLL_LEVEL H 1
+
+HALTED 
+
+start 1 1
+
+brow 0
+bcol 0
+brow 14
+bcol 39
+col 19 1 6 block
+col 19 8 13 block
+col 20 1 6 block
+col 20 8 13 block
+check 7 20
+
+spiderboss
+
+lava 1 18
+lava 13 18
+
+lava 4 18
+lava 10 18
+lava 6 18
+
+

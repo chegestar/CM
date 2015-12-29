@@ -1,0 +1,46 @@
+#include <Boss.h>
+#include <Switch.h>
+#include <Bullet.h>
+
+class ChaseSpider : public Boss{
+ private:
+  bool isMove;
+ public:
+  ChaseSpider(Level* l,int index);
+
+  void act();
+};
+
+
+class FireBullet : public Bullet {
+ public:
+  FireBullet(Level* l, float x, float y);
+
+};
+
+class ShooterSpider : public Boss {
+ private:
+  int isMove;
+  int timer;
+  std::list<FireBullet*> bullets;
+
+  sf::RectangleShape bottom_bar;
+  sf::RectangleShape top_bar;
+ public:
+  ShooterSpider(Level* l, float level_width, float screen_width);
+
+  void start();
+
+  void act();
+  void render(sf::RenderWindow& window);
+};
+
+
+class SpiderExit : public Switch {
+ private:
+  ShooterSpider* boss;
+ public:
+  SpiderExit(Level* l,ShooterSpider* b,float x);
+
+  int activate();
+};

@@ -17,6 +17,8 @@ int getApproachDir(Actor* a1, Actor* a2);
 
 bool isRectangularHit(Actor* a1,Actor* a2);
 
+float getAngleTo(Actor* a1,Actor* a2);
+
 bool isLineHit(Line l1, Line l2);
 
 bool isCircleLineHit(Circle c1,Line l1);

@@ -32,8 +32,8 @@ Bob::~Bob() {
 
 void Bob::web() {
   if (!isWeb) {
-    shiftX(-(getX1()-getLastX1())*3.0/5);
-    shiftY(-(getY1()-getLastY1())*3.0/5);
+    shiftX(-(getX1()-getLastX1())*3.5/5);
+    shiftY(-(getY1()-getLastY1())*3.5/5);
   }
   isWeb=true;
 }
@@ -48,7 +48,6 @@ void Bob::drain() {
 }
 void Bob::act() {
   Mover::act();
-  
   isWeb=false;
   if (!isDrain) hp+=1;
   if (hp>100)
