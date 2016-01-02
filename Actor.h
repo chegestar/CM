@@ -48,7 +48,7 @@ class Actor {
   void linkPosition(Actor** location) {pointer_to_location=location;}
   void linkPosition(Collectable** location) {pointer_to_gem=location;}
   void linkPosition(std::list<Rock*>::iterator& itr) {pointer_to_rock = new std::list<Rock*>::iterator(itr);}
-  std::list<Rock*>::iterator* removePosition();
+  virtual bool removePosition(std::list<Rock*>::iterator*&);
   virtual void act() {}
   virtual int activate() {return 0;}  
   virtual void windowEvent(sf::Event& event) {}

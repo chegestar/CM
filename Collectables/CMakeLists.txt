@@ -4,6 +4,7 @@ set (SWITCH_SRC
   Switch.cpp
   Web.cpp
   FakeExit.cpp
+  Trigger.cpp
 )
 
 set (COLLECTABLE_SRC
@@ -14,6 +15,7 @@ set (COLLECTABLE_SRC
   Life.cpp
   Item.cpp
   FireBoot.cpp
+  Dynamite.cpp
 )
 
 add_library(collect ${SWITCH_SRC} ${COLLECTABLE_SRC})

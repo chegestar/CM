@@ -31,8 +31,9 @@ void Actor::setPosition(float x_, float y_,bool keepLast) {
   y=y_+level->getY();
 }
 
-std::list<Rock*>::iterator* Actor::removePosition() {
+bool Actor::removePosition(std::list<Rock*>::iterator*& itr) {
   if (pointer_to_location) *pointer_to_location=NULL;
   if (pointer_to_gem) *pointer_to_gem=NULL;
-  return pointer_to_rock;
+  itr = pointer_to_rock;
+  return true;
 }

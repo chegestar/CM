@@ -2,11 +2,13 @@
 #include <Actor.h>
 #include <Mover.h>
 #include <queue>
+#include <set>
 #include <Codes.h>
 #ifndef __BOB__H__
 #define __BOB__H__
 
 class Collectable;
+class Item;
 
 class Bob : public Mover{
  private:
@@ -23,10 +25,12 @@ class Bob : public Mover{
 
   //Inventory storage and item affects
 
-  typedef std::queue<Collectable*> INVENTORY;
+  typedef std::queue<Item*> INVENTORY;
   INVENTORY inventory;
-  bool* has_item;
-  I_CODE convertCollectableToIndex(Collectable* item);
+  unsigned int* has_item;
+  bool has_dropped;
+  std::set<Item*> recent_drops;
+  I_CODE convertItemToIndex(Item* item);
  public:
   Bob(Level* l,float x_,float y_);
   ~Bob();
@@ -49,8 +53,8 @@ class Bob : public Mover{
   void act();
   void render(sf::RenderWindow& window);
 
-  bool pushInventory(Collectable* item);
-  Collectable* popInventory();
+  bool pushInventory(Item* item);
+  Item* popInventory();
   bool hasItem(I_CODE c);
 };
 

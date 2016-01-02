@@ -2,6 +2,8 @@
 #include <list>
 #include <vector>
 #include <cmath>
+#include <cassert>
+
 #include <Actor.h>
 #include <Bob.h>
 #include <Codes.h>
@@ -16,9 +18,11 @@ class GemDoor;
 class Rock;
 
 class Level {
- private:
+ public:
   //Data Structure for the actors
   typedef  std::map<int,Actor*> ACTORS;
+
+ private:
 
   //Level type variables
   L_TYPE level_type;
@@ -51,6 +55,8 @@ class Level {
   int getCol() {return ceil(x_/window_width);}
 
  public:
+
+
   Level();
   Level(std::string filename,sf::RenderWindow& window);
   ~Level();
@@ -65,17 +71,27 @@ class Level {
   float getLevelHeight() const {return max_rows*height;}
   Bob* getBob() const {return bob;}
   const std::list<Rock*>& getRocks() const {return rocks;}
+  void findOpenPosition(int& r,int& c) const;
 
-  bool isOutOfBounds(Actor* actor);
+  bool isOutOfBounds(Actor* actor) const ;
 
   void setLevelType(L_TYPE type) {level_type=type;}
   void halt() {isHalted=true;}
   void unhalt() {isHalted=false;}
   void addActor(Actor* actor) {insert(actor);}
-  void addStationary(Actor* actor,int r, int c);
+
+  void addStationary(Actor* actor,int r, int c, bool needs_adding=true);
 
   void act();
   void render(sf::RenderWindow& window);
+
+  ACTORS::iterator beginActor() {return actors.begin();}
+  ACTORS::iterator iterateActor(ACTORS::iterator& itr) {
+    assert(itr!=endActor());
+    itr++;
+    return itr;
+  }
+  ACTORS::iterator endActor() {return actors.end();}
 
   void testHitStationary(Actor* actor, std::vector<Actor*>& hits);
   void testHitCollectable(Actor* actor, std::vector<Collectable*>& hits);

@@ -6,16 +6,17 @@
 #include <GemDoor.h>
 #include <Rock.h>
 #include <Exit.h>
-#include <FakeExit.h>
 #include <Coin.h>
 #include <EpCrystal.h>
 #include <Crystal.h>
 #include <Life.h>
 #include <Web.h>
+#include <FakeExit.h>
+#include <Trigger.h>
 #include <Lava.h>
 #include <Pit.h>
 #include <FireBoot.h>
-
+#include <Dynamite.h>
 #include <utilities.h>
 #include <cassert>
 #include <algorithm>
@@ -74,6 +75,9 @@ Actor* Level::getStationary(std::string key, int x, int y,std::ifstream& in_str)
     else if (key=="fireboot") {
       return new FireBoot(this,x*width,y*height);
     }
+    else if (key=="dynamite"||key=="dm") {
+      return new Dynamite(this,x*width,y*height);
+    }
     return NULL;
 }
 Level::Level(std::string filename,sf::RenderWindow& window) {
@@ -83,6 +87,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
   }
   x_=y_=0;
   level_type=NORMAL;
+  isWrapped=false; isHalted=false;
   width=32;
   height=32;
   window_width = window.getSize().x;
@@ -253,6 +258,47 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       }
       delete[] doors;
     }
+    else if (key=="trigger"||key=="t") {
+      in_str>>y>>x;
+      int storey =y;int storex = x;
+      Trigger* trigger = new Trigger(this,x*width,y*height);
+      std::string c;
+      while ((in_str>>c)&&(c!=";")) {
+        if (c=="row") {
+          in_str>>y>>x>>end;
+          for (int i=x;i<=end;i++) {
+            Dynamite* d = new Dynamite(this,i*width,y*height);
+            trigger->add(d);
+            addStationary(d,y,i);
+          }
+        }
+        else if (c=="col") {
+          in_str>>x>>y>>end;
+          for (int i=y;i<=end;i++) {
+            Dynamite* d = new Dynamite(this,x*width,i*height);
+            trigger->add(d);
+
+            addStationary(d,i,x);
+          }
+        }
+        else if (c=="rect") {
+          in_str>>y>>x>>end>>end2;
+          for (int i=y;i<=end;i++)
+            for (int j=x;j<=end2;j++) {
+              Dynamite* d = new Dynamite(this,j*width,i*height);
+              trigger->add(d);
+              addStationary(d,i,j);
+            }
+        }
+        else {
+          in_str>>y>>x;
+          Dynamite* d = new Dynamite(this,x*width,y*height);
+          trigger->add(d);
+          addStationary(d,y,x);
+        }
+      }
+      addStationary(trigger,storey,storex);
+    }
 
     //Bosses
     else if (key=="spiderboss") {
@@ -293,13 +339,15 @@ void Level::act() {
   while(itr!=actors.end()) {
     itr->second->act();
     if (itr->second->getDead()) {
-      std::list<Rock*>::iterator* rock_itr = itr->second->removePosition();
+      std::list<Rock*>::iterator* rock_itr;
+      bool can_delete = itr->second->removePosition(rock_itr);
       if (rock_itr) rocks.erase(*rock_itr);
-      delete itr->second;
-      
-      ACTORS::iterator temp_itr = itr;
-      itr--;
-      actors.erase(temp_itr);
+      if (can_delete) {
+        delete itr->second;
+        ACTORS::iterator temp_itr = itr;
+        itr--;
+        actors.erase(temp_itr);
+      }
     }
     itr++;
   }
@@ -390,6 +438,20 @@ void Level::act() {
       x_ = width*max_cols-window_width;
     }
   }
+  else {
+    if (bob->getY2()+y_>max_rows*height) {
+      bob->shiftY(max_rows*height-bob->getY2()-y_);
+    }
+    if (bob->getY1()+y_<0) {
+      bob->shiftY(-bob->getY1()-y_); 
+    }
+    if (bob->getX2()+x_>max_cols*width) {
+      bob->shiftX(window_width-bob->getX2()-x_);
+    }
+    if (bob->getX1()+x_<0) {
+      bob->shiftX(-bob->getX1()-x_);
+    }
+  }
 
 }
 
@@ -452,11 +514,44 @@ void Level::testHitCollectable(Actor* actor,std::vector<Collectable*>& hits) {
           gems[ri][ci] && isRectangularHit(actor,gems[ri][ci]))
         hits.push_back(gems[ri][ci]);
 }
-void Level::addStationary(Actor* actor,int r, int c) {
+
+void Level::findOpenPosition(int& r,int& c) const {
+  int orr,orc,layer,offset,iter;
+  orr=r; orc=c; layer=1;offset=0;iter=0;
+  while (r>=0&&c>=0&&r<max_rows&&c<max_cols&&stationary[r][c]) {
+    int dr = orr-r;
+    int dc = orc-c;
+    if (dr==0&&dc==0) {
+      dr=-1;
+    }
+    else if (iter==3) {
+      iter=0;
+      offset++;
+      if (offset>layer)
+        offset-=2*layer;
+      if (offset==0)
+        layer++;
+      dr=-layer;
+      dc=offset;
+    }
+    else {
+      int tr = dr;
+      dr=dc;
+      dc=-tr;
+      iter++;
+    }
+    r= orr+dr;
+    c = orc+dc;
+  }
+
+}
+
+void Level::addStationary(Actor* actor,int r, int c,bool needs_adding) {
   if (!stationary[r][c]) {
     stationary[r][c] = actor;
     actor->linkPosition(&stationary[r][c]);
-    insert(stationary[r][c]);
+    if (needs_adding)
+      insert(stationary[r][c]);
   }
   else
     delete actor;
@@ -478,7 +573,7 @@ void Level::insert(Actor* actor,int depth) {
 
 }
 
-bool Level::isOutOfBounds(Actor* actor) {
+bool Level::isOutOfBounds(Actor* actor) const {
   if (actor->getX2()+x_<0)
     return true;
   if (actor->getY2()+y_<0)

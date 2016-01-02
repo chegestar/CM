@@ -5,6 +5,7 @@
 #include <utilities.h>
 #include <Collectable.h>
 #include <FireBoot.h>
+#include <Dynamite.h>
 
 #include <cassert>
 
@@ -17,9 +18,11 @@ Bob::Bob(Level* l,float x_,float y_) :
   score=0;
   specials=0;
   hp=100;
-  has_item = new bool[MAX_INVENTORY];
+  has_item = new unsigned int[MAX_INVENTORY];
   for (unsigned int i=0;i<MAX_INVENTORY;i++)
-    has_item[i]=false;
+    has_item[i]=0;
+  has_dropped=false;
+
 
   shape = new sf::RectangleShape(sf::Vector2f(width,height));
   static_cast<sf::RectangleShape*>(shape)->setFillColor(sf::Color(255,255,0));
@@ -66,7 +69,26 @@ void Bob::act() {
     x-=getMovementCorrectionX(speed);
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     x+=getMovementCorrectionX(speed);
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+    if (!has_dropped) {
+      int r = y/level->getHeight();
+      int c = x/level->getWidth();
+      Item* item = popInventory();
+      if (item) {
+        level->findOpenPosition(r,c);
+        item->setPosition(c*level->getWidth(),r*level->getHeight());
+        level->addStationary(item,r,c,false);
+        recent_drops.insert(item);
+        has_dropped=true;
+      }
+    }
 
+  }
+  else {
+    has_dropped=false;
+  }
+    
+  std::set<Item*> new_drops;
   std::vector<Actor*> stationary;
   level->testHitStationary(this,stationary);
   for (unsigned int i=0;i<stationary.size();i++) {
@@ -96,8 +118,14 @@ void Bob::act() {
         setPosition(actor->getX2(),getY1());
     }
     else if (dynamic_cast<Item*>(actor)) {
-      if (pushInventory(static_cast<Collectable*>(actor))) {
-        actor->setDead();
+      Item* item = static_cast<Item*>(actor);
+      if (recent_drops.find(item)!=recent_drops.end()) {
+        new_drops.insert(item);
+      }
+      else  {
+        if (pushInventory(item)) {        
+          actor->setDead();
+        }
       }
     }
     else if (dynamic_cast<Collectable*>(actor)) {
@@ -115,6 +143,7 @@ void Bob::act() {
       starty = actor->getY1()+level->getY();
     }
   }
+  recent_drops=new_drops;
 
   std::vector<Collectable*> collects;
   level->testHitCollectable(this,collects);
@@ -135,29 +164,33 @@ void Bob::render(sf::RenderWindow& window) {
   window.draw(*shape);
 }
 
-I_CODE Bob::convertCollectableToIndex(Collectable* item) {
+I_CODE Bob::convertItemToIndex(Item* item) {
   if (dynamic_cast<FireBoot*>(item)) 
     return FIRE_BOOT;
+  else if (dynamic_cast<Dynamite*>(item))
+    return DYNAMITE;
   else
     return NO_ITEM;
 }
 
-bool Bob::pushInventory(Collectable* item) {
+bool Bob::pushInventory(Item* item) {
 
-  I_CODE index = convertCollectableToIndex(item);
-  if (hasItem(index)) {return false;} 
+  I_CODE index = convertItemToIndex(item);
+  //if (hasItem(index)) {return false;} 
   assert(index!=NO_ITEM);
   inventory.push(item);
-  has_item[index] = true;
+  has_item[index]++;
   return true;
 }
 
-Collectable* Bob::popInventory() {
-  Collectable* item = inventory.front();
-  I_CODE index = convertCollectableToIndex(item);
+Item* Bob::popInventory() {
+  if (inventory.size()==0)
+    return NULL;
+  Item* item = inventory.front();
+  I_CODE index = convertItemToIndex(item);
   assert(index!=NO_ITEM);
   inventory.pop();
-  has_item[index]=false;
+  has_item[index]--;
   return item;
 }
 

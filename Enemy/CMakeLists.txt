@@ -3,6 +3,7 @@ set (ENEMY_SRC
   Die.cpp
   Lava.cpp
   Pit.cpp
+  Explosion.cpp
   Enemy.cpp
   Spider.cpp
   Ghost.cpp
