@@ -13,7 +13,7 @@ Ghost::Ghost(Level* l, float x, float y) :
 
 void Ghost::act() {
   Mover::act();
-  const int speed = 2.5;
+  const int speed = 2;
   
   x+=speed*cos(angle);
   y+=speed*sin(angle);

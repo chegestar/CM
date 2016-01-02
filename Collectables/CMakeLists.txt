@@ -5,6 +5,7 @@ set (SWITCH_SRC
   Web.cpp
   FakeExit.cpp
   Trigger.cpp
+  Hint.cpp
 )
 
 set (COLLECTABLE_SRC

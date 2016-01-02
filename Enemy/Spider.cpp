@@ -14,7 +14,7 @@ Spider::Spider(Level* l, float x, float y,bool d) :
 
 void Spider::act() {
   Mover::act();
-  const int speed = 2.5;
+  const int speed = 2;
   if (isVert)
     y+=dir*getMovementCorrectionY(speed);
   else

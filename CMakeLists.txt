@@ -45,6 +45,7 @@ set(ROOT_SOURCES
    Level.cpp
    CheckPoint.cpp
    Exit.cpp
+   SpeechBubble.cpp
 )
 
 

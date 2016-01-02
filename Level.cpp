@@ -13,6 +13,7 @@
 #include <Web.h>
 #include <FakeExit.h>
 #include <Trigger.h>
+#include <Hint.h>
 #include <Lava.h>
 #include <Pit.h>
 #include <FireBoot.h>
@@ -48,6 +49,11 @@ Actor* Level::getStationary(std::string key, int x, int y,std::ifstream& in_str)
       int newy,newx;
       in_str>>newy>>newx;
       return new FakeExit(this,x*width,y*height,newx*width,newy*height);
+    }
+    else if (key=="hint") {
+      std::string m;
+      getline(in_str,m);
+      return new Hint(this,x*width,y*height,m);
     }
     else if (key=="lava") {
       return new Lava(this,x*width,y*height);
