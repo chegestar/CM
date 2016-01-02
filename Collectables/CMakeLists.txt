@@ -3,6 +3,7 @@
 set (SWITCH_SRC
   Switch.cpp
   Web.cpp
+  FakeExit.cpp
 )
 
 set (COLLECTABLE_SRC

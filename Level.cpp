@@ -1,10 +1,12 @@
 #include "Level.h"
 #include <Bob.h>
 #include <Spider.h>
+#include <Ghost.h>
 #include <SpiderBoss.h>
 #include <GemDoor.h>
 #include <Rock.h>
 #include <Exit.h>
+#include <FakeExit.h>
 #include <Coin.h>
 #include <EpCrystal.h>
 #include <Crystal.h>
@@ -22,7 +24,7 @@ Level::Level() {
   bob=NULL;
 }
 
-Actor* Level::getStationary(std::string key, int x, int y) {
+Actor* Level::getStationary(std::string key, int x, int y,std::ifstream& in_str) {
     if (key=="b"||key=="block") {
       return new Block(this,x*width,y*height);
     }
@@ -40,6 +42,11 @@ Actor* Level::getStationary(std::string key, int x, int y) {
     } 
     else if (key=="web"||key=="w") {
       return new Web(this,x*width,y*height);
+    }
+    else if (key=="fakeexit"||key=="fe") {
+      int newy,newx;
+      in_str>>newy>>newx;
+      return new FakeExit(this,x*width,y*height,newx*width,newy*height);
     }
     else if (key=="lava") {
       return new Lava(this,x*width,y*height);
@@ -139,14 +146,14 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       in_str>>y>>x>>end>>key;
       assert(end>=x);
       for (int i=x;i<=end;i++) {
-        addStationary(getStationary(key,i,y),y,i);
+        addStationary(getStationary(key,i,y,in_str),y,i);
       }
     }
     else if (key=="col") {
       in_str>>x>>y>>end>>key;
       assert(end>=y);
       for (int i =y;i<=end;i++) {
-        addStationary(getStationary(key,x,i),i,x);
+        addStationary(getStationary(key,x,i,in_str),i,x);
       }
   
     }
@@ -155,7 +162,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       assert(end>=y&&end2>=x);
       for (int i = y;i<=end;i++)
         for (int j=x;j<=end2;j++)
-          addStationary(getStationary(key,j,i),i,j);
+          addStationary(getStationary(key,j,i,in_str),i,j);
     }
 
     //Bob Option
@@ -170,6 +177,10 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       char c;
       in_str>>y>>x>>c;
       insert(new Spider(this,(x)*width,(y)*height,c=='V'));
+    }
+    else if (key=="ghost"||key=="gh") {
+      in_str>>y>>x;
+      insert(new Ghost(this,(x)*width,(y)*height));
     }
     else if (key=="rock") {
       in_str>>y>>x;
@@ -197,12 +208,22 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
     }
 
     //Block Options
-    else if (key=="gemdoor"||key=="gd") {
+    else if (key=="read_board") {
+      for (int i=0;i<max_rows;i++) {
+        for (int j=0;j<max_cols;j++) {
+          in_str>>key;
+          Actor* actor = getStationary(key,j,i,in_str); 
+          if (actor) {
+            addStationary(actor,i,j);
+          }
+        }
+      }
+    }
+    else if (key=="gemdoor"||key=="g") {
       int num;
       in_str>>num;
       GemDoor** doors = new GemDoor*[num];
       for (int i=0;i<num;i++) {
-        int x,y;
         in_str>>y>>x;
         doors[i] = new GemDoor(this,x*width,y*height);
         addStationary(doors[i],y,x);
@@ -246,7 +267,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
     //Let's do all the stationary by calling the getStationary function
     else {
       in_str>>y>>x;
-      Actor* actor = getStationary(key,x,y); 
+      Actor* actor = getStationary(key,x,y,in_str); 
       if (actor)
         addStationary(actor,y,x);
     }

@@ -5,8 +5,9 @@ set (ENEMY_SRC
   Pit.cpp
   Enemy.cpp
   Spider.cpp
+  Ghost.cpp
   Bullet.cpp
-
+  
   Boss.cpp
 )
 

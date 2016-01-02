@@ -29,9 +29,10 @@ int main(int argc, char* argv[]) {
   sf::Font f;
   f.loadFromFile("Fonts/arial.ttf");
   int size=18;
-  setupText(score_box,f,"Score: 0",size,sf::Color(255,255,255),5,5);
-  setupText(lives_box,f,"Lives: 0",size,sf::Color(255,255,255),width/2-70,5);
-  setupText(ep_box,f,"Special: 0",size,sf::Color(255,255,255),width-150,5);
+  int color=200;
+  setupText(score_box,f,"Score: 0",size,sf::Color(color,color,color),5,5);
+  setupText(lives_box,f,"Lives: 0",size,sf::Color(color,color,color),width/2-70,5);
+  setupText(ep_box,f,"Special: 0",size,sf::Color(color,color,color),width-150,5);
 
   std::vector<std::vector<std::string> > worlds;
   Level* level;
@@ -58,24 +59,25 @@ int main(int argc, char* argv[]) {
 
   //Global Bob stats
   int score,lives,num_spe,num_coins;
-
+  bool isPause=false;
   while (window.isOpen()) {
     sf::Event event;
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed)
         window.close();
       if (event.type == sf::Event::LostFocus) {
-
+        isPause=true;
       }
       if (event.type== sf::Event::GainedFocus) {
-
+        isPause=false;
       }
       if (event.type==sf::Event::KeyPressed&&
           event.key.code == sf::Keyboard::Escape)
         window.close();
         
     }
-    level->act();
+    if (!isPause)
+      level->act();
     level->render(window);
     Bob* b = level->getBob();
     char score_text[20];
@@ -95,22 +97,27 @@ int main(int argc, char* argv[]) {
     if (b->getLives()<=0)
       window.close();
     if (b->getExit()) {
-      score = b->getScore();
-      lives = b->getLives();
-      num_spe = b->getSpecials();
-      num_coins = b->getCoins();
-      level_index++;
-      if (level_index>=worlds[world_index].size()-1) {
-        level_index=0;
-        world_index++;
-      }
-      if (world_index>=worlds.size())
+      if (worlds.size()==0) {
         window.close();
+      }
       else {
-        delete level;
-        level = new Level(worlds[world_index][level_index],window);
-        Bob* b2 = level->getBob();
-        b2->setStats(score,lives,num_spe,num_coins);
+        score = b->getScore();
+        lives = b->getLives();
+        num_spe = b->getSpecials();
+        num_coins = b->getCoins();
+        level_index++;
+        if (level_index>=worlds[world_index].size()-1) {
+          level_index=0;
+          world_index++;
+        }
+        if (world_index>=worlds.size())
+          window.close();
+        else {
+          delete level;
+          level = new Level(worlds[world_index][level_index],window);
+          Bob* b2 = level->getBob();
+          b2->setStats(score,lives,num_spe,num_coins);
+        }
       }
     }
 
