@@ -1,5 +1,5 @@
 #include <Collectable.h>
-
+#include <Codes.h>
 #ifndef __CRYSTAL__H__
 #define __CRYSTAL__H__
 
@@ -8,7 +8,7 @@ class GemDoor;
 
 class Crystal : public Collectable {
  public:
-  Crystal(Level* l, float x_, float y_, float w, float h);
+  Crystal(Level* l, float x_, float y_, C_CODE col);
 
   void addDoor(GemDoor* d) {doors.push_back(d);}
 
@@ -18,6 +18,7 @@ class Crystal : public Collectable {
 
  protected:
   std::vector<GemDoor*> doors;
+  C_CODE c;
 };
 
 #endif

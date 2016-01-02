@@ -196,6 +196,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       temp--;
       r->linkPosition(temp);
     }
+
     //Syntactic Sugar
     else if (key=="brow") {
       in_str>>y;
@@ -225,35 +226,37 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       }
     }
     else if (key=="gemdoor"||key=="g") {
+      std::string color;
       int num;
-      in_str>>num;
+      in_str>>color>>num;
+      C_CODE col = getColor(color);
       GemDoor** doors = new GemDoor*[num];
       for (int i=0;i<num;i++) {
         in_str>>y>>x;
-        doors[i] = new GemDoor(this,x*width,y*height);
+        doors[i] = new GemDoor(this,x*width,y*height,col);
         addStationary(doors[i],y,x);
       }
       std::string c;
       while ((in_str>>c)&&(c!=";")) {
-        if (c=="crow") {
+        if (c=="row") {
           in_str>>y>>x>>end;
           for (int i=x;i<=end;i++)
-            addGem(new Crystal(this,i*width,y*height,width,height),y,i,doors,num);
+            addGem(new Crystal(this,i*width,y*height,col),y,i,doors,num);
         }
-        else if (c=="ccol") {
+        else if (c=="col") {
           in_str>>x>>y>>end;
           for (int i=y;i<=end;i++)
-            addGem(new Crystal(this,x*width,i*height,width,height),i,x,doors,num);
+            addGem(new Crystal(this,x*width,i*height,col),i,x,doors,num);
         }
-        else if (c=="crect") {
+        else if (c=="rect") {
           in_str>>y>>x>>end>>end2;
           for (int i=y;i<=end;i++)
             for (int j=x;j<=end2;j++)
-              addGem(new Crystal(this,j*width,i*height,width,height),i,j,doors,num);
+              addGem(new Crystal(this,j*width,i*height,col),i,j,doors,num);
         }
         else {
           in_str>>y>>x;
-          addGem(new Crystal(this,x*width,y*height,width,height),y,x,doors,num);
+          addGem(new Crystal(this,x*width,y*height,col),y,x,doors,num);
         }
       }
       delete[] doors;

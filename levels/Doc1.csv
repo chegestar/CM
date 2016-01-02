@@ -17,7 +17,7 @@ b O b O O O O O O O O O O O O O b O b b
 b O b b b b b b b b b b b O b O b O b b
 b O O O O O O O O O O O O O O O O O O b
 b b b b b b b b b O O b b b b b b b b b
-gemdoor   7  4 2 2 7 2 12 2 14 2 16 11 14 12 13 
+gemdoor BLUE  7  4 2 2 7 2 12 2 14 2 16 11 14 12 13 
 c   10 1               
 c  13 1                
 c 7 15                 
@@ -28,7 +28,7 @@ c  7 18
 c  13 18                
 ;                   
                    
-gemdoor    5  9 9 10 10 9 11 5 3 5 5    
+gemdoor RED   5  9 9 10 10 9 11 5 3 5 5    
 c  1 1                
 c  4 1                
 c  1 4                

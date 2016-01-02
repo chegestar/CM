@@ -38,6 +38,7 @@ add_subdirectory(levels)
 
 set(ROOT_SOURCES
    Main.cpp
+   Codes.cpp
    Actor.cpp
    Mover.cpp
    Bob.cpp
