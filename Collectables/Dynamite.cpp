@@ -1,9 +1,9 @@
 #include "Dynamite.h"
 #include <Level.h>
 #include <Explosion.h>
-Dynamite::Dynamite(Level*l, float x_,float y_) :
+Dynamite::Dynamite(Level*l, float x_,float y_,C_CODE col) :
   Item(l,x_,y_,l->getWidth(),l->getHeight()) {
-  
+  c=col;
 }
 
 void Dynamite::blowup() {

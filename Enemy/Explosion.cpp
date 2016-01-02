@@ -8,7 +8,7 @@ Explosion::Explosion(Level* l, float x_, float y_) :
 }
 
 void Explosion::act() {
-  const float speed = 1;
+  const float speed = 2.5;
   x-=speed/2;
   y-=speed/2;
   width+=speed;

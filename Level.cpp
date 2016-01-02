@@ -76,7 +76,7 @@ Actor* Level::getStationary(std::string key, int x, int y,std::ifstream& in_str)
       return new FireBoot(this,x*width,y*height);
     }
     else if (key=="dynamite"||key=="dm") {
-      return new Dynamite(this,x*width,y*height);
+      return new Dynamite(this,x*width,y*height,COIN);
     }
     return NULL;
 }
@@ -262,15 +262,17 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       delete[] doors;
     }
     else if (key=="trigger"||key=="t") {
-      in_str>>y>>x;
+      std::string color;
+      in_str>>color>>y>>x;
+      C_CODE col = getColor(color);
       int storey =y;int storex = x;
-      Trigger* trigger = new Trigger(this,x*width,y*height);
+      Trigger* trigger = new Trigger(this,x*width,y*height,col);
       std::string c;
       while ((in_str>>c)&&(c!=";")) {
         if (c=="row") {
           in_str>>y>>x>>end;
           for (int i=x;i<=end;i++) {
-            Dynamite* d = new Dynamite(this,i*width,y*height);
+            Dynamite* d = new Dynamite(this,i*width,y*height,col);
             trigger->add(d);
             addStationary(d,y,i);
           }
@@ -278,9 +280,8 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
         else if (c=="col") {
           in_str>>x>>y>>end;
           for (int i=y;i<=end;i++) {
-            Dynamite* d = new Dynamite(this,x*width,i*height);
+            Dynamite* d = new Dynamite(this,x*width,i*height,col);
             trigger->add(d);
-
             addStationary(d,i,x);
           }
         }
@@ -288,14 +289,14 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
           in_str>>y>>x>>end>>end2;
           for (int i=y;i<=end;i++)
             for (int j=x;j<=end2;j++) {
-              Dynamite* d = new Dynamite(this,j*width,i*height);
+              Dynamite* d = new Dynamite(this,j*width,i*height,col);
               trigger->add(d);
               addStationary(d,i,j);
             }
         }
         else {
           in_str>>y>>x;
-          Dynamite* d = new Dynamite(this,x*width,y*height);
+          Dynamite* d = new Dynamite(this,x*width,y*height,col);
           trigger->add(d);
           addStationary(d,y,x);
         }
