@@ -1,6 +1,7 @@
 #include "Explosion.h"
 #include <Level.h>
-#include <Crystal.h>
+#include <Item.h>
+#include <Block.h>
 #include <utilities.h>
 
 Explosion::Explosion(Level* l, float x_, float y_) :
@@ -9,7 +10,9 @@ Explosion::Explosion(Level* l, float x_, float y_) :
 }
 
 bool isExplodable(Actor* actor) {
-  return (!dynamic_cast<Explosion*>(actor)&&!dynamic_cast<Crystal*>(actor));
+  return dynamic_cast<Block*>(actor)||dynamic_cast<Item*>(actor)||
+    dynamic_cast<Bob*>(actor)||
+    (dynamic_cast<Enemy*>(actor)&&!dynamic_cast<Explosion*>(actor));
 }
 
 void Explosion::act() {
