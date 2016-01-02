@@ -6,9 +6,10 @@ set (ENEMY_SRC
   Explosion.cpp
   Enemy.cpp
   Spider.cpp
+  Fireball.cpp
   Ghost.cpp
   Bullet.cpp
-  
+
   Boss.cpp
 )
 

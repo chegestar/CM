@@ -5,7 +5,7 @@
 #include <Block.h>
 
 
-Spider::Spider(Level* l, float x, float y,bool d) : 
+Spider::Spider(Level* l, float x, float y,bool d) :
   Actor(l,x,y,32*4.0/5,32*4.0/5), Enemy(l,x,y,width,height) {
 
   isVert=d;
@@ -14,7 +14,7 @@ Spider::Spider(Level* l, float x, float y,bool d) :
 
 void Spider::act() {
   Mover::act();
-  const int speed = 2;
+  const int speed = getSpeed();
   if (isVert)
     y+=dir*getMovementCorrectionY(speed);
   else
@@ -33,4 +33,3 @@ void Spider::act() {
   }
   Enemy::act();
 }
-

@@ -11,8 +11,9 @@ class Spider : public Enemy {
   bool isVert;
  public:
   Spider(Level* l, float x, float y, bool d);
-  
+
   virtual void act();
+  virtual int getSpeed() { return 2; }
 };
 
 #endif

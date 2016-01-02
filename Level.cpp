@@ -1,6 +1,6 @@
 #include "Level.h"
 #include <Bob.h>
-#include <Spider.h>
+#include <Fireball.h>
 #include <Ghost.h>
 #include <SpiderBoss.h>
 #include <GemDoor.h>
@@ -41,7 +41,7 @@ Actor* Level::getStationary(std::string key, int x, int y,std::ifstream& in_str)
     }
     else if (key=="life" || key=="l") {
       return new Life(this,x*width,y*height);
-    } 
+    }
     else if (key=="web"||key=="w") {
       return new Web(this,x*width,y*height);
     }
@@ -62,7 +62,7 @@ Actor* Level::getStationary(std::string key, int x, int y,std::ifstream& in_str)
       if (stationary[y][x]) {
         if (dynamic_cast<Lava*>(stationary[y][x]))
           dynamic_cast<Lava*>(stationary[y][x])->setPath();
-        else 
+        else
           std::cerr<<"[WARNING] Location: ("<<y<<','<<x<<") is not lava";
         return NULL;
       }
@@ -101,7 +101,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
   in_str>>rows>>cols;
   grows=gcols=1;
   std::string key;
-  
+
   //Level Options
   int x,y;
   in_str>>key;
@@ -166,7 +166,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       for (int i =y;i<=end;i++) {
         addStationary(getStationary(key,x,i,in_str),i,x);
       }
-  
+
     }
     else if (key=="rect") {
       in_str>>y>>x>>end>>end2>>key;
@@ -189,6 +189,11 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       in_str>>y>>x>>c;
       insert(new Spider(this,(x)*width,(y)*height,c=='V'));
     }
+    else if (key=="fireball"||key=="fb") {
+      char c;
+      in_str>>y>>x>>c;
+      insert(new Fireball(this,(x)*width,(y)*height,c=='V'));
+    }
     else if (key=="ghost"||key=="gh") {
       in_str>>y>>x;
       insert(new Ghost(this,(x)*width,(y)*height));
@@ -206,14 +211,14 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
     //Syntactic Sugar
     else if (key=="brow") {
       in_str>>y;
-      for (int i=0;i<max_cols;i++) 
+      for (int i=0;i<max_cols;i++)
         if (!stationary[y][i]) {
           addStationary(new Block(this,i*width,y*height),y,i);
         }
     }
     else if (key=="bcol") {
       in_str>>x;
-      for (int i=0;i<max_rows;i++) 
+      for (int i=0;i<max_rows;i++)
         if (!stationary[i][x]) {
           addStationary( new Block(this,x*width,i*height),i,x);
         }
@@ -224,7 +229,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       for (int i=0;i<max_rows;i++) {
         for (int j=0;j<max_cols;j++) {
           in_str>>key;
-          Actor* actor = getStationary(key,j,i,in_str); 
+          Actor* actor = getStationary(key,j,i,in_str);
           if (actor) {
             addStationary(actor,i,j);
           }
@@ -357,7 +362,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
     //Let's do all the stationary by calling the getStationary function
     else {
       in_str>>y>>x;
-      Actor* actor = getStationary(key,x,y,in_str); 
+      Actor* actor = getStationary(key,x,y,in_str);
       if (actor)
         addStationary(actor,y,x);
     }
@@ -381,7 +386,7 @@ Level::~Level() {
 }
 
 void Level::act() {
-  ACTORS::iterator itr=actors.begin(); 
+  ACTORS::iterator itr=actors.begin();
   bool is_block_gone=false;
   while(itr!=actors.end()) {
     itr->second->act();
@@ -420,7 +425,7 @@ void Level::act() {
       y_+=diff;
       if (y_>32*rows-window_height)
         y_ = 32*rows-window_height;
-    }      
+    }
     if (bob->getY1()<window_height*1/3) {
       float diff = fabs(bob->getY1()-window_height*1/3);
       diff = std::min(diff,max_num);
@@ -477,7 +482,7 @@ void Level::act() {
       y_=0;
     }
     if (bob->getY2()<0) {
-      bob->shiftY(max_rows*height); 
+      bob->shiftY(max_rows*height);
       y_ = height*max_rows-window_height;
     }
     if (bob->getX1()>window_width) {
@@ -494,7 +499,7 @@ void Level::act() {
       bob->shiftY(max_rows*height-bob->getY2()-y_);
     }
     if (bob->getY1()+y_<0) {
-      bob->shiftY(-bob->getY1()-y_); 
+      bob->shiftY(-bob->getY1()-y_);
     }
     if (bob->getX2()+x_>max_cols*width) {
       bob->shiftX(window_width-bob->getX2()-x_);
@@ -507,7 +512,7 @@ void Level::act() {
 }
 
 void Level::render(sf::RenderWindow& window) {
-  ACTORS::iterator itr; 
+  ACTORS::iterator itr;
   for (itr=actors.begin();itr!=actors.end();itr++) {
     if (!(dynamic_cast<Bob*>(itr->second)))
       itr->second->render(window);
@@ -643,7 +648,7 @@ void Level::setBlocks() {
                    j+1>=max_cols||dynamic_cast<Block*>(stationary[i][j+1]),
                    i+1>=max_rows||dynamic_cast<Block*>(stationary[i+1][j]),
                    j-1<0||dynamic_cast<Block*>(stationary[i][j-1]));
-                   
+
       }
     }
   }
