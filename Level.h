@@ -49,7 +49,7 @@ class Level {
   int max_depth;
 
   Actor* getStationary(std::string key,int x, int y,std::ifstream& in_str);
-  void addGem(Crystal* g, int r, int c, GemDoor* doors[], int num) ;
+  void addGem(Crystal* g, int r, int c) ;
   void insert(Actor* actor,int depth=-1);
   void setBlocks();
   int getRow() {return ceil(y_/window_height);}

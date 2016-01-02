@@ -231,47 +231,81 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
         }
       }
     }
+    else if (key=="read_gems") {
+      std::vector<std::vector<GemDoor*>* > doorss;
+      std::vector<C_CODE> colors;
+      int num_colors;
+      in_str>>num_colors;
+      for (int i=0;i<num_colors;i++) {
+        std::vector<GemDoor*>* doors = new std::vector<GemDoor*>();
+        std::string color;
+
+        int num;
+        in_str>>color>>num;
+        C_CODE col = getColor(color);
+        colors.push_back(col);
+        for (int j=0;j<num;j++) {
+          in_str>>y>>x;
+          GemDoor* door = new GemDoor(this,x*width,y*height,col);
+          if (j==0)
+            door->own(doors);
+          doors->push_back(door);
+          addStationary((*doors)[j],y,x);
+        }
+        doorss.push_back(doors);
+      }
+
+      for (int i=0;i<max_rows;i++) {
+        for (int j=0;j<max_cols;j++) {
+          int index;
+          in_str>>index;
+          if (index==0) continue;
+          addGem(new Crystal(this,j*width,i*height,colors[index-1],doorss[index-1]),i,j);
+        }
+      }
+    }
     else if (key=="gemdoor"||key=="g") {
       std::string color;
       int num;
       in_str>>color>>num;
       C_CODE col = getColor(color);
-      GemDoor** doors = new GemDoor*[num];
+      std::vector<GemDoor*>* doors = new std::vector<GemDoor*>();
       for (int i=0;i<num;i++) {
         in_str>>y>>x;
-        doors[i] = new GemDoor(this,x*width,y*height,col);
-        addStationary(doors[i],y,x);
+        doors->push_back(new GemDoor(this,x*width,y*height,col));
+        if (i==0)
+          (*doors)[0]->own(doors);
+        addStationary((*doors)[i],y,x);
       }
       std::string c;
       while ((in_str>>c)&&(c!=";")) {
         if (c=="row") {
           in_str>>y>>x>>end;
           for (int i=x;i<=end;i++)
-            addGem(new Crystal(this,i*width,y*height,col),y,i,doors,num);
+            addGem(new Crystal(this,i*width,y*height,col,doors),y,i);
         }
         else if (c=="col") {
           in_str>>x>>y>>end;
           for (int i=y;i<=end;i++)
-            addGem(new Crystal(this,x*width,i*height,col),i,x,doors,num);
+            addGem(new Crystal(this,x*width,i*height,col,doors),i,x);
         }
         else if (c=="rect") {
           in_str>>y>>x>>end>>end2;
           for (int i=y;i<=end;i++)
             for (int j=x;j<=end2;j++)
-              addGem(new Crystal(this,j*width,i*height,col),i,j,doors,num);
+              addGem(new Crystal(this,j*width,i*height,col,doors),i,j);
         }
         else {
           in_str>>y>>x;
-          addGem(new Crystal(this,x*width,y*height,col),y,x,doors,num);
+          addGem(new Crystal(this,x*width,y*height,col,doors),y,x);
         }
       }
-      delete[] doors;
     }
     else if (key=="trigger"||key=="t") {
       std::string color;
       in_str>>color>>y>>x;
       C_CODE col = getColor(color);
-      int storey =y;int storex = x;
+      int storey =y; int storex = x;
       Trigger* trigger = new Trigger(this,x*width,y*height,col);
       std::string c;
       while ((in_str>>c)&&(c!=";")) {
@@ -574,14 +608,10 @@ void Level::addStationary(Actor* actor,int r, int c,bool needs_adding) {
     delete actor;
 }
 
-void Level::addGem(Crystal* g, int r, int c, GemDoor* doors[], int num) {
+void Level::addGem(Crystal* g, int r, int c) {
   g->linkPosition(&gems[r][c]);
   gems[r][c] = g;
   insert(g);
-  for (int i=0;i<num;i++) {
-    doors[i]->addCrystal();
-    g->addDoor(doors[i]);
-  }
 }
 
 void Level::insert(Actor* actor,int depth) {

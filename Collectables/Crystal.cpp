@@ -3,17 +3,21 @@
 #include <Level.h>
 #include <GemDoor.h>
 
-Crystal::Crystal(Level* l, float x_, float y_, C_CODE col) : 
+Crystal::Crystal(Level* l, float x_, float y_, C_CODE col,std::vector<GemDoor*>* ds) : 
   Collectable(l,x_,y_,l->getWidth(),l->getHeight()) {
   c=col;
+  doors = ds;
+  for (unsigned int i=0;i<doors->size();i++)
+    (*doors)[i]->addCrystal();
+
   shape = new sf::CircleShape(width/2);
   static_cast<sf::CircleShape*>(shape)->setFillColor(sf::Color((c==RED)*255,0,(c==BLUE)*255));
 }
 
 int Crystal::activate() {
   Collectable::activate();
-  for (unsigned int i=0;i<doors.size();i++)
-    doors[i]->removeCrystal();
+  for (unsigned int i=0;i<doors->size();i++)
+    (*doors)[i]->removeCrystal();
   return getColorScore(c);
 }
 
