@@ -328,6 +328,8 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
         addStationary(actor,y,x);
     }
   }
+
+  setBlocks();
 }
 
 Level::~Level() {
@@ -346,12 +348,15 @@ Level::~Level() {
 
 void Level::act() {
   ACTORS::iterator itr=actors.begin(); 
+  bool is_block_gone=false;
   while(itr!=actors.end()) {
     itr->second->act();
     if (itr->second->getDead()) {
       std::list<Rock*>::iterator* rock_itr;
       bool can_delete = itr->second->removePosition(rock_itr);
       if (rock_itr) rocks.erase(*rock_itr);
+      if (dynamic_cast<Block*>(itr->second))
+        is_block_gone=true;
       if (can_delete) {
         delete itr->second;
         ACTORS::iterator temp_itr = itr;
@@ -361,6 +366,8 @@ void Level::act() {
     }
     itr++;
   }
+  if (is_block_gone)
+    setBlocks();
   if (level_type==GRID) {
     if (getRow()<grows-1&&bob->getY1()>window_height)
       y_ +=height*(rows-1);
@@ -593,4 +600,21 @@ bool Level::isOutOfBounds(Actor* actor) const {
   if (actor->getY1()+x_>getLevelHeight())
     return true;
   return false;
+}
+
+void Level::setBlocks() {
+
+  for (int i=0;i<max_rows;i++) {
+    for (int j=0;j<max_cols;j++) {
+      Block* b;
+
+      if (stationary[i][j]&&(b=dynamic_cast<Block*>(stationary[i][j]))) {
+        b->setDirs(i-1<0||dynamic_cast<Block*>(stationary[i-1][j]),
+                   j+1>=max_cols||dynamic_cast<Block*>(stationary[i][j+1]),
+                   i+1>=max_rows||dynamic_cast<Block*>(stationary[i+1][j]),
+                   j-1<0||dynamic_cast<Block*>(stationary[i][j-1]));
+                   
+      }
+    }
+  }
 }

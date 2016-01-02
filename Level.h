@@ -51,6 +51,7 @@ class Level {
   Actor* getStationary(std::string key,int x, int y,std::ifstream& in_str);
   void addGem(Crystal* g, int r, int c, GemDoor* doors[], int num) ;
   void insert(Actor* actor,int depth=-1);
+  void setBlocks();
   int getRow() {return ceil(y_/window_height);}
   int getCol() {return ceil(x_/window_width);}
 
@@ -79,8 +80,8 @@ class Level {
   void halt() {isHalted=true;}
   void unhalt() {isHalted=false;}
   void addActor(Actor* actor) {insert(actor);}
-
   void addStationary(Actor* actor,int r, int c, bool needs_adding=true);
+
 
   void act();
   void render(sf::RenderWindow& window);

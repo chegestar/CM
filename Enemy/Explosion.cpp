@@ -1,10 +1,15 @@
 #include "Explosion.h"
 #include <Level.h>
+#include <Crystal.h>
 #include <utilities.h>
 
 Explosion::Explosion(Level* l, float x_, float y_) :
   Actor(l,x_,y_,l->getWidth(),l->getHeight()),Enemy(l,x_,y_,width,height){
   
+}
+
+bool isExplodable(Actor* actor) {
+  return (!dynamic_cast<Explosion*>(actor)&&!dynamic_cast<Crystal*>(actor));
 }
 
 void Explosion::act() {
@@ -18,7 +23,7 @@ void Explosion::act() {
   Enemy::act();
   Level::ACTORS::iterator itr=level->beginActor();
   do {
-    if (!dynamic_cast<Explosion*>(itr->second)&&isRectangularHit(this,itr->second))
+    if (isExplodable(itr->second)&&isRectangularHit(this,itr->second))
       itr->second->setDead();
   }
   while (level->iterateActor(itr)!=level->endActor());

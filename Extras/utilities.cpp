@@ -108,15 +108,16 @@ bool testCircles(Actor* circle,Actor* lines) {
 }
 
 int getApproachDir(Actor* a1, Actor* a2) {
-  if (a1->getLastY2()<=a2->getLastY1() && a1->getY2()>=a2->getY1()) //Landing
-    return 2;
-  if (a1->getLastY1()>=a2->getLastY2() && a1->getY1()<=a2->getY2()) //Ceiling
-    return 0;
-  if (a1->getLastX2() <= a2->getLastX1() && a1->getX2()>=a2->getX1()) //Right wall
-    return 1;
-  if (a1->getLastX1() >= a2->getLastX2() && a1->getX1()<=a2->getX2()) //Left wall
-    return 3;
-  return -1;
+  int dir=0;
+  if (a1->getLastY2()<=a2->getLastY1() && a1->getY2()>a2->getY1()) //Landing
+    dir+=4;
+  if (a1->getLastY1()>=a2->getLastY2() && a1->getY1()<a2->getY2()) //Ceiling
+    dir+=1;
+  if (a1->getLastX2() <= a2->getLastX1() && a1->getX2()>a2->getX1()) //Right wall
+    dir+=2;
+  if (a1->getLastX1() >= a2->getLastX2() && a1->getX1()<a2->getX2()) //Left wall
+    dir+=8;
+  return dir;
 }
 
 void getObjectCenter(Actor* a,float& cx,float& cy) {

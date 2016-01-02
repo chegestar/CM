@@ -21,14 +21,9 @@ void Rock::act() {
 
     if (dynamic_cast<Block*>(hits[i])) {
       int dir = getApproachDir(this,actor);
-      if (dir==0&&getLastX1()!=actor->getX2()&&getLastX2()!=actor->getX1()) 
-        setPosition(getX1(),actor->getY2());
-      else if (dir==1)
-        setPosition(actor->getX1()-width,getY1());
-      else if (dir==2&&getLastX1()!=actor->getX2()&&getLastX2()!=actor->getX1())
-        setPosition(getX1(),actor->getY1()-height);
-      else if (dir==3)
-        setPosition(actor->getX2(),getY1());
+      Block* b = dynamic_cast<Block*>(actor);
+      b->push_back(this,dir);
+
     }
     else if (dynamic_cast<Pit*>(hits[i])) {
       if (!getDead()) {
@@ -40,15 +35,7 @@ void Rock::act() {
   Bob* b =level->getBob();
   if (isRectangularHit(this,b)) {
     int dir = getApproachDir(b,this);
-
-    if (dir==0)
-      b->setPosition(b->getX1(),getY2());
-    else if (dir==1)
-      b->setPosition(getX1()-b->getWidth(),b->getY1());
-    else if (dir==2)
-      b->setPosition(b->getX1(),getY1()-b->getHeight());
-    else if (dir==3)
-      b->setPosition(getX2(),b->getY1());
+    push_back(b,dir);
   }
   Mover::act();
 }

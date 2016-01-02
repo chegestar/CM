@@ -27,15 +27,9 @@ void Ghost::act() {
   for (unsigned int i=0;i<hits.size();i++) {
     if (dynamic_cast<Block*>(hits[i])) {
       int dir = getApproachDir(this,hits[i]);
-      if (dir==0&&getLastX1()!=hits[i]->getX2()&&getLastX2()!=hits[i]->getX1()) {
-        setPosition(getX1(),hits[i]->getY2());
-      }
-      else if (dir==1)
-        setPosition(hits[i]->getX1()-width,getY1());
-      else if (dir==2&&getLastX1()!=hits[i]->getX2()&&getLastX2()!=hits[i]->getX1())
-        setPosition(getX1(),hits[i]->getY1()-height);
-      else if (dir==3)
-        setPosition(hits[i]->getX2(),getY1());
+      Block* b = dynamic_cast<Block*>(hits[i]);
+      b->push_back(this,dir);
+
       angle = getRand(0,M_PI*2);
     }
   }

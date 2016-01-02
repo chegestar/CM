@@ -25,9 +25,9 @@ void Spider::act() {
   for (unsigned int i=0;i<hits.size();i++) {
     if (dynamic_cast<Block*>(hits[i])) {
       int d = getApproachDir(this,hits[i]);
-      if (d ==0 || d == 3)
+      if (d%2 || (d>>3)%2)
         dir = 1;
-      else if (d==1 || d==2)
+      else if ((d>>1)%2 || (d>>2)%2)
         dir=-1;
     }
   }

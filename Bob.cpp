@@ -96,26 +96,19 @@ void Bob::act() {
     if (!actor) continue;
     int dir = getApproachDir(this,actor);
     if (dynamic_cast<Rock*>(actor)) {
-      if (dir==0) 
+      if (dir%2) 
         actor->shiftY(getY1()-actor->getY2());
-      else if (dir==1)
+      if ((dir>>1)%2)
         actor->shiftX(getX2()-actor->getX1());
-      else if (dir==2)
+      if ((dir>>2)%2)
         actor->shiftY(getY2()-actor->getY1());
-      else if (dir==3)
+      if ((dir>>3)%2)
         actor->shiftX(getX1()-actor->getX2());
     }
     else if (dynamic_cast<Block*>(actor)) {
       int dir = getApproachDir(this,actor);
-      if (dir==0&&getLastX1()!=actor->getX2()&&getLastX2()!=actor->getX1()) {
-        setPosition(getX1(),actor->getY2());
-      }
-      else if (dir==1)
-        setPosition(actor->getX1()-width,getY1());
-      else if (dir==2&&getLastX1()!=actor->getX2()&&getLastX2()!=actor->getX1())
-        setPosition(getX1(),actor->getY1()-height);
-      else if (dir==3)
-        setPosition(actor->getX2(),getY1());
+      Block* b = dynamic_cast<Block*>(actor);
+      b->push_back(this,dir);
     }
     else if (dynamic_cast<Item*>(actor)) {
       Item* item = static_cast<Item*>(actor);
