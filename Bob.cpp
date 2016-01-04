@@ -136,8 +136,9 @@ void Bob::act() {
         new_drops.insert(item);
       }
       else  {
-        if (pushInventory(item)) {        
-          actor->setDead();
+        if (pushInventory(item)) {
+          
+          actor->removePosition();
         }
       }
     }
@@ -177,9 +178,8 @@ I_CODE Bob::convertItemToIndex(Item* item) {
 bool Bob::pushInventory(Item* item) {
 
   I_CODE index = convertItemToIndex(item);
-  //if (hasItem(index)) {return false;} 
   assert(index!=NO_ITEM);
-  inventory.push(item);
+  inventory.push_back(item);
   has_item[index]++;
   return true;
 }
@@ -187,10 +187,10 @@ bool Bob::pushInventory(Item* item) {
 Item* Bob::popInventory() {
   if (inventory.size()==0)
     return NULL;
-  Item* item = inventory.front();
+  Item* item = *(inventory.begin());
   I_CODE index = convertItemToIndex(item);
   assert(index!=NO_ITEM);
-  inventory.pop();
+  inventory.pop_front();
   has_item[index]--;
   return item;
 }
@@ -199,4 +199,18 @@ bool Bob::hasItem(I_CODE index) {
   assert(index!=NO_ITEM);
   assert(index<MAX_INVENTORY);
   return has_item[index];
+}
+
+void Bob::removeDynamite(C_CODE color) {
+  std::list<Item*>::iterator itr;
+  for (itr=inventory.begin();itr!=inventory.end();itr++) {
+    Dynamite* d;
+    if ((d=dynamic_cast<Dynamite*>(*itr))) {
+      if (d->getColor()==color)  {
+        std::list<Item*>::iterator temp = itr;
+        itr--;
+        inventory.erase(temp);
+      }
+    }
+  }
 }

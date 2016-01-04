@@ -19,7 +19,8 @@ void GemDoor::render(sf::RenderWindow& window) {
   Block::render(window);
 }
 
-bool GemDoor::removePosition(std::list<Rock*>::iterator*& itr) {
+std::list<Rock*>::iterator* GemDoor::removePosition() {
   if (us) delete us;
-  return Block::removePosition(itr);
+  return Block::removePosition();
+
 }

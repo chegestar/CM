@@ -35,11 +35,13 @@ void Actor::setPosition(float x_, float y_,bool keepLast) {
   y=y_+level->getY();
 }
 
-bool Actor::removePosition(std::list<Rock*>::iterator*& itr) {
+std::list<Rock*>::iterator* Actor::removePosition() {
+  x=-width*2;
+  y=-height*2;
   if (pointer_to_location) *pointer_to_location=NULL;
   if (pointer_to_gem) *pointer_to_gem=NULL;
-  itr = pointer_to_rock;
-  return true;
+  return pointer_to_rock;
+
 }
 
 void Actor::render(sf::RenderWindow& window) {

@@ -9,6 +9,8 @@ class Dynamite : public Item {
   C_CODE c;
  public:
   Dynamite(Level* l, float x_,float y_,C_CODE col);
+  
+  C_CODE getColor() const {return c;}
 
   void blowup();
 };

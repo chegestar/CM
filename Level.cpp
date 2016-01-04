@@ -427,17 +427,14 @@ void Level::act() {
   while(itr!=actors.end()) {
     itr->second->act();
     if (itr->second->getDead()) {
-      std::list<Rock*>::iterator* rock_itr;
-      bool can_delete = itr->second->removePosition(rock_itr);
+      std::list<Rock*>::iterator* rock_itr = itr->second->removePosition();
       if (rock_itr) rocks.erase(*rock_itr);
       if (dynamic_cast<Block*>(itr->second))
         is_block_gone=true;
-      if (can_delete) {
-        delete itr->second;
-        ACTORS::iterator temp_itr = itr;
-        itr--;
-        actors.erase(temp_itr);
-      }
+      delete itr->second;
+      ACTORS::iterator temp_itr = itr;
+      itr--;
+      actors.erase(temp_itr);
     }
     itr++;
   }

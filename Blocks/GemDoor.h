@@ -16,7 +16,7 @@ class GemDoor : public Block{
   void addCrystal() {num_gems++;}
   void removeCrystal() {num_gems--; if (num_gems<=0) setDead();}
   
-  bool removePosition(std::list<Rock*>::iterator*&);
+  std::list<Rock*>::iterator* removePosition();
 
   void render(sf::RenderWindow& window);
 

@@ -25,12 +25,15 @@ class Bob : public Mover{
 
   //Inventory storage and item affects
 
-  typedef std::queue<Item*> INVENTORY;
+  typedef std::list<Item*> INVENTORY;
   INVENTORY inventory;
   unsigned int* has_item;
   bool has_dropped;
   std::set<Item*> recent_drops;
   I_CODE convertItemToIndex(Item* item);
+  bool pushInventory(Item* item);
+  Item* popInventory();
+
  public:
   Bob(Level* l,float x_,float y_);
   ~Bob();
@@ -54,9 +57,8 @@ class Bob : public Mover{
 
   void act();
 
-  bool pushInventory(Item* item);
-  Item* popInventory();
   bool hasItem(I_CODE c);
+  void removeDynamite(C_CODE color);
 };
 
 #endif

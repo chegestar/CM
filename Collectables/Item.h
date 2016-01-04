@@ -7,7 +7,7 @@ class Item : public Collectable {
  public:
   Item(Level* l, float x_, float y_, float w, float h);
   
-  bool removePosition(std::list<Rock*>::iterator*&);
+
 };
 
 #endif
