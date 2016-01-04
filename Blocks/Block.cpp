@@ -59,13 +59,13 @@ void Block::setDirs(bool u,bool r, bool d, bool l) {
   isR=!r;
   isU=!u;
   isD=!d;
+  texture_set=0;
   if (isL+isR+isU+isD==2) {
     if (isL&&isR)
       texture_set=2;
     if (isU&&isD)
       texture_set=1;
   }
-
 }
 
 void Block::render(sf::RenderWindow& window) {

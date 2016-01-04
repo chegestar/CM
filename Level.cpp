@@ -681,7 +681,6 @@ void Level::setBlocks() {
   for (int i=0;i<max_rows;i++) {
     for (int j=0;j<max_cols;j++) {
       Block* b;
-
       if (stationary[i][j]&&(b=dynamic_cast<Block*>(stationary[i][j]))) {
         b->setDirs(i-1>=0&&isBlock(i-1,j),
                    j+1<max_cols&&isBlock(i,j+1),
