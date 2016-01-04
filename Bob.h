@@ -19,6 +19,7 @@ class Bob : public Mover{
   int score;
   int specials;
   float hp;
+  int isInvincible;
 
   bool isWeb;
   bool isDrain;
@@ -43,13 +44,15 @@ class Bob : public Mover{
   int getScore() const {return score;}
   int getSpecials() const {return specials;}
   int getCoins() const {return num_coins;}
+  bool isInvuln() const {return isInvincible>0;}
 
   void web();
   void drain();
   void earnEP() {specials++;};
   void earnLife() {num_lives++;};
   void earnCoin() {num_coins++; if (num_coins>=100) {num_coins=0;num_lives++;}}
-  void die() {x=startx; y = starty; num_lives--; hp=100;}
+  void earnMagicRing() {isInvincible=60*10;}
+  bool die();
   void setStats(int s,int l, int spe, int c) {specials=spe; num_lives=l;
     score=s; num_coins=c;}
   void setCheckPoint(float x_,float y_) {startx = x_;starty= y_;}

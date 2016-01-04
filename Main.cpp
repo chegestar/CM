@@ -155,6 +155,7 @@ void loadInFiles() {
   addGraphic("coin_gate","graphics/gates/padlock_gold_sparkle_strip32.png");
 
   addGraphic("coin_gem","graphics/gimmicks/coins_strip32.png");
+  addGraphic("magic_ring","graphics/gimmicks/super diamond_strip32.png");
   addGraphic("checkpoint","graphics/gimmicks/checkpoint.png");
   addGraphic("checkpoint_hit","graphics/gimmicks/checkpoint_active.png");
   addGraphic("life","graphics/gimmicks/life.png");
@@ -173,13 +174,19 @@ void loadInFiles() {
   addGraphic("fireball_left","graphics/hazards/fireball_left_strip8.png");
   addGraphic("fireball_right","graphics/hazards/fireball_right_strip8.png");
   addGraphic("ghost","graphics/hazards/ghost_floating_strip8.png");
+  addGraphic("weak_ghost","graphics/hazards/vulnerable ghost_strip8.png");
   addGraphic("fire","graphics/hazards/fire_strip5.png");
 
   
   addGraphic("bob_up", "graphics/Bob/explorer_up_strip8.png");
-  addGraphic("bob_right", "graphics/Bob/explorer_left_strip8.png");
+  addGraphic("bob_right", "graphics/Bob/explorer_right_strip8.png");
   addGraphic("bob_down", "graphics/Bob/explorer_down_strip8.png");
-  addGraphic("bob_left", "graphics/Bob/explorer_right_strip8.png");
+  addGraphic("bob_left", "graphics/Bob/explorer_left_strip8.png");
+  addGraphic("super_bob_up", "graphics/Bob/super bob up_strip8.png");
+  addGraphic("super_bob_right", "graphics/Bob/suoer bob right_strip8.png");
+  addGraphic("super_bob_down", "graphics/Bob/super bob down_strip8.png");
+  addGraphic("super_bob_left", "graphics/Bob/super bob left_strip8.png");
+
 
   addGraphic("cave_mid","graphics/walls/cave_cent.png");
   addGraphic("cave_horiz","graphics/walls/cave_horiz.png");

@@ -7,6 +7,7 @@
 #include <Rock.h>
 #include <Exit.h>
 #include <Coin.h>
+#include <MagicRing.h>
 #include <EpCrystal.h>
 #include <Crystal.h>
 #include <Life.h>
@@ -38,6 +39,9 @@ Actor* Level::getStationary(std::string key, int x, int y,std::ifstream& in_str)
     }
     else if (key=="life" || key=="l") {
       return new Life(this,x*width,y*height);
+    }
+    else if (key=="magicring"|| key=="mr") {
+      return new MagicRing(this,x*width,y*height);
     }
     else if (key=="web"||key=="w") {
       return new Web(this,x*width,y*height);

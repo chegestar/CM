@@ -2,17 +2,18 @@
 #include <Level.h>
 #include <Item.h>
 #include <Block.h>
+#include <Enemy.h>
 #include <utilities.h>
 
 Explosion::Explosion(Level* l, float x_, float y_) :
-  Actor(l,x_,y_,l->getWidth(),l->getHeight()),Enemy(l,x_,y_,width,height){
+  Actor(l,x_,y_,l->getWidth(),l->getHeight()),Die(l,x_,y_,width,height){
   shape = new sf::CircleShape();
 }
 
 bool isExplodable(Actor* actor) {
+  Bob* b;
   return dynamic_cast<Block*>(actor)||dynamic_cast<Item*>(actor)||
-    dynamic_cast<Bob*>(actor)||
-    (dynamic_cast<Enemy*>(actor)&&!dynamic_cast<Explosion*>(actor));
+    (b=dynamic_cast<Bob*>(actor))&&!b->isInvuln()||dynamic_cast<Enemy*>(actor);
 }
 
 void Explosion::act() {
@@ -23,7 +24,7 @@ void Explosion::act() {
   height+=speed;
   if (width>level->getWidth()*3-speed*2)
     setDead();
-  Enemy::act();
+  Die::act();
   Level::ACTORS::iterator itr=level->beginActor();
   do {
     if (isExplodable(itr->second)&&isRectangularHit(this,itr->second))

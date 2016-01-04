@@ -1,9 +1,9 @@
-#include <Enemy.h>
+#include <Die.h>
 
 #ifndef __EXPLOSION_H__
 #define __EXPLOSION_H__
 
-class Explosion : public Enemy {
+class Explosion : public Die {
  public:
   Explosion(Level* l, float x_, float y_);
   

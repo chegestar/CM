@@ -3,7 +3,7 @@
 #include <Level.h>
 #include <Exit.h>
 #include <utilities.h>
-#include <Collectable.h>
+
 #include <FireBoot.h>
 #include <Dynamite.h>
 
@@ -18,16 +18,22 @@ Bob::Bob(Level* l,float x_,float y_) :
   score=0;
   specials=0;
   hp=100;
+  isInvincible=0;
+
   has_item = new unsigned int[MAX_INVENTORY];
   for (unsigned int i=0;i<MAX_INVENTORY;i++)
     has_item[i]=0;
   has_dropped=false;
-
+  
 
   texture_keys.push_back("bob_up");
-  texture_keys.push_back("bob_left");
-  texture_keys.push_back("bob_down");
   texture_keys.push_back("bob_right");
+  texture_keys.push_back("bob_down");
+  texture_keys.push_back("bob_left");
+  texture_keys.push_back("super_bob_up");
+  texture_keys.push_back("super_bob_right");
+  texture_keys.push_back("super_bob_down");
+  texture_keys.push_back("super_bob_left");
 
 }
 
@@ -51,6 +57,17 @@ void Bob::drain() {
     die();
   isDrain=true;
 }
+
+bool Bob::die() {
+  if (isInvincible>0)
+    return false;
+  x = startx; 
+  y = starty; 
+  num_lives--; 
+  hp=100;
+  return true;
+}
+
 void Bob::act() {
   Mover::act();
   isWeb=false;
@@ -58,10 +75,15 @@ void Bob::act() {
   if (hp>100)
     hp=100;
   isDrain=false;
+  if (isInvincible>0)
+    isInvincible--;
 
   float speed = 2.5;
   if (has_item[FIRE_BOOT]) {
     speed*=3.5/5;
+  }
+  if (has_item[DYNAMITE]) {
+    speed*=pow(.99,has_item[DYNAMITE]);
   }
   bool didMove=false;
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
@@ -89,6 +111,7 @@ void Bob::act() {
   }
   else
     texture_step=0;
+  texture_set=(texture_set%4)+(isInvincible>0)*4;
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
     if (!has_dropped) {
       int r = y/level->getHeight();
