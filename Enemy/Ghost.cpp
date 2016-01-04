@@ -6,7 +6,7 @@
 
 
 Ghost::Ghost(Level* l, float x, float y) : 
-  Actor(l,x,y,32*4.0/5,32*4.0/5), Enemy(l,x,y,width,height) {
+  Actor(l,x,y,32,32), Enemy(l,x,y,width,height) {
   angle = getRand(0,M_PI*2);
 
   texture_keys.push_back("ghost");
