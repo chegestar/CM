@@ -1,11 +1,6 @@
-<<<<<<< HEAD
 build*
-*~
-=======
-build
 *~
 .idea
 .DS_Store
 .AppleDouble
 .LSOverride
->>>>>>> b59558ccffd99fb0f52c77c1df291bfe7740a64c
