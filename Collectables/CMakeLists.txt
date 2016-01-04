@@ -1,13 +1,3 @@
-
-
-set (SWITCH_SRC
-  Switch.cpp
-  Web.cpp
-  FakeExit.cpp
-  Trigger.cpp
-  Hint.cpp
-)
-
 set (COLLECTABLE_SRC
   Collectable.cpp
   Crystal.cpp
@@ -19,4 +9,4 @@ set (COLLECTABLE_SRC
   Dynamite.cpp
 )
 
-add_library(collect ${SWITCH_SRC} ${COLLECTABLE_SRC})
+add_library(collect ${COLLECTABLE_SRC})

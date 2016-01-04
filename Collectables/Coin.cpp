@@ -3,8 +3,9 @@
 #include <Level.h>
 
 Coin::Coin(Level* l, float x_, float y_) : 
-  Collectable(l,x_,y_,15,15) {
-  static_cast<sf::CircleShape*>(shape)->setFillColor(sf::Color(200,200,0));
+  Collectable(l,x_,y_,l->getWidth(),l->getHeight()) {
+  texture_keys.push_back("coin_gem");
+
 }
 
 int Coin::activate() {
@@ -15,6 +16,6 @@ int Coin::activate() {
 
 
 void Coin::render(sf::RenderWindow& window) {
-  static_cast<sf::CircleShape*>(shape)->setPosition(getX1(),getY1());
-  window.draw(*shape);
+  texture_step++;
+  Actor::render(window);
 }

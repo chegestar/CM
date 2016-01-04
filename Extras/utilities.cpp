@@ -126,39 +126,6 @@ void getObjectCenter(Actor* a,float& cx,float& cy) {
 }
 
 
-void setupText(sf::Text& text,sf::Font& f,std::string s,int size, sf::Color c,
-               float x, float y, int num_chars) {
-  text.setFont(f);
-  text.setString(s);
-  text.setCharacterSize(size);
-  text.setColor(c);
-  text.setOrigin(0,0);
-  text.setPosition(0,0);
-  if (num_chars==-1) {
-    float width = text.findCharacterPos(s.size()).x-text.findCharacterPos(0).x;
-    text.setOrigin(width/2,0);
-  }
-  else 
-    text.setOrigin(text.findCharacterPos(num_chars).x,0);
-  text.setPosition(x,y);
-}
-
-void setupRect(sf::RectangleShape& shape,float x1, float y1, float x2, float y2,
-               sf::Color col,sf::Color out, float out_size) {
-  shape.setPosition(x1,y1);
-  shape.setSize(sf::Vector2f(x2-x1,y2-y1));
-  shape.setFillColor(col);
-  shape.setOutlineColor(out);
-  shape.setOutlineThickness(out_size);
-}
-
-void setRectPos(sf::RectangleShape& s, sf::Text& t) {
-  s.setPosition(t.findCharacterPos(0)-sf::Vector2f(5,0));
-  s.setSize(t.findCharacterPos(t.getString().getSize())-t.findCharacterPos(0)+
-            sf::Vector2f(10,t.getCharacterSize()+10.0f));
-  
-}
-
 MTRand mtr;
 
 int getRandInt(int low, int high) {
@@ -167,4 +134,31 @@ int getRandInt(int low, int high) {
 
 float getRand(float low, float high) {
   return (float)(mtr.rand(high-low)+low);
+}
+
+
+Reader reader;
+
+void addGraphic(std::string name,std::string file_name) {
+  reader.registerGraphics(name,file_name);
+}
+void addFont(std::string name,std::string file_name) {
+  reader.registerFont(name,file_name);
+}
+void addSong(std::string name,std::string file_name, bool repeat) {
+  reader.registerSong(name,file_name,repeat);
+}
+
+const sf::Texture& getGraphic(std::string name) {
+  return reader.getGraphics(name);
+}
+const sf::Font& getFont(std::string name) {
+  return reader.getFont(name);
+}
+sf::Music* getSong(std::string name) {
+  return reader.getSong(name);
+}
+
+void destroySongs() {
+  reader.destroy();
 }

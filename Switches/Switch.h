@@ -7,7 +7,7 @@ class Switch : public Actor {
  public:
   Switch(Level* l, float x_, float y_, float w, float h);
 
-  void render(sf::RenderWindow& window);
+
 };
 
 #endif

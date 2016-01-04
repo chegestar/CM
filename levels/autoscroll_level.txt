@@ -1,6 +1,6 @@
 20 20
-
 AUTOSCROLL_LEVEL V 1
+CAVE
 
 start 1 1
 

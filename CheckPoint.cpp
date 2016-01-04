@@ -1,17 +1,19 @@
 #include "CheckPoint.h"
 #include <Level.h>
-
+#include <Bob.h>
+#include <utilities.h>
 CheckPoint::CheckPoint(Level* l, float x_,float y_) : 
-  Actor(l,x_,y_,l->getWidth(),l->getHeight()) {
-  shape = new sf::CircleShape(width/2);
-  static_cast<sf::CircleShape*>(shape)->setFillColor(sf::Color(0,255,0));
+  Actor(l,x_,y_,l->getWidth()-3,l->getHeight()-3) {
+  
+  texture_keys.push_back("checkpoint");
+  texture_keys.push_back("checkpoint_hit");
 };
 
-void CheckPoint::render(sf::RenderWindow& window) {
-
-  static_cast<sf::CircleShape*>(shape)->setPosition(getX1(),getY1());
-
-  window.draw(*shape);
-
+void CheckPoint::act() {
+  if (isRectangularHit(this,level->getBob())) {
+    texture_set=1;
+    activate();
+  }
+  else
+    texture_set=0;
 }
-

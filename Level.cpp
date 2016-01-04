@@ -30,9 +30,6 @@ Actor* Level::getStationary(std::string key, int x, int y,std::ifstream& in_str)
     if (key=="b"||key=="block") {
       return new Block(this,x*width,y*height);
     }
-    else if (key=="c"||key=="check") {
-      return new CheckPoint(this,x*width,y*height);
-    }
     else if (key=="coin") {
       return new Coin(this,x*width,y*height);
     }
@@ -74,9 +71,6 @@ Actor* Level::getStationary(std::string key, int x, int y,std::ifstream& in_str)
     }
     else if (key=="pit") {
       return new Pit(this,x*width,y*height);
-    }
-    else if (key=="exit") {
-      return new Exit(this,x*width,y*height);
     }
     else if (key=="fireboot") {
       return new FireBoot(this,x*width,y*height);
@@ -125,6 +119,25 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
     isVertical= (c=='V');
   }
 
+  in_str>>key;
+  if (key=="CAVE") 
+    zone=CAVE;
+  else if (key=="CRYSTAL")
+    zone=CRYSTAL;
+  else if (key=="LAVA")
+    zone=LAVA;
+  else if (key=="PYRAMID")
+    zone=PYRAMID;
+  else if (key=="ICE")
+    zone=ICE;
+  else if (key=="DARK")
+    zone=DARK;
+  else if (key=="FACTORY")
+    zone = FACTORY;
+  else if (key=="SPECIAL")
+    zone = SPECIAL;
+  else
+    zone=HUB;
 
   max_depth=0;
   max_rows = rows*grows-grows+1;
@@ -181,6 +194,14 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
       in_str>>y>>x;
       bob = new Bob(this,x*height,y*width);
       insert(bob);
+    }
+    else if (key=="c"||key=="check") {
+      in_str>>y>>x;
+      insert(new CheckPoint(this,x*width,y*height));
+    }
+    else if (key=="exit") {
+      in_str>>y>>x;
+      insert(new Exit(this,x*width,y*height));
     }
 
     //Moving Options
@@ -637,6 +658,10 @@ bool Level::isOutOfBounds(Actor* actor) const {
   return false;
 }
 
+bool Level::isBlock(int i,int j) {
+
+  return dynamic_cast<Block*>(stationary[i][j])&& !dynamic_cast<GemDoor*>(stationary[i][j]);
+}
 void Level::setBlocks() {
 
   for (int i=0;i<max_rows;i++) {
@@ -644,10 +669,10 @@ void Level::setBlocks() {
       Block* b;
 
       if (stationary[i][j]&&(b=dynamic_cast<Block*>(stationary[i][j]))) {
-        b->setDirs(i-1<0||dynamic_cast<Block*>(stationary[i-1][j]),
-                   j+1>=max_cols||dynamic_cast<Block*>(stationary[i][j+1]),
-                   i+1>=max_rows||dynamic_cast<Block*>(stationary[i+1][j]),
-                   j-1<0||dynamic_cast<Block*>(stationary[i][j-1]));
+        b->setDirs(i-1>=0&&isBlock(i-1,j),
+                   j+1<max_cols&&isBlock(i,j+1),
+                   i+1<max_rows&&isBlock(i+1,j),
+                   j-1>=0&&isBlock(i,j-1));
 
       }
     }

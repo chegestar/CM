@@ -7,6 +7,7 @@ class FireBoot : public Item {
  public:
   FireBoot(Level* l, float x_,float y_);
 
+  void render(sf::RenderWindow& window);
 };
 
 #endif

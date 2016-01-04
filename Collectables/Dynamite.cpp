@@ -4,6 +4,7 @@
 Dynamite::Dynamite(Level*l, float x_,float y_,C_CODE col) :
   Item(l,x_,y_,l->getWidth(),l->getHeight()) {
   c=col;
+  texture_keys.push_back("dynamite");
 }
 
 void Dynamite::blowup() {

@@ -26,6 +26,7 @@ class Level {
 
   //Level type variables
   L_TYPE level_type;
+  Z_TYPE zone;
   bool isHalted,isWrapped;
   bool isVertical;
   int dir;
@@ -51,6 +52,7 @@ class Level {
   Actor* getStationary(std::string key,int x, int y,std::ifstream& in_str);
   void addGem(Crystal* g, int r, int c) ;
   void insert(Actor* actor,int depth=-1);
+  bool isBlock(int i,int j);
   void setBlocks();
   int getRow() {return ceil(y_/window_height);}
   int getCol() {return ceil(x_/window_width);}
@@ -62,6 +64,7 @@ class Level {
   Level(std::string filename,sf::RenderWindow& window);
   ~Level();
 
+  Z_TYPE getZone() const {return zone;}
   float getX() const {return x_;}
   float getY() const {return y_;}
   float getWidth() const {return width;}

@@ -14,7 +14,7 @@ class Die : public virtual Actor {
   virtual bool hitBob(Bob* b);
   
   virtual void act();
-  void render(sf::RenderWindow& window);
+
 };
 
 #endif

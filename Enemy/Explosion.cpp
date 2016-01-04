@@ -6,7 +6,7 @@
 
 Explosion::Explosion(Level* l, float x_, float y_) :
   Actor(l,x_,y_,l->getWidth(),l->getHeight()),Enemy(l,x_,y_,width,height){
-  
+  shape = new sf::CircleShape();
 }
 
 bool isExplodable(Actor* actor) {
@@ -34,6 +34,8 @@ void Explosion::act() {
 
 void Explosion::render(sf::RenderWindow& window) {
   static_cast<sf::CircleShape*>(shape)->setRadius(width/2);
-  Die::render(window);
+  static_cast<sf::CircleShape*>(shape)->setPosition(getX1(),getY1());
+  window.draw(*shape);
+
 }
 

@@ -4,7 +4,9 @@ Hint::Hint(Level*l, float x_,float y_, std::string message) :
   Switch(l,x_,y_,l->getWidth(),l->getHeight()){
   bubble.setup(message);
   was_hit=false;
+  static_cast<sf::CircleShape*>(shape)->setFillColor(sf::Color(0,0,255));
 }
+
 
 
 int Hint::activate() {
@@ -21,6 +23,7 @@ void Hint::act() {
 }
 
 void Hint::render(sf::RenderWindow& window) {
-  Switch::render(window);
+  static_cast<sf::CircleShape*>(shape)->setPosition(getX1(),getY1());
+  window.draw(*shape);
   bubble.render(window);
 }

@@ -11,6 +11,8 @@ class Boss : public Enemy {
   Boss(Level* l, float x_, float y_, float w, float h);
 
   virtual void act();
+
+  void render(sf::RenderWindow& window);
 };
 
 #endif

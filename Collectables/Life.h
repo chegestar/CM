@@ -9,8 +9,6 @@ class Life : public Collectable {
 
   virtual int activate();
 
-  void render(sf::RenderWindow& window);
-
 };
 
 #endif

@@ -11,7 +11,6 @@ class Enemy : public Die,public Mover {
   Enemy(Level* l, float x, float y, float w, float h);
     
   virtual void act();
-  void render(sf::RenderWindow& window);
 };
 
 #endif

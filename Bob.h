@@ -49,9 +49,10 @@ class Bob : public Mover{
   void die() {x=startx; y = starty; num_lives--; hp=100;}
   void setStats(int s,int l, int spe, int c) {specials=spe; num_lives=l;
     score=s; num_coins=c;}
+  void setCheckPoint(float x_,float y_) {startx = x_;starty= y_;}
+  void setExit() {isExit=true;}
 
   void act();
-  void render(sf::RenderWindow& window);
 
   bool pushInventory(Item* item);
   Item* popInventory();

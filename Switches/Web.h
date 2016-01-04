@@ -9,8 +9,6 @@ class Web : public Switch {
 
   virtual int activate();
 
-  void render(sf::RenderWindow& window);
-
 };
 
 #endif

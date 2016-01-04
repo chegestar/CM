@@ -1,6 +1,6 @@
 20 20
-
 CONTINUOUS_LEVEL
+CAVE
 
 start 1 1
 
@@ -16,4 +16,4 @@ rock 5 10
 
 row 13 1 18 pit
 
-row 18 1 18 exit 
+exit 1 18

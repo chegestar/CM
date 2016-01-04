@@ -2,7 +2,7 @@
 #include <utilities.h>
 #include <Level.h>
 #include <GemDoor.h>
-
+#include <stdio.h>
 Crystal::Crystal(Level* l, float x_, float y_, C_CODE col,std::vector<GemDoor*>* ds) : 
   Collectable(l,x_,y_,l->getWidth(),l->getHeight()) {
   c=col;
@@ -10,8 +10,9 @@ Crystal::Crystal(Level* l, float x_, float y_, C_CODE col,std::vector<GemDoor*>*
   for (unsigned int i=0;i<doors->size();i++)
     (*doors)[i]->addCrystal();
 
-  shape = new sf::CircleShape(width/2);
-  static_cast<sf::CircleShape*>(shape)->setFillColor(sf::Color((c==RED)*255,0,(c==BLUE)*255));
+  char key[15];
+  sprintf(key,"%s_gem",getColorString(c));
+  texture_keys.push_back(std::string(key));
 }
 
 int Crystal::activate() {
@@ -22,6 +23,6 @@ int Crystal::activate() {
 }
 
 void Crystal::render(sf::RenderWindow& window) {
-  static_cast<sf::CircleShape*>(shape)->setPosition(getX1(),getY1());
-  window.draw(*shape);
+  Actor::render(window);
+  texture_step++;
 }

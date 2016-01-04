@@ -10,6 +10,9 @@ Spider::Spider(Level* l, float x, float y,bool d) :
 
   isVert=d;
   dir=getRandInt(0,1)*2-1;
+  texture_keys.push_back("Hspider");
+  texture_keys.push_back("Vspider");
+  texture_set=isVert;
 };
 
 void Spider::act() {
@@ -19,7 +22,7 @@ void Spider::act() {
     y+=dir*getMovementCorrectionY(speed);
   else
     x+=dir*getMovementCorrectionX(speed);
-
+  texture_step++;
   std::vector<Actor*> hits;
   level->testHitStationary(this,hits);
   for (unsigned int i=0;i<hits.size();i++) {
@@ -32,4 +35,9 @@ void Spider::act() {
     }
   }
   Enemy::act();
+}
+
+
+void Spider::render(sf::RenderWindow& window) {
+  Actor::render(window);
 }

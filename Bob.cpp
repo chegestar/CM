@@ -10,7 +10,7 @@
 #include <cassert>
 
 Bob::Bob(Level* l,float x_,float y_) : 
-  Actor(l,x_,y_,l->getWidth()*4/8,l->getHeight()*4/8), 
+  Actor(l,x_,y_,l->getWidth()*5/8,l->getHeight()*5/8), 
   Mover(l,x,y,width,height),
   startx(x), starty(y){
   isExit=false;
@@ -24,8 +24,10 @@ Bob::Bob(Level* l,float x_,float y_) :
   has_dropped=false;
 
 
-  shape = new sf::RectangleShape(sf::Vector2f(width,height));
-  static_cast<sf::RectangleShape*>(shape)->setFillColor(sf::Color(255,255,0));
+  texture_keys.push_back("bob_up");
+  texture_keys.push_back("bob_left");
+  texture_keys.push_back("bob_down");
+  texture_keys.push_back("bob_right");
 
 }
 
@@ -61,14 +63,32 @@ void Bob::act() {
   if (has_item[FIRE_BOOT]) {
     speed*=3.5/5;
   }
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+  bool didMove=false;
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+    didMove=true;
+    texture_set=0;
     y-=getMovementCorrectionY(speed);
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+    didMove=true;
+    texture_set=2;
     y+=getMovementCorrectionY(speed);
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+    didMove=true;
+    texture_set=3;
     x-=getMovementCorrectionX(speed);
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+    didMove=true;
+    texture_set=1;
     x+=getMovementCorrectionX(speed);
+  }
+  if (didMove) {
+    texture_step++;
+  }
+  else
+    texture_step=0;
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
     if (!has_dropped) {
       int r = y/level->getHeight();
@@ -128,13 +148,6 @@ void Bob::act() {
     else if (dynamic_cast<Switch*>(actor)) {
       actor->activate();
     }
-    else if (dynamic_cast<Exit*>(actor)) {
-      isExit=true;
-    }
-    else if (dynamic_cast<CheckPoint*>(actor)) {
-      startx = actor->getX1()+level->getX();
-      starty = actor->getY1()+level->getY();
-    }
   }
   recent_drops=new_drops;
 
@@ -151,11 +164,6 @@ void Bob::act() {
 
 }
 
-void Bob::render(sf::RenderWindow& window) {
-  static_cast<sf::RectangleShape*>(shape)->setPosition(getX1(),getY1());
-  static_cast<sf::RectangleShape*>(shape)->setFillColor(sf::Color(255,255,0,hp/100*255));
-  window.draw(*shape);
-}
 
 I_CODE Bob::convertItemToIndex(Item* item) {
   if (dynamic_cast<FireBoot*>(item)) 

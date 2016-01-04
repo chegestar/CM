@@ -52,7 +52,7 @@ class Actor {
   virtual void act() {}
   virtual int activate() {return 0;}  
   virtual void windowEvent(sf::Event& event) {}
-  virtual void render(sf::RenderWindow& window) {}
+  virtual void render(sf::RenderWindow& window);
 
   friend bool operator==(const Actor& a1, const Actor& a2) {
     return a1.x==a2.x && a1.y == a2.y && a1.width==a2.width && a1.height==a2.height; 
@@ -66,7 +66,12 @@ protected:
   Actor** pointer_to_location; 
   Collectable** pointer_to_gem; 
   std::list<Rock*>::iterator* pointer_to_rock;
+
   sf::Drawable* shape;
+  sf::Sprite sprite;
+  std::vector<std::string > texture_keys;
+  int texture_set,texture_step;
+
 };
 
 #endif

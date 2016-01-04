@@ -1,0 +1,29 @@
+15 20
+ZOOMED_LEVEL
+CAVE
+
+start 13 1
+
+brow 0
+brow 14
+bcol 0
+bcol 19
+col 2 1 12 block
+col 11 2 4 block
+col 13 2 4 block
+col 15 4 10 block
+col 17 2 12 block
+row 2 2 9 block
+row 2 11 17 block
+row 4 4 9 block
+row 6 4 6 block
+row 6 8 13 block
+row 8 4 13 block
+row 10 4 15 block
+row 12 2 17 block
+block 3 9
+block 7 4
+block 11 4
+
+ec 13 4
+exit 11 5

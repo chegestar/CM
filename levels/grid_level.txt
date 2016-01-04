@@ -1,5 +1,7 @@
 15 20
 GRID_LEVEL 2 2
+PYRAMID
+
 WRAPPED
 start 1 1
 

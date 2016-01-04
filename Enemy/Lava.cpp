@@ -8,8 +8,7 @@
 Lava::Lava(Level* l, float x, float y) : 
   Actor(l,x,y,l->getWidth(),l->getHeight()), Die(l,x,y,width,height) {
   isPath=false;
-  
-  static_cast<sf::CircleShape*>(shape)->setFillColor(sf::Color(255,0,0));
+  texture_keys.push_back("fire");
 }
 
 bool Lava::hitBob(Bob* b) {
@@ -21,7 +20,7 @@ bool Lava::hitBob(Bob* b) {
 }
 
 void Lava::act() {
-
+  texture_step++;
   if (isPath) {
     Bob* b = level->getBob();
     if (hitBob(b)) {
@@ -38,8 +37,6 @@ void Lava::act() {
 }
 
 void Lava::render(sf::RenderWindow& window) {
-
-  static_cast<sf::CircleShape*>(shape)->setPosition(getX1(),getY1());
-  window.draw(*shape);
+  Actor::render(window);
 
 }

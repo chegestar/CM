@@ -8,5 +8,7 @@ class Fireball : public Spider {
   Fireball(Level* l, float x, float y, bool d);
 
   virtual int getSpeed() { return 3; }
+
+  void render(sf::RenderWindow& window);
 };
 #endif

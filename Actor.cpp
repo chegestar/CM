@@ -1,5 +1,6 @@
 #include "Actor.h"
 #include <Level.h>
+#include <utilities.h>
 
 Actor::Actor(Level* l, float x_,float y_,float w,float h) {
   level = l;
@@ -11,7 +12,10 @@ Actor::Actor(Level* l, float x_,float y_,float w,float h) {
   pointer_to_location=NULL;
   pointer_to_gem=NULL;
   pointer_to_rock=NULL;
+
   shape=NULL;
+  texture_set=texture_step=0;
+  
 }
 
 Actor::~Actor() {
@@ -36,4 +40,18 @@ bool Actor::removePosition(std::list<Rock*>::iterator*& itr) {
   if (pointer_to_gem) *pointer_to_gem=NULL;
   itr = pointer_to_rock;
   return true;
+}
+
+void Actor::render(sf::RenderWindow& window) {
+  sf::Texture text = getGraphic(texture_keys[texture_set]);
+  sprite.setTexture(text);
+
+  int step=texture_step/3;
+  float w = sprite.getLocalBounds().width;
+  step %= int(round(w/32));
+  sprite.setTextureRect(sf::IntRect(32*step,0,32,32));
+  sprite.setPosition(getX1(),getY1());
+  sprite.setScale(width/32,height/32);
+  window.draw(sprite);
+  sprite.setTextureRect(sf::IntRect(0,0,w,32));
 }

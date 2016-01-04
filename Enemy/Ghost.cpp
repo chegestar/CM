@@ -8,6 +8,8 @@
 Ghost::Ghost(Level* l, float x, float y) : 
   Actor(l,x,y,32*4.0/5,32*4.0/5), Enemy(l,x,y,width,height) {
   angle = getRand(0,M_PI*2);
+
+  texture_keys.push_back("ghost");
 };
 
 
@@ -18,6 +20,7 @@ void Ghost::act() {
   x+=speed*cos(angle);
   y+=speed*sin(angle);
 
+  texture_step++;
   float rand = getRand(0,1);
   if (rand<.55/60) 
     angle = getRand(0,M_PI*2);

@@ -3,6 +3,7 @@
 
 Pit::Pit(Level* l, float x, float y) : 
   Actor(l,x,y,l->getWidth(),l->getHeight()), Die(l,x,y,width,height) {
+  shape = new sf::CircleShape(width/2);
   static_cast<sf::CircleShape*>(shape)->setFillColor(sf::Color(0,0,0));
 }
 

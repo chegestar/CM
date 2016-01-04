@@ -5,8 +5,6 @@
 
 Die::Die(Level* l, float x, float y, float w, float h) : 
   Actor(l,x,y,w,h) {
-  shape = new sf::CircleShape(width/2);
-  static_cast<sf::CircleShape*>(shape)->setFillColor(sf::Color(255,0,0));
 
 
 }
@@ -21,9 +19,3 @@ void Die::act() {
   }
 }
 
-void Die::render(sf::RenderWindow& window) {
-
-  static_cast<sf::CircleShape*>(shape)->setPosition(getX1(),getY1());
-  window.draw(*shape);
-
-}

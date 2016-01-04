@@ -17,6 +17,7 @@ class Crystal : public Collectable {
  protected:
   std::vector<GemDoor*>* doors;
   C_CODE c;
+
 };
 
 #endif

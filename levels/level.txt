@@ -1,5 +1,7 @@
 15 20
 NORMAL_LEVEL
+CRYSTAL
+
 start 1 1
 
 col 0 0 14 block
@@ -10,8 +12,7 @@ row 14 0 19 block
 row 4 4 8 coin
 row 12 4 8 life
 col 3 4 8 block
-col 18 4 8 exit
-
+exit 9 18
 rock 10 10
 rock 5 10
 spider 11 14 H 

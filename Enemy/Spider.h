@@ -6,7 +6,7 @@
 class Bob;
 
 class Spider : public Enemy {
- private:
+ protected:
   int dir;
   bool isVert;
  public:
@@ -14,6 +14,8 @@ class Spider : public Enemy {
 
   virtual void act();
   virtual int getSpeed() { return 2; }
+
+  virtual void render(sf::RenderWindow& window);
 };
 
 #endif

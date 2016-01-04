@@ -6,9 +6,8 @@
 
 Rock::Rock(Level* l,float x_,float y_) : 
   Actor(l,x_,y_,l->getWidth()*3.5/5,l->getHeight()*3.5/5), Block(l,x_,y_), Mover(l,x_,y_,width,height){
-
-  static_cast<sf::RectangleShape*>(shape)->setFillColor(sf::Color(150,150,30));
-
+  texture_keys.clear();
+  texture_keys.push_back("rock");
 }
 
 void Rock::act() {
@@ -26,7 +25,7 @@ void Rock::act() {
 
     }
     else if (dynamic_cast<Pit*>(hits[i])) {
-      if (!getDead()) {
+      if (!getDead()&&!hits[i]->getDead()) {
         hits[i]->setDead();
         setDead();
       }
@@ -41,6 +40,6 @@ void Rock::act() {
 }
 
 void Rock::render(sf::RenderWindow& window) {
-  static_cast<sf::RectangleShape*>(shape)->setPosition(getX1(),getY1());
-  window.draw(*shape);
+  texture_set=0;
+  Block::render(window);
 }
