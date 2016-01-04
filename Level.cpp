@@ -120,24 +120,39 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
   }
 
   in_str>>key;
-  if (key=="CAVE") 
+  background.setPosition(0,0);
+  if (key=="CAVE")  {
     zone=CAVE;
-  else if (key=="CRYSTAL")
+    background.setTexture(getGraphic("cave"));
+  }
+  else if (key=="CRYSTAL") {
     zone=CRYSTAL;
-  else if (key=="LAVA")
+    background.setTexture(getGraphic("crystal"));
+  }
+  else if (key=="LAVA") {
     zone=LAVA;
-  else if (key=="PYRAMID")
+    background.setTexture(getGraphic("lava"));
+  }
+  else if (key=="PYRAMID") {
     zone=PYRAMID;
-  else if (key=="ICE")
+    background.setTexture(getGraphic("sand"));
+  }
+  else if (key=="ICE") {
     zone=ICE;
-  else if (key=="DARK")
+  }
+  else if (key=="DARK") {
     zone=DARK;
-  else if (key=="FACTORY")
+  }
+  else if (key=="FACTORY") {
     zone = FACTORY;
-  else if (key=="SPECIAL")
+  }
+  else if (key=="SPECIAL") {
     zone = SPECIAL;
-  else
+  }
+  else {
     zone=HUB;
+  }
+  background.setTextureRect(sf::IntRect(0,0,32*20,32*15));
 
   max_depth=0;
   max_rows = rows*grows-grows+1;
@@ -533,6 +548,8 @@ void Level::act() {
 }
 
 void Level::render(sf::RenderWindow& window) {
+  window.draw(background);
+
   ACTORS::iterator itr;
   for (itr=actors.begin();itr!=actors.end();itr++) {
     if (!(dynamic_cast<Bob*>(itr->second)))

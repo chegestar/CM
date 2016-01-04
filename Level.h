@@ -27,6 +27,7 @@ class Level {
   //Level type variables
   L_TYPE level_type;
   Z_TYPE zone;
+  sf::Sprite background;
   bool isHalted,isWrapped;
   bool isVertical;
   int dir;

@@ -139,8 +139,8 @@ float getRand(float low, float high) {
 
 Reader reader;
 
-void addGraphic(std::string name,std::string file_name) {
-  reader.registerGraphics(name,file_name);
+void addGraphic(std::string name,std::string file_name,bool isRepeated) {
+  reader.registerGraphics(name,file_name,isRepeated);
 }
 void addFont(std::string name,std::string file_name) {
   reader.registerFont(name,file_name);

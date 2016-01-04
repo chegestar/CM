@@ -1,9 +1,10 @@
 #include "ReaderClass.h"
 #include <stdexcept>
 
-void Reader::registerGraphics(std::string name,std::string file_name) {
+void Reader::registerGraphics(std::string name,std::string file_name,bool repeat) {
   sf::Texture text;
   text.loadFromFile(file_name);
+  text.setRepeated(repeat);
   graphics.insert(std::make_pair(name,text));
 }
 void Reader::registerFont(std::string name,std::string file_name) {

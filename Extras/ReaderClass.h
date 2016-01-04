@@ -10,7 +10,7 @@ class Reader {
   Reader() {}
   
   void destroy();
-  void registerGraphics(std::string name,std::string file_name);
+  void registerGraphics(std::string name,std::string file_name,bool repeat);
   void registerFont(std::string name,std::string file_name);
   void registerSong(std::string name,std::string file_name, bool repeat);
 

@@ -36,7 +36,7 @@ int getRandInt(int low, int high);
 float getRand(float low,float high);
 
 
-void addGraphic(std::string name,std::string file_name);
+void addGraphic(std::string name,std::string file_name,bool isRepeated=false);
 
 const sf::Texture& getGraphic(std::string name);
 

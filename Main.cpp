@@ -130,6 +130,11 @@ int main(int argc, char* argv[]) {
 }
 
 void loadInFiles() {
+  addGraphic("cave","graphics/backgrounds/cave.png",true);
+  addGraphic("crystal","graphics/backgrounds/crystal.png",true);
+  addGraphic("lava","graphics/backgrounds/lava.png",true);
+  addGraphic("sand","graphics/backgrounds/sand.png",true);
+
   addGraphic("blue_gem","graphics/Crystals/gem_blue_sparkle_strip32.png");
   addGraphic("red_gem","graphics/Crystals/gem_red_sparkle_strip32.png");
   addGraphic("green_gem","graphics/Crystals/gem_green_sparkle_strip32.png");
