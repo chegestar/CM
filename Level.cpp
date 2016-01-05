@@ -143,6 +143,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
   }
   else if (key=="ICE") {
     zone=ICE;
+    background.setTexture(getGraphic("crystal"));
   }
   else if (key=="DARK") {
     zone=DARK;

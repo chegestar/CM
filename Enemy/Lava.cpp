@@ -9,14 +9,23 @@ Lava::Lava(Level* l, float x, float y) :
   Actor(l,x,y,l->getWidth(),l->getHeight()), Die(l,x,y,width,height) {
   isPath=false;
   texture_keys.push_back("fire");
+  light=NULL;
+  if (l->getZone()==ICE) {
+
+    float rad = l->getWidth()*3.5/2;
+    light = new Light(level,x,y,rad);
+  }
+}
+Lava::~Lava() {
+  if (light)
+    delete light;
 }
 
 bool Lava::hitBob(Bob* b) {
-  bool isHit = false;
   if (!b->hasItem(FIRE_BOOT)) {
-    isHit = Die::hitBob(b);
+    return Die::hitBob(b);
   }
-  return isHit;
+  return false;
 }
 
 void Lava::act() {
@@ -26,7 +35,8 @@ void Lava::act() {
     if (hitBob(b)) {
       b->drain();
     }
-  } else { //Just for you Justin
+  } 
+  else {
     Die::act();
     std::list<Rock*> rocks = level->getRocks();
     std::list<Rock*>::iterator itr;
@@ -34,9 +44,15 @@ void Lava::act() {
       if (isRectangularHit(this,*itr))
         (*itr)->setDead();
   }
+  if (light&&isRectangularHit(level->getBob(),light)) {
+    light->activate();
+  }
 }
 
 void Lava::render(sf::RenderWindow& window) {
+  if (level->getZone()==ICE) {
+    light->render(window);
+  }
   Actor::render(window);
 
 }

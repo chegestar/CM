@@ -29,6 +29,10 @@ Block::Block(Level* l,float x_,float y_) :
     texture_keys.push_back("pyramid_vert");
   }
   else if (l->getZone()==ICE) {
+    texture_keys.push_back("crystal_mid");
+    texture_keys.push_back("crystal_horiz");
+    texture_keys.push_back("crystal_vert");
+
   }
   else if (l->getZone()==DARK) {
   }

@@ -35,6 +35,10 @@ class Bob : public Mover{
   bool pushInventory(Item* item);
   Item* popInventory();
 
+  float warmth;
+  sf::RectangleShape top_warmth;
+  sf::RectangleShape bottom_bar;
+  
  public:
   Bob(Level* l,float x_,float y_);
   ~Bob();
@@ -48,6 +52,8 @@ class Bob : public Mover{
 
   void web();
   void drain();
+  void drainWarmth();
+  void warmup();
   void earnEP() {specials++;};
   void earnLife() {num_lives++;};
   void earnCoin() {num_coins++; if (num_coins>=100) {num_coins=0;num_lives++;}}
@@ -59,6 +65,7 @@ class Bob : public Mover{
   void setExit() {isExit=true;}
 
   void act();
+  void render(sf::RenderWindow& window);
 
   bool hasItem(I_CODE c);
   void removeDynamite(C_CODE color);

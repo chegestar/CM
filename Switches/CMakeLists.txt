@@ -3,6 +3,7 @@ set (SWITCH_SRC
   Web.cpp
   FakeExit.cpp
   Trigger.cpp
+  Light.cpp
   Hint.cpp
 )
 

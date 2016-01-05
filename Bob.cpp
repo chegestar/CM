@@ -18,13 +18,18 @@ Bob::Bob(Level* l,float x_,float y_) :
   score=0;
   specials=0;
   hp=100;
+
   isInvincible=0;
 
   has_item = new unsigned int[MAX_INVENTORY];
   for (unsigned int i=0;i<MAX_INVENTORY;i++)
     has_item[i]=0;
   has_dropped=false;
-  
+
+  warmth=100;
+  top_warmth.setFillColor(sf::Color(0,255,0));
+  bottom_bar.setFillColor(sf::Color(255,0,0));
+  bottom_bar.setSize(sf::Vector2f(width,5));
 
   texture_keys.push_back("bob_up");
   texture_keys.push_back("bob_right");
@@ -58,6 +63,19 @@ void Bob::drain() {
   isDrain=true;
 }
 
+void Bob::drainWarmth() {
+  warmth-=.125;
+  if (warmth<=0)
+    die();
+
+}
+
+void Bob::warmup() {
+  warmth+=.5;
+  if (warmth>100)
+    warmth=100;
+}
+
 bool Bob::die() {
   if (isInvincible>0)
     return false;
@@ -65,6 +83,7 @@ bool Bob::die() {
   y = starty; 
   num_lives--; 
   hp=100;
+  warmth=100;
   return true;
 }
 
@@ -77,7 +96,11 @@ void Bob::act() {
   isDrain=false;
   if (isInvincible>0)
     isInvincible--;
-
+  if (level->getZone()==ICE) {
+    drainWarmth();
+    if (!has_item[JACKET])
+      drainWarmth();
+  }
   float speed = 2.5;
   if (has_item[FIRE_BOOT]) {
     speed*=3.5/5;
@@ -188,6 +211,16 @@ void Bob::act() {
 
 }
 
+void Bob::render(sf::RenderWindow& window) {
+  if (level->getZone()==ICE&&warmth!=100) {
+    top_warmth.setSize(sf::Vector2f(bottom_bar.getSize().x*warmth/100,bottom_bar.getSize().y));
+    top_warmth.setPosition(getX1(),getY1()+height+2);
+    bottom_bar.setPosition(getX1(),getY1()+height+2);
+    window.draw(bottom_bar);
+    window.draw(top_warmth);
+  }
+  Actor::render(window);
+}
 
 I_CODE Bob::convertItemToIndex(Item* item) {
   if (dynamic_cast<FireBoot*>(item)) 
