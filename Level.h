@@ -27,6 +27,7 @@ class Level {
   //Level type variables
   L_TYPE level_type;
   Z_TYPE zone;
+  int num_levels;
   sf::Sprite background;
   bool isHalted,isWrapped;
   bool isVertical;
@@ -62,7 +63,7 @@ class Level {
 
 
   Level();
-  Level(std::string filename,sf::RenderWindow& window);
+  Level(std::string filename,sf::RenderWindow& window, int tot_levels);
   ~Level();
 
   Z_TYPE getZone() const {return zone;}

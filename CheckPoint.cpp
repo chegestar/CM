@@ -11,9 +11,14 @@ CheckPoint::CheckPoint(Level* l, float x_,float y_) :
 
 void CheckPoint::act() {
   if (isRectangularHit(this,level->getBob())) {
-    texture_set=1;
+
     activate();
   }
-  else
-    texture_set=0;
+  float sx,sy;
+  level->getBob()->getStart(sx,sy);
+  texture_set=0;
+  
+  if (sx==x&&sy==y)
+    texture_set=1;
+
 }

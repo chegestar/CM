@@ -5,7 +5,7 @@
 #define _GEMDOOR_H_
 
 class GemDoor : public Block{
- private:
+ protected:
   int num_gems;
   C_CODE c;
   std::vector<GemDoor*>* us;

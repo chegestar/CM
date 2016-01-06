@@ -54,10 +54,10 @@ int main(int argc, char* argv[]) {
       }
       worlds.push_back(world);
     }
-    level = new Level(worlds[world_index][level_index],window);
+    level = new Level(worlds[world_index][level_index],window,worlds[world_index].size()-1);
   }
   else
-    level = new Level(argv[1],window);
+    level = new Level(argv[1],window,1);
 
   //Global Bob stats
   int score,lives,num_spe,num_coins;
@@ -76,7 +76,10 @@ int main(int argc, char* argv[]) {
       if (event.type==sf::Event::KeyPressed&&
           event.key.code == sf::Keyboard::Escape)
         window.close();
-        
+      if (event.type==sf::Event::KeyPressed&&
+          event.key.code == sf::Keyboard::N)
+        level->getBob()->setExit();
+
     }
     if (!isPause)
       level->act();
@@ -116,7 +119,7 @@ int main(int argc, char* argv[]) {
           window.close();
         else {
           delete level;
-          level = new Level(worlds[world_index][level_index],window);
+          level = new Level(worlds[world_index][level_index],window,worlds[world_index].size()-1);
           Bob* b2 = level->getBob();
           b2->setStats(score,lives,num_spe,num_coins);
         }

@@ -3,7 +3,7 @@
 #include <Fireball.h>
 #include <Ghost.h>
 #include <SpiderBoss.h>
-#include <GemDoor.h>
+#include <EpDoor.h>
 #include <Rock.h>
 #include <Exit.h>
 #include <Coin.h>
@@ -31,11 +31,14 @@ Actor* Level::getStationary(std::string key, int x, int y,std::ifstream& in_str)
     if (key=="b"||key=="block") {
       return new Block(this,x*width,y*height);
     }
-    else if (key=="coin") {
+    else if (key=="coin"||key=="co") {
       return new Coin(this,x*width,y*height);
     }
     else if (key=="ecrystal" || key=="ec") {
       return new EpCrystal(this,x*width,y*height);
+    }
+    else if (key=="epdoor" || key=="ep") {
+      return new EpDoor(this,x*width,y*height,num_levels);
     }
     else if (key=="life" || key=="l") {
       return new Life(this,x*width,y*height);
@@ -56,10 +59,10 @@ Actor* Level::getStationary(std::string key, int x, int y,std::ifstream& in_str)
       getline(in_str,m);
       return new Hint(this,x*width,y*height,m);
     }
-    else if (key=="lava") {
+    else if (key=="lava"||key=="la") {
       return new Lava(this,x*width,y*height);
     }
-    else if (key=="lavapath") {
+    else if (key=="lavapath"||key=="lap") {
       if (stationary[y][x]) {
         if (dynamic_cast<Lava*>(stationary[y][x]))
           dynamic_cast<Lava*>(stationary[y][x])->setPath();
@@ -76,7 +79,7 @@ Actor* Level::getStationary(std::string key, int x, int y,std::ifstream& in_str)
     else if (key=="pit") {
       return new Pit(this,x*width,y*height);
     }
-    else if (key=="fireboot") {
+    else if (key=="fireboot"||key=="fib") {
       return new FireBoot(this,x*width,y*height);
     }
     else if (key=="dynamite"||key=="dm") {
@@ -84,11 +87,12 @@ Actor* Level::getStationary(std::string key, int x, int y,std::ifstream& in_str)
     }
     return NULL;
 }
-Level::Level(std::string filename,sf::RenderWindow& window) {
+Level::Level(std::string filename,sf::RenderWindow& window, int tot_levels) {
   std::ifstream in_str(filename.c_str());
   if (!in_str) {
     throw 1;
   }
+  num_levels=tot_levels;
   x_=y_=0;
   level_type=NORMAL;
   isWrapped=false; isHalted=false;
@@ -322,6 +326,7 @@ Level::Level(std::string filename,sf::RenderWindow& window) {
         if (i==0)
           (*doors)[0]->own(doors);
         addStationary((*doors)[i],y,x);
+        
       }
       std::string c;
       while ((in_str>>c)&&(c!=";")) {
@@ -679,7 +684,7 @@ bool Level::isOutOfBounds(Actor* actor) const {
 
 bool Level::isBlock(int i,int j) {
 
-  return dynamic_cast<Block*>(stationary[i][j])&& !dynamic_cast<GemDoor*>(stationary[i][j]);
+  return dynamic_cast<Block*>(stationary[i][j]);//&& !dynamic_cast<GemDoor*>(stationary[i][j]);
 }
 void Level::setBlocks() {
 

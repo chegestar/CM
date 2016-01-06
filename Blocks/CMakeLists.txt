@@ -2,6 +2,7 @@
 set(PLATFORM_SRC
   Block.cpp
   GemDoor.cpp
+  EpDoor.cpp
   Rock.cpp
 )
 

@@ -43,6 +43,7 @@ class Bob : public Mover{
   Bob(Level* l,float x_,float y_);
   ~Bob();
 
+  void getStart(float& sx,float& sy) const {sx = startx;sy=starty;}
   bool getExit() const {return isExit;}
   int getLives() const {return num_lives;}
   int getScore() const {return score;}

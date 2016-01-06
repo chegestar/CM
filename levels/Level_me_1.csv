@@ -1,0 +1,44 @@
+15 20                      
+NORMAL_LEVEL                       
+CRYSTAL                       
+start 7 0                     
+read_board                       
+b b b b b b b b b b b b b b b b b b b b    
+b 0 b 0 b 0 0 0 0 0 0 0 b co l l co 0 0 b    
+b 0 b 0 b 0 0 0 b web co 0 b 0 0 0 0 b 0 b    
+b 0 0 co b co web co b co web web b web web web web b 0 b    
+b 0 b co b web web web b 0 0 web b co web 0 co b 0 b    
+b 0 b 0 0 0 0 0 b co web web b co 0 web co b 0 b    
+b 0 b co b co co co b 0 co web b 0 0 0 0 b 0 b    
+0 0 b co b web 0 web b web 0 web b web web web web b 0 0    
+b 0 b 0 b 0 web 0 b 0 0 0 b co co co co b 0 b    
+b 0 b 0 b co 0 co b co co co b co 0 0 co b co b    
+b web 0 0 b 0 co web 0 web web web b co 0 0 co b co b    
+b 0 b 0 b 0 co web 0 web co co b web web web 0 b life b    
+b 0 b 0 b 0 0 0 web 0 0 web b 0 0 0 0 b life b    
+b 0 b 0 b 0 0 0 b 0 0 life 0 0 co co 0 b ec b    
+b b b b b b b b b b b b b b b b b b b b    
+                       
+exit 7 19                     
+check   5 4                   
+check   13 12                   
+                       
+spider  1 1 V  spider  1 3 V  spider  1 5 V spider  1 7 V  
+spider  2 6 H  spider  1 11 V  spider  1 13 V spider  1 14 V  
+spider  1 16 V spider  4 9 H spider  4 16 H spider 5 16 H spider  6 15 V
+spider  8 11 H spider  9 13 H spider 10 13 H spider  12 16 H spider  13 1 V
+spider  13 3 V spider 12 3 V spider 13 5 V spider 13 6 V spider 13 7 V   
+spider 13 9 V spider 13 10 V spider 13 16 V spider 12 8 V        
+                       
+gemdoor    BLUE  10  2 1  2 3  3 2  12 5  12 7  
+   10 8  2 11  10 14  2 16  8 1       
+col  1 3 5                   
+                       
+;                       
+                       
+gemdoor    RED   20  12 1 10 2 11 3 2 5 12 6 2 7   
+  1 8 12 9 12 10 8 10 4 10 2 13 2 14 2 15 4 15    
+  5 14 9 15 12 14 8 18 11 8            
+col   1 9 11                   
+                       
+;                       
