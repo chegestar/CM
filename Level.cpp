@@ -5,8 +5,9 @@
 #include <SpiderBoss.h>
 #include <EpDoor.h>
 #include <Rock.h>
-#include <Exit.h>
+#include <SpecialDoor.h>
 #include <Coin.h>
+#include <HourGlass.h>
 #include <MagicRing.h>
 #include <EpCrystal.h>
 #include <Crystal.h>
@@ -42,6 +43,11 @@ Actor* Level::getStationary(std::string key, int x, int y,std::ifstream& in_str)
     }
     else if (key=="life" || key=="l") {
       return new Life(this,x*width,y*height);
+    }
+    else if (key=="hourglass"|| key=="h") {
+      char c;
+      in_str>>c;
+      return new HourGlass(this,x*width,y*height,c=='R');
     }
     else if (key=="magicring"|| key=="mr") {
       return new MagicRing(this,x*width,y*height);
@@ -87,7 +93,7 @@ Actor* Level::getStationary(std::string key, int x, int y,std::ifstream& in_str)
     }
     return NULL;
 }
-Level::Level(std::string filename,sf::RenderWindow& window, int tot_levels) {
+Level::Level(std::string filename,sf::RenderWindow& window, int tot_levels,bool isS) {
   std::ifstream in_str(filename.c_str());
   if (!in_str) {
     throw 1;
@@ -95,6 +101,7 @@ Level::Level(std::string filename,sf::RenderWindow& window, int tot_levels) {
   num_levels=tot_levels;
   x_=y_=0;
   level_type=NORMAL;
+  isSpecial=isS;
   isWrapped=false; isHalted=false;
   width=32;
   height=32;
@@ -129,43 +136,46 @@ Level::Level(std::string filename,sf::RenderWindow& window, int tot_levels) {
 
   in_str>>key;
   background.setPosition(0,0);
-  if (key=="CAVE")  {
-    zone=CAVE;
+  zone = getZoneType(key);
+  if (zone==CAVE)  {
     background.setTexture(getGraphic("cave"));
   }
-  else if (key=="CRYSTAL") {
-    zone=CRYSTAL;
+  else if (zone==CRYSTAL) {
     background.setTexture(getGraphic("crystal"));
   }
-  else if (key=="LAVA") {
-    zone=LAVA;
+  else if (zone==LAVA) {
     background.setTexture(getGraphic("lava"));
   }
-  else if (key=="PYRAMID") {
-    zone=PYRAMID;
+  else if (zone==PYRAMID) {
     background.setTexture(getGraphic("sand"));
   }
-  else if (key=="ICE") {
-    zone=ICE;
+  else if (zone==ICE) {
     background.setTexture(getGraphic("crystal"));
   }
-  else if (key=="DARK") {
-    zone=DARK;
+  else if (zone==DARK) {
   }
-  else if (key=="FACTORY") {
-    zone = FACTORY;
+  else if (zone==FACTORY) {
   }
-  else if (key=="SPECIAL") {
-    zone = SPECIAL;
+  else if (zone==SPECIAL) {
   }
   else {
-    zone=HUB;
+    background.setTexture(getGraphic("cave"));
+    for (int i=0;i<grows*gcols;i++) {
+      in_str>>key;
+      hub_grid.push_back(getZoneType(key));
+    }
   }
   background.setTextureRect(sf::IntRect(0,0,32*20,32*15));
 
-  max_depth=0;
-  max_rows = rows*grows-grows+1;
-  max_cols= cols*gcols-gcols+1;
+  min_depth=-1000;
+  stationary_depth=0;
+  gem_depth=10000;
+  door_depth=20000;
+  monster_depth=30000;
+  wall_depth=40000;
+
+  max_rows = rows*grows;
+  max_cols= cols*gcols;
   stationary = new Actor**[max_rows];
   for (int i=0;i<max_rows;i++)  {
     stationary[i] = new Actor*[max_cols];
@@ -217,36 +227,40 @@ Level::Level(std::string filename,sf::RenderWindow& window, int tot_levels) {
     else if (key=="start"||key=="s") {
       in_str>>y>>x;
       bob = new Bob(this,x*height,y*width);
-      insert(bob);
+      insert(bob,min_depth);
     }
     else if (key=="c"||key=="check") {
       in_str>>y>>x;
-      insert(new CheckPoint(this,x*width,y*height));
+      insert(new CheckPoint(this,x*width,y*height),stationary_depth);
     }
     else if (key=="exit") {
       in_str>>y>>x;
-      insert(new Exit(this,x*width,y*height));
+      insert(new Exit(this,x*width,y*height),stationary_depth);
+    }
+    else if (key=="specialexit"||key=="se") {
+      in_str>>y>>x;
+      insert(new SpecialDoor(this,x*width,y*height),stationary_depth);
     }
 
     //Moving Options
     else if (key=="spider"||key=="sp") {
       char c;
       in_str>>y>>x>>c;
-      insert(new Spider(this,(x)*width,(y)*height,c=='V'));
+      insert(new Spider(this,(x)*width,(y)*height,c=='V'),monster_depth);
     }
     else if (key=="fireball"||key=="fb") {
       char c;
       in_str>>y>>x>>c;
-      insert(new Fireball(this,(x)*width,(y)*height,c=='V'));
+      insert(new Fireball(this,(x)*width,(y)*height,c=='V'),monster_depth);
     }
     else if (key=="ghost"||key=="gh") {
       in_str>>y>>x;
-      insert(new Ghost(this,(x)*width,(y)*height));
+      insert(new Ghost(this,(x)*width,(y)*height),monster_depth);
     }
     else if (key=="rock") {
       in_str>>y>>x;
       Rock* r = new Rock(this,x*width,y*height);
-      insert(r);
+      insert(r,wall_depth);
       rocks.push_back(r);
       std::list<Rock*>::iterator temp = rocks.end();
       temp--;
@@ -398,9 +412,9 @@ Level::Level(std::string filename,sf::RenderWindow& window, int tot_levels) {
     //Bosses
     else if (key=="spiderboss") {
       for (int i=0;i<5;i++)
-        insert(new ChaseSpider(this,i));
+        insert(new ChaseSpider(this,i),monster_depth);
       ShooterSpider* boss = new ShooterSpider(this,(max_cols)*width,window_width);
-      insert(boss);
+      insert(boss,monster_depth);
       SpiderExit* exit = new SpiderExit(this,boss,(max_cols-10)*width);
       addStationary(exit,13,(max_cols-10));
     }
@@ -431,7 +445,19 @@ Level::~Level() {
   delete [] stationary;
 }
 
+Z_TYPE Level::getHubZone(int x,int y) const {
+  int r = y/window_height;
+  int c = x/window_width;
+  return hub_grid[r*gcols+c];
+}
 void Level::act() {
+  if (zone==HUB) {
+    std::string key = getZoneString(getHubZone(x_,y_));
+    background.setTexture(getGraphic(key));
+    background.setTextureRect(sf::IntRect(0,0,32*20,32*15));
+
+
+  }
   ACTORS::iterator itr=actors.begin();
   bool is_block_gone=false;
   while(itr!=actors.end()) {
@@ -452,13 +478,13 @@ void Level::act() {
     setBlocks();
   if (level_type==GRID) {
     if (getRow()<grows-1&&bob->getY1()>window_height)
-      y_ +=height*(rows-1);
+      y_ +=height*(rows);
     if (getRow()>0&&bob->getY2()<0)
-      y_-=height*(rows-1);
+      y_-=height*(rows);
     if (getCol()<gcols-1&&bob->getX1()>window_width)
-      x_+=width*(cols-1);
+      x_+=width*(cols);
     if (getCol()>0&&bob->getX2()<0)
-      x_-=width*(cols-1);
+      x_-=width*(cols);
   }
   else if (level_type==CONTINUOUS&&!isHalted) {
     const float max_num = 5;
@@ -559,7 +585,7 @@ void Level::render(sf::RenderWindow& window) {
 
   ACTORS::iterator itr;
   for (itr=actors.begin();itr!=actors.end();itr++) {
-    if (!(dynamic_cast<Bob*>(itr->second)))
+    if (!(dynamic_cast<Bob*>(itr->second))&&!isOutOfBounds(itr->second))
       itr->second->render(window);
   }
   bob->render(window);
@@ -647,12 +673,32 @@ void Level::findOpenPosition(int& r,int& c) const {
 
 }
 
+void Level::setSpiders(bool isR) {
+  ACTORS::iterator itr;
+  for (itr=beginActor();itr!=endActor();iterateActor(itr)) {
+    if (dynamic_cast<Spider*>(itr->second)) {
+      dynamic_cast<Spider*>(itr->second)->flip(isR);
+    }
+  }
+}
+
 void Level::addStationary(Actor* actor,int r, int c,bool needs_adding) {
   if (!stationary[r][c]) {
     stationary[r][c] = actor;
     actor->linkPosition(&stationary[r][c]);
-    if (needs_adding)
-      insert(stationary[r][c]);
+    if (needs_adding) {
+      if (dynamic_cast<GemDoor*>(actor))
+        insert(stationary[r][c],door_depth);
+      else if (dynamic_cast<Die*>(actor))
+        insert(stationary[r][c],monster_depth);
+      else if (dynamic_cast<Coin*>(actor))
+        insert(stationary[r][c],gem_depth);
+      else if (dynamic_cast<Switch*>(actor))
+        insert(stationary[r][c],stationary_depth);
+      else if (dynamic_cast<Block*>(actor))
+        insert(stationary[r][c],wall_depth);
+
+    }
   }
   else
     delete actor;
@@ -661,23 +707,23 @@ void Level::addStationary(Actor* actor,int r, int c,bool needs_adding) {
 void Level::addGem(Crystal* g, int r, int c) {
   g->linkPosition(&gems[r][c]);
   gems[r][c] = g;
-  insert(g);
+  insert(g,gem_depth);
 }
 
-void Level::insert(Actor* actor,int depth) {
-  if (depth==-1) {depth = max_depth; max_depth++;}
+void Level::insert(Actor* actor,int& depth) {
   actors.insert(std::make_pair(depth,actor));
+  depth++;
 
 }
 
 bool Level::isOutOfBounds(Actor* actor) const {
-  if (actor->getX2()+x_<0)
+  if (actor->getX2()<0)
     return true;
-  if (actor->getY2()+y_<0)
+  if (actor->getY2()<0)
     return true;
-  if (actor->getX1()+x_>getLevelWidth())
+  if (actor->getX1()>getLevelWidth())
     return true;
-  if (actor->getY1()+x_>getLevelHeight())
+  if (actor->getY1()>getLevelHeight())
     return true;
   return false;
 }

@@ -27,6 +27,8 @@ class Level {
   //Level type variables
   L_TYPE level_type;
   Z_TYPE zone;
+  std::vector<Z_TYPE> hub_grid;
+  bool isSpecial;
   int num_levels;
   sf::Sprite background;
   bool isHalted,isWrapped;
@@ -49,24 +51,25 @@ class Level {
   ACTORS actors; 
   Bob* bob;
 
-  int max_depth;
+  int min_depth;
+  int wall_depth,monster_depth,door_depth,gem_depth,stationary_depth;
 
   Actor* getStationary(std::string key,int x, int y,std::ifstream& in_str);
   void addGem(Crystal* g, int r, int c) ;
-  void insert(Actor* actor,int depth=-1);
+  void insert(Actor* actor,int& depth);
   bool isBlock(int i,int j);
   void setBlocks();
   int getRow() {return ceil(y_/window_height);}
   int getCol() {return ceil(x_/window_width);}
 
  public:
-
-
   Level();
-  Level(std::string filename,sf::RenderWindow& window, int tot_levels);
+  Level(std::string filename,sf::RenderWindow& window, int tot_levels,bool isS=false);
   ~Level();
 
   Z_TYPE getZone() const {return zone;}
+  Z_TYPE getHubZone(int x,int y) const;
+  bool getSpecial() const {return isSpecial;}
   float getX() const {return x_;}
   float getY() const {return y_;}
   float getWidth() const {return width;}
@@ -84,9 +87,9 @@ class Level {
   void setLevelType(L_TYPE type) {level_type=type;}
   void halt() {isHalted=true;}
   void unhalt() {isHalted=false;}
-  void addActor(Actor* actor) {insert(actor);}
+  void addActor(Actor* actor) {insert(actor,min_depth);}
   void addStationary(Actor* actor,int r, int c, bool needs_adding=true);
-
+  void setSpiders(bool isR);
 
   void act();
   void render(sf::RenderWindow& window);

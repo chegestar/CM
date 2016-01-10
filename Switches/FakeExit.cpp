@@ -4,7 +4,7 @@ FakeExit::FakeExit(Level*l, float x_,float y_, float nx, float ny) :
   Switch(l,x_,y_,32,32){
   newx=nx;
   newy = ny;
-  texture_keys.push_back("exit");
+  texture_keys.push_back(std::vector<std::string>(1,"exit"));
 }
 
 

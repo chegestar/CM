@@ -5,8 +5,8 @@
 Trigger::Trigger(Level*l, float x_,float y_,C_CODE col) :
   Switch(l,x_,y_,l->getWidth(),l->getHeight()){
   c = col;
-  texture_keys.push_back("trigger_off");
-  texture_keys.push_back("trigger_on");
+  texture_keys.push_back(std::vector<std::string>(1,"trigger_off"));
+  texture_keys.push_back(std::vector<std::string>(1,"trigger_on"));
 }
 
 

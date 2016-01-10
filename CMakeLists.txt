@@ -19,6 +19,7 @@ file(COPY graphics DESTINATION ${CMAKE_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(Blocks)
 include_directories(Enemy)
+include_directories(Exits)
 include_directories(Boss1)
 include_directories(Extras)
 include_directories(Switches)
@@ -32,6 +33,7 @@ endif()
 add_subdirectory(Blocks)
 add_subdirectory(Extras)
 add_subdirectory(Enemy)
+add_subdirectory(Exits)
 add_subdirectory(Boss1)
 add_subdirectory(Switches)
 add_subdirectory(Collectables)
@@ -45,8 +47,6 @@ set(ROOT_SOURCES
    Mover.cpp
    Bob.cpp
    Level.cpp
-   CheckPoint.cpp
-   Exit.cpp
    SpeechBubble.cpp
 )
 
@@ -54,6 +54,7 @@ set(ROOT_SOURCES
 add_executable(CM ${ROOT_SOURCES})
 
 target_link_libraries(CM extras)
+target_link_libraries(CM exits)
 target_link_libraries(CM blocks)
 target_link_libraries(CM boss1)
 target_link_libraries(CM collect)

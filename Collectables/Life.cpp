@@ -5,7 +5,8 @@
 
 Life::Life(Level* l, float x_, float y_) : 
   Collectable(l,x_,y_,l->getWidth(),l->getHeight()) {
-  texture_keys.push_back("life");
+  
+  texture_keys.push_back(std::vector<std::string>(1,"life"));
 }
 
 int Life::activate() {

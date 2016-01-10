@@ -30,6 +30,10 @@ typedef enum ZONE_TYPE {
   HUB
 } Z_TYPE;
 
+Z_TYPE getZoneType(std::string zone);
+
+std::string getZoneString(Z_TYPE zone);
+
 typedef enum COLOR_CODE {
   RED,
   BLUE,
@@ -40,6 +44,8 @@ typedef enum COLOR_CODE {
   WHITE,
   COIN
 } C_CODE;
+
+void getNextColor(C_CODE& color);
 
 C_CODE getColor(std::string color);
 

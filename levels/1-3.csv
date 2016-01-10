@@ -1,43 +1,44 @@
-15 20                          
-NORMAL_LEVEL                           
-CAVE                           
-                           
-read_board                           
-b b b b b b b b b b b b b b b b b b b b        
-b ` ` ` ` ` ` ` sh ` ` ` ` ` c c c c l b        
-b c b b b b b b c b b b c b b b b b b b        
-b ` b b b b b b ` c c b b b ` b ` ` ` b        
-b ` sh ` ` ` ` ` ` b b b ` b ` b ` b ` b        
-b b b b b b b b ` b ` b ` b ` b ` b ` b        
-b l ` ` ` b ` b ` b ` b sv b ` b ` b s b        
-b l ` ` ` b ` b ` b ` b b b ` b ` b b b        
-b ec ` ` sv co ` g ch c sv c ` c sv co ` g e b        
-b l ` ` ` b ` b ` b ` b b b ` b b b b b        
-b l ` ` ` b ` b ` b ` b sv b ` b c c c b        
-b b b b b b b b ` b ` b ` b ` b c b c b        
-b c b b b b b b ` b b b b b b b c b c b        
-b ` ` ` ` ` ` ` sh ` ` ` ` ` ` ` c c c b        
-b b b b b b b b b b b b b b b b b b b b        
-                           
-start  6 18                        
-exit  8 18                        
-                           
-spider  1 8 H  spider   18 8 H  spider   4 2 H         
-spider  8 4 V  spider   8 10 V  spider   8 14 V  spider 6 12 V spider 10 12 V
-                           
-read_gems   1 BLUE  2 8 17 8 7                 
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0        
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 0 0        
-0 1 0 0 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0        
-0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0        
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0        
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0        
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0        
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0        
-0 0 0 0 0 0 0 0 0 1 0 1 0 1 0 0 0 0 0 0        
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0        
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0        
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0        
-0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0        
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0        
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0        
+15 20                                                                                                                    
+GRID_LEVEL   1 2                                                                                                                 
+CRYSTAL                                                                                                                     
+                                                                                                                     
+read_board                                                                                                                     
+b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b                                                                              
+b 1 1 1 1 1 1 1 1 1 1 1 1 sh b ` 1g ` rh b b ec 3g 3 3 3 2g 3 3 3 e 3 3 3 3 3 3 3 3 b                                                                              
+b 1 1 1 1 1 1 1 1 1 1 1 1 1 b ` b b b b b 3g 3 3 3 3g sv 3 3 3 3g 3 3 3 3 3g 3 3 3 b                                                                              
+b 1 1 1 1 1 1 1 1 1 1 1 1 1 1 ` ` b 3 b b 2g 3 3 3 3g 2g 3 3 3 3g 3 3 3 3 3g 3 3 2g b                                                                              
+b 1 1 1 1 1 1 1 1 1 1 1 1 1 sh b ` b 3 b b sv 3 3 3 3g 3 3 3 2g 3g 3 3 3 3 3 3 3 sv b                                                                              
+b 1 1 1 1 1 1 1 1 1 1 1 1 1 1 b ` b 1 b b 2g 3 3 3 3g 3 3 3 sv 3g 3 3 3 3 3g 3 3 2g b                                                                              
+b 1 1 1 1 1 1 1 1 1 1 1 1 1 sh b ` b 1 b b 3 3 3 2g 3g 3 3 3 2g 3g 3 3 3 3 3g 3 3 3 b                                                                              
+b b b b b b b b b b b b b b b b ` b 1 b b 3 3 3 sv 3g 3 3 3 3 3g 3 2g 3 3 3g 3 3 3 b                                                                              
+b sh ` ` sh sh ` ` sh sh ` ` ` ` ` b ` b 1 b b 3 3 3 2g 3g 3 3 3 3 3g 3 sv 3 3 3 3 3 3 b                                                                              
+b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b ` s ` b b 3 3 3 3 3g 3 3 3 3 3g 3 2g 3 3 3g 3 3 3 b                                                                              
+b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b sh b ` b b 3 3 2g 3 3g 3 2g 3 3 3g 3 3 2g 3 3g 3 3 3 b                                                                              
+b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b ` b sh b b 3 3 sv 3 3g 3 sv 3 3 3g 3 3 sv 3 3 3 3 3 b                                                                              
+b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b ` b ` b b 3 3 2g 3 3g 3 2g 3 3 3g 3 3 2g 3 3g 3 3 3 b                                                                              
+b 2 2 2 2 2 2 2 2 2 2 2 2 2 bh ` ` b ` ` ` 3 3 3 3 3g 3 3 3 3 3 3 3 3 3 3g 3 3 3 b                                                                              
+b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b                                                                              
+                                                                                                                     
+start  9 17                                                                                                                  
+exit  1 30                                                                                                                  
+h 1 18 R h 13 14 B                                                                                                               
+                                                                                                                     
+spider 4 21 V  spider 7 24 V  spider 11 23 V  spider 2 26 V  spider 5 29 V  spider 11 27 V  spider 11 33 V  spider 8 32 V  spider 4 38 V                                                                     
+spider 1 13 H  spider 4 14 H  spider 6 14 H  spider 8 1 H  spider 8 4 H  spider 8 5 H  spider 8 8 H  spider 8 9 H  spider 10 16 H  spider 11 18 H                                                                     
+                                                                                                                     
+read_gems 3 BLUE 1 1 16 RED 19 13 19 12 23 10 23 3 21 5 21 6 24 8 24 1 26 3 26 4 29 6 29 10 27 12 27 12 33 10 33 9 32 7 32 5 38 3 38 COIN 34 2 21 1 22 2 25 3 25 4 25 5 25 6 25 7 25 8 25 9 25 10 25 11 25 12 25 13 25 2 30 3 30 4 30 5 30 6 30 7 30 8 30 9 30 10 30 11 30 12 30 2 35 3 35 5 35 6 35 7 35 9 35 10 35 12 35 13 35
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0                                                                              
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 3 3 3 3 3 3 3 0 3 3 3 3 3 3 3 3 0                                                                              
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 3 3 3 0 3 3 3 3 0 3 3 3 3 0 3 3 3 0                                                                              
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 3 0 0 3 3 3 3 0 3 3 3 3 0 3 3 3 3 0 3 3 3 0                                                                              
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 3 0 0 3 3 3 3 0 3 3 3 3 0 3 3 3 3 3 3 3 3 0                                                                              
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 1 0 0 3 3 3 3 0 3 3 3 3 0 3 3 3 3 0 3 3 3 0                                                                              
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 1 0 0 3 3 3 3 0 3 3 3 3 0 3 3 3 3 0 3 3 3 0                                                                              
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 3 3 3 3 0 3 3 3 3 0 3 3 3 3 0 3 3 3 0                                                                              
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 3 3 3 3 0 3 3 3 3 0 3 3 3 3 3 3 3 3 0                                                                              
+0 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 0 3 3 3 3 0 3 3 3 3 0 3 3 3 3 0 3 3 3 0                                                                              
+0 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 0 3 3 3 3 0 3 3 3 3 0 3 3 3 3 0 3 3 3 0                                                                              
+0 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 0 3 3 3 3 0 3 3 3 3 0 3 3 3 3 3 3 3 3 0                                                                              
+0 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 0 3 3 3 3 0 3 3 3 3 0 3 3 3 3 0 3 3 3 0                                                                              
+0 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 0 0 3 3 3 3 0 3 3 3 3 3 3 3 3 3 0 3 3 3 0                                                                              
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0                                                                              

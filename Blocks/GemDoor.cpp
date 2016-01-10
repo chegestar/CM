@@ -5,11 +5,21 @@ GemDoor::GemDoor(Level* l,int x,int y,C_CODE col) : Actor(l,x,y,l->getWidth(),l-
   num_gems=0;
   c=col;
   us = NULL;
-
+  
   char key[15];
-  sprintf(key,"%s_gate",getColorString(c));
+  std::vector<std::string> keys;
+  if (col==COIN||col==YELLOW||col==WHITE) {
+    for (int i=0;i<32;i++) {
+      sprintf(key,"%s_gate_%d",getColorString(c),i);
+      keys.push_back(key);
+    }
+  }
+  else {
+    sprintf(key,"%s_gate",getColorString(c));
+    keys.push_back(key);
+  }
   texture_keys.clear();
-  texture_keys.push_back(std::string(key));
+  texture_keys.push_back(keys);
 
 }
 

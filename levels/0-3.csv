@@ -1,0 +1,43 @@
+15 20                          
+NORMAL_LEVEL                           
+CAVE                           
+                           
+read_board                           
+b b b b b b b b b b b b b b b b b b b b        
+b ` ` ` ` ` ` ` sh ` ` ` ` ` c c c c l b        
+b c b b b b b b c b b b c b b b b b b b        
+b ` b b b b b b ` c c b b b ` b ` ` ` b        
+b ` sh ` ` ` ` ` ` b b b ` b ` b ` b ` b        
+b b b b b b b b ` b ` b ` b ` b ` b ` b        
+b l ` ` ` b ` b ` b ` b sv b ` b ` b s b        
+b l ` ` ` b ` b ` b ` b b b ` b ` b b b        
+b ec ` ` sv co ` g ch c sv c ` c sv co ` g e b        
+b l ` ` ` b ` b ` b ` b b b ` b b b b b        
+b l ` ` ` b ` b ` b ` b sv b ` b c c c b        
+b b b b b b b b ` b ` b ` b ` b c b c b        
+b c b b b b b b ` b b b b b b b c b c b        
+b ` ` ` ` ` ` ` sh ` ` ` ` ` ` ` c c c b        
+b b b b b b b b b b b b b b b b b b b b        
+                           
+start  6 18                        
+exit  8 18                        
+                           
+spider  1 8 H  spider   18 8 H  spider   4 2 H         
+spider  8 4 V  spider   8 10 V  spider   8 14 V  spider 6 12 V spider 10 12 V
+                           
+read_gems   1 BLUE  2 8 17 8 7                 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0        
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 0 0        
+0 1 0 0 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0        
+0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0        
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0        
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0        
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0        
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0        
+0 0 0 0 0 0 0 0 0 1 0 1 0 1 0 0 0 0 0 0        
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0        
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0        
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0        
+0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0        
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0        
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0        

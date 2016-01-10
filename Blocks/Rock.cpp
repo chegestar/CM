@@ -7,7 +7,8 @@
 Rock::Rock(Level* l,float x_,float y_) : 
   Actor(l,x_,y_,l->getWidth()*3.5/5,l->getHeight()*3.5/5), Block(l,x_,y_), Mover(l,x_,y_,width,height){
   texture_keys.clear();
-  texture_keys.push_back("rock");
+  std::vector<std::string> keys(1,"rock");
+  texture_keys.push_back(keys);
 }
 
 void Rock::act() {

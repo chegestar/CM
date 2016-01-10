@@ -13,7 +13,7 @@ Bob::Bob(Level* l,float x_,float y_) :
   Actor(l,x_,y_,l->getWidth()*5/8,l->getHeight()*5/8), 
   Mover(l,x,y,width,height),
   startx(x), starty(y){
-  isExit=false;
+  isExit=isSpecial=false;
   num_lives=3;
   score=0;
   specials=0;
@@ -30,15 +30,57 @@ Bob::Bob(Level* l,float x_,float y_) :
   top_warmth.setFillColor(sf::Color(0,255,0));
   bottom_bar.setFillColor(sf::Color(255,0,0));
   bottom_bar.setSize(sf::Vector2f(width,5));
-
-  texture_keys.push_back("bob_up");
-  texture_keys.push_back("bob_right");
-  texture_keys.push_back("bob_down");
-  texture_keys.push_back("bob_left");
-  texture_keys.push_back("super_bob_up");
-  texture_keys.push_back("super_bob_right");
-  texture_keys.push_back("super_bob_down");
-  texture_keys.push_back("super_bob_left");
+  std::vector<std::string> keys;
+  char key[30];
+  for (int i=0;i<8;i++) {
+    sprintf(key,"%s_%d","bob_up",i);
+    keys.push_back(std::string(key));
+  }
+  texture_keys.push_back(keys);
+  keys.clear();
+  for (int i=0;i<8;i++) {
+    sprintf(key,"%s_%d","bob_right",i);
+    keys.push_back(std::string(key));
+  }
+  texture_keys.push_back(keys);
+  keys.clear();
+  for (int i=0;i<8;i++) {
+    sprintf(key,"%s_%d","bob_down",i);
+    keys.push_back(std::string(key));
+  }
+  texture_keys.push_back(keys);
+  keys.clear();
+  for (int i=0;i<8;i++) {
+    sprintf(key,"%s_%d","bob_left",i);
+    keys.push_back(std::string(key));
+  }
+  texture_keys.push_back(keys);
+  keys.clear();
+  for (int i=0;i<8;i++) {
+    sprintf(key,"%s_%d","super_bob_up",i);
+    keys.push_back(std::string(key));
+  }
+  texture_keys.push_back(keys);
+  keys.clear();
+  for (int i=0;i<8;i++) {
+    sprintf(key,"%s_%d","super_bob_right",i);
+    keys.push_back(std::string(key));
+  }
+  texture_keys.push_back(keys);
+  keys.clear();
+  for (int i=0;i<8;i++) {
+    sprintf(key,"%s_%d","super_bob_down",i);
+    keys.push_back(std::string(key));
+  }
+  texture_keys.push_back(keys);
+  keys.clear();
+  for (int i=0;i<8;i++) {
+    sprintf(key,"%s_%d","super_bob_left",i);
+    keys.push_back(std::string(key));
+  }
+  texture_keys.push_back(keys);
+  keys.clear();
+  
 
 }
 

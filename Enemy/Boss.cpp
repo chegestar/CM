@@ -13,7 +13,7 @@ void Boss::act() {
 }
 
 
-void Boss::render(sf::RenderWindow& window) {
-  static_cast<sf::CircleShape*>(shape)->setPosition(getX1(),getY1());
-  window.draw(*shape);
-}
+// void Boss::render(sf::RenderWindow& window) {
+//   static_cast<sf::CircleShape*>(shape)->setPosition(getX1(),getY1());
+//   window.draw(*shape);
+// }

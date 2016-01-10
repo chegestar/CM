@@ -4,7 +4,13 @@
 
 Coin::Coin(Level* l, float x_, float y_) : 
   Collectable(l,x_,y_,l->getWidth(),l->getHeight()) {
-  texture_keys.push_back("coin_gem");
+  std::vector<std::string> keys;
+  for (int i=0;i<32;i++) {
+    char key[40];
+    sprintf(key,"coin_gem_%d",i);
+    keys.push_back(key);
+  }
+  texture_keys.push_back(keys);
 
 }
 

@@ -12,11 +12,31 @@ Fireball::Fireball(Level* l, float x, float y,bool d) :
     light = new Light(level,x,y,rad);
 
   }
-
-  texture_keys.push_back("fireball_right");
-  texture_keys.push_back("fireball_up");
-  texture_keys.push_back("fireball_left");
-  texture_keys.push_back("fireball_down");
+  char key[20];
+  std::vector<std::string> keys;
+  for (int i=0;i<8;i++) {
+    sprintf(key,"fireball_right_%d",i);
+    keys.push_back(key);
+  }
+  texture_keys.push_back(keys);
+  keys.clear();
+  for (int i=0;i<8;i++) {
+    sprintf(key,"fireball_up_%d",i);
+    keys.push_back(key);
+  }
+  texture_keys.push_back(keys);
+  keys.clear();
+  for (int i=0;i<8;i++) {
+    sprintf(key,"fireball_left_%d",i);
+    keys.push_back(key);
+  }
+  texture_keys.push_back(keys);
+  keys.clear();
+  for (int i=0;i<8;i++) {
+    sprintf(key,"fireball_down_%d",i);
+    keys.push_back(key);
+  }
+  texture_keys.push_back(keys);
   
 }
 Fireball::~Fireball() {

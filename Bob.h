@@ -13,7 +13,7 @@ class Item;
 class Bob : public Mover{
  private:
   float startx,starty;
-  bool isExit;
+  bool isExit,isSpecial;
   int num_lives;
   int num_coins;
   int score;
@@ -45,6 +45,7 @@ class Bob : public Mover{
 
   void getStart(float& sx,float& sy) const {sx = startx;sy=starty;}
   bool getExit() const {return isExit;}
+  bool getSpecialExit() const {return isSpecial;}
   int getLives() const {return num_lives;}
   int getScore() const {return score;}
   int getSpecials() const {return specials;}
@@ -64,6 +65,7 @@ class Bob : public Mover{
     score=s; num_coins=c;}
   void setCheckPoint(float x_,float y_) {startx = x_;starty= y_;}
   void setExit() {isExit=true;}
+  void setSpecialExit() {isSpecial=true;}
 
   void act();
   void render(sf::RenderWindow& window);

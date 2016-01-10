@@ -15,7 +15,7 @@ Actor::Actor(Level* l, float x_,float y_,float w,float h) {
 
   shape=NULL;
   texture_set=texture_step=0;
-  
+  old_set=old_step=-1;
 }
 
 Actor::~Actor() {
@@ -45,15 +45,15 @@ std::list<Rock*>::iterator* Actor::removePosition() {
 }
 
 void Actor::render(sf::RenderWindow& window) {
-  sf::Texture text = getGraphic(texture_keys[texture_set]);
-  sprite.setTexture(text);
-
-  int step=texture_step/3;
-  float w = sprite.getLocalBounds().width;
-  step %= int(round(w/32));
-  sprite.setTextureRect(sf::IntRect(32*step,0,32,32));
+  int step=(texture_step/3)%texture_keys[texture_set].size();;
+  sf::Texture text = getGraphic(texture_keys[texture_set][step]);
+  if (has_changed_set()||has_changed_step()) {
+    sprite.setTexture(text);
+  }
+  old_set=texture_set;
+  old_step=texture_step;
   sprite.setPosition(getX1(),getY1());
   sprite.setScale(width/32,height/32);
   window.draw(sprite);
-  sprite.setTextureRect(sf::IntRect(0,0,w,32));
+
 }

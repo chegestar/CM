@@ -12,7 +12,7 @@ class Boss : public Enemy {
 
   virtual void act();
 
-  void render(sf::RenderWindow& window);
+  //void render(sf::RenderWindow& window);
 };
 
 #endif

@@ -99,8 +99,9 @@ int main(int argc, char* argv[]) {
     window.draw(ep_box);
     window.display();
     window.clear(sf::Color(200,200,200));
-    if (b->getLives()<=0)
+    if (b->getLives()<=0) {
       window.close();
+    }
     if (b->getExit()) {
       if (worlds.size()==0) {
         window.close();
@@ -115,8 +116,9 @@ int main(int argc, char* argv[]) {
           level_index=0;
           world_index++;
         }
-        if (world_index>=worlds.size())
+        if (world_index>=worlds.size()) {
           window.close();
+        }
         else {
           delete level;
           level = new Level(worlds[world_index][level_index],window,worlds[world_index].size()-1);
@@ -125,11 +127,38 @@ int main(int argc, char* argv[]) {
         }
       }
     }
+    else if (b->getSpecialExit()) {
+      if (worlds.size()==0) {
+        window.close();
+      }
+      else {
+        score = b->getScore();
+        lives = b->getLives();
+        num_spe = b->getSpecials();
+        num_coins = b->getCoins();
+        delete level;
+        level = new Level(worlds[world_index][worlds[world_index].size()-1],
+                          window,worlds[world_index].size()-1,true);
+        Bob* b2 = level->getBob();
+        b2->setStats(score,lives,num_spe,num_coins);
+      }
+        
+    }
 
 
   }
   delete level;
   return 0;
+}
+
+void addStrip(std::string key,std::string prefix,int num) {
+  char c_key[30];
+  char path[100];
+  for (int i=0;i<num;i++) {
+    sprintf(c_key,"%s_%d",key.c_str(),i);
+    sprintf(path,"%s_%d.png",prefix.c_str(),i);
+    addGraphic(c_key,path);
+  }
 }
 
 void loadInFiles() {
@@ -138,27 +167,31 @@ void loadInFiles() {
   addGraphic("lava","graphics/backgrounds/lava.png",true);
   addGraphic("sand","graphics/backgrounds/sand.png",true);
 
-  addGraphic("blue_gem","graphics/Crystals/gem_blue_sparkle_strip32.png");
-  addGraphic("red_gem","graphics/Crystals/gem_red_sparkle_strip32.png");
-  addGraphic("green_gem","graphics/Crystals/gem_green_sparkle_strip32.png");
-  addGraphic("yellow_gem","graphics/Crystals/gem_yellow_sparkle_strip32.png");
-  addGraphic("purple_gem","graphics/Crystals/gem_purple_sparkle_strip32.png");
-  addGraphic("black_gem","graphics/Crystals/gem_dark_sparkle_strip32.png");
-  addGraphic("white_gem","graphics/Crystals/gem_light_sparkle_strip32.png");
-  addGraphic("Ep_gem","graphics/Crystals/supreme_strip32.png");
+  addStrip("blue_gem","graphics/Crystals/blue_gem",32);
+  addStrip("red_gem","graphics/Crystals/red_gem",32);
+  addStrip("green_gem","graphics/Crystals/green_gem",32);
+  addStrip("yellow_gem","graphics/Crystals/yello_gem",32);
+  addStrip("purple_gem","graphics/Crystals/purple_gem",32);
+  addStrip("black_gem","graphics/Crystals/dark_gem",32);
+  addStrip("white_gem","graphics/Crystals/light_gem",32);
 
   addGraphic("blue_gate","graphics/gates/crystal.png");
   addGraphic("red_gate","graphics/gates/lock_copper.png");
   addGraphic("green_gate","graphics/gates/emerald.png");
-  addGraphic("yellow_gate","graphics/gates/lock_gold_sparkle_strip32.png");
+  addGraphic("yellow_gate","graphics/gates/yellow_gate_1.png");
+  addStrip("yellow_gate","graphics/gates/yellow_gate",32);
   addGraphic("purple_gate","graphics/gates/lock_magic.png");
   addGraphic("black_gate","graphics/gates/lock_black.png");
-  addGraphic("white_gate","graphics/gates/lock_silver_sparkle_strip32.png");
-  addGraphic("Ep_gate","graphics/gates/supreme_strip7.png");
-  addGraphic("coin_gate","graphics/gates/padlock_gold_sparkle_strip32.png");
+  addGraphic("white_gate","graphics/gates/white_gate_1.png");
+  addStrip("white_gate","graphics/gates/white_gate",32);
+  addStrip("coin_gate","graphics/gates/coin_gate",32);
 
-  addGraphic("coin_gem","graphics/gimmicks/coins_strip32.png");
-  addGraphic("magic_ring","graphics/gimmicks/super diamond_strip32.png");
+
+  
+  addStrip("coin_gem","graphics/gimmicks/coin",32);
+  addStrip("hourglass_red","graphics/gimmicks/red_hg",12);
+  addStrip("hourglass_black","graphics/gimmicks/black_hg",12);
+  addStrip("magic_ring","graphics/gimmicks/super_diamond",32);
   addGraphic("checkpoint","graphics/gimmicks/checkpoint.png");
   addGraphic("checkpoint_hit","graphics/gimmicks/checkpoint_active.png");
   addGraphic("life","graphics/gimmicks/life.png");
@@ -166,40 +199,45 @@ void loadInFiles() {
   addGraphic("trigger_off","graphics/gimmicks/detonator_off.png");
   addGraphic("trigger_on","graphics/gimmicks/detonator_on.png");
   addGraphic("exit","graphics/gimmicks/exitsign.png");
+  addStrip("special_door","graphics/gimmicks/special_door",6);
+  addGraphic("door","graphics/gimmicks/doors.png");
   addGraphic("dynamite","graphics/gimmicks/dynamite_pack.png");
   addGraphic("rock","graphics/gimmicks/rock.png");
-  addGraphic("fireboot","graphics/gimmicks/fire boots_strip8.png");
+  addStrip("fireboot","graphics/gimmicks/fire_boot",8);
 
-  addGraphic("Hspider","graphics/hazards/spider_down_strip8.png");
-  addGraphic("Vspider","graphics/hazards/ud spider_strip8.png");
-  addGraphic("fireball_up","graphics/hazards/fireball_up_strip8.png");
-  addGraphic("fireball_down","graphics/hazards/fireball_down_strip8.png");
-  addGraphic("fireball_left","graphics/hazards/fireball_left_strip8.png");
-  addGraphic("fireball_right","graphics/hazards/fireball_right_strip8.png");
-  addGraphic("ghost","graphics/hazards/ghost_floating_strip8.png");
-  addGraphic("weak_ghost","graphics/hazards/vulnerable ghost_strip8.png");
-  addGraphic("fire","graphics/hazards/fire_strip5.png");
-
+  addStrip("Hspider","graphics/hazards/hspider",8);
+  addStrip("Vspider","graphics/hazards/vspider",8);
+  addStrip("fireball_up","graphics/hazards/fireball_up",8);
+  addStrip("fireball_down","graphics/hazards/fireball_down",8);
+  addStrip("fireball_left","graphics/hazards/fireball_left",8);
+  addStrip("fireball_right","graphics/hazards/fireball_right",8);
+  addStrip("ghost","graphics/hazards/ghost",8);
+  addStrip("weak_ghost","graphics/hazards/weak_ghost",8);
+  addStrip("fire","graphics/hazards/fire",5);
+  addStrip("explosion","graphics/hazards/explosion",7);
   
-  addGraphic("bob_up", "graphics/Bob/explorer_up_strip8.png");
-  addGraphic("bob_right", "graphics/Bob/explorer_right_strip8.png");
-  addGraphic("bob_down", "graphics/Bob/explorer_down_strip8.png");
-  addGraphic("bob_left", "graphics/Bob/explorer_left_strip8.png");
-  addGraphic("super_bob_up", "graphics/Bob/super bob up_strip8.png");
-  addGraphic("super_bob_right", "graphics/Bob/suoer bob right_strip8.png");
-  addGraphic("super_bob_down", "graphics/Bob/super bob down_strip8.png");
-  addGraphic("super_bob_left", "graphics/Bob/super bob left_strip8.png");
+  addStrip("bob_up","graphics/Bob/bob_up",8);
+  addStrip("bob_left","graphics/Bob/bob_left",8);
+  addStrip("bob_down","graphics/Bob/bob_down",8);
+  addStrip("bob_right","graphics/Bob/bob_right",8);
+  addStrip("super_bob_up","graphics/Bob/super_bob_up",8);
+  addStrip("super_bob_left","graphics/Bob/super_bob_left",8);
+  addStrip("super_bob_down","graphics/Bob/super_bob_down",8);
+  addStrip("super_bob_right","graphics/Bob/super_bob_right",8);
+
+
+
 
 
   addGraphic("cave_mid","graphics/walls/cave_cent.png");
   addGraphic("cave_horiz","graphics/walls/cave_horiz.png");
   addGraphic("cave_vert","graphics/walls/cave_vert.png");
-  addGraphic("crystal_mid","graphics/walls/crystal_cent_strip13.png");
-  addGraphic("crystal_horiz","graphics/walls/crystal_horiz_strip13.png");
-  addGraphic("crystal_vert","graphics/walls/crystal_vert_strip13.png");
-  addGraphic("lava_mid","graphics/walls/lava cent_strip9.png");
-  addGraphic("lava_horiz","graphics/walls/lava horiz_strip9.png");
-  addGraphic("lava_vert","graphics/walls/lava vert_strip9.png");
+  addStrip("crystal_mid","graphics/walls/crystal_cent",13);
+  addStrip("crystal_horiz","graphics/walls/crystal_horiz",13);
+  addStrip("crystal_vert","graphics/walls/crystal_vert",13);
+  addStrip("lava_mid","graphics/walls/lava_cent",9);
+  addStrip("lava_horiz","graphics/walls/lava_horiz",9);
+  addStrip("lava_vert","graphics/walls/lava_vert",9);
   addGraphic("pyramid_mid","graphics/walls/pyramid cent.png");
   addGraphic("pyramid_horiz","graphics/walls/pyramid horiz.png");
   addGraphic("pyramid_vert","graphics/walls/pyramid vert.png");

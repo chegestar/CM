@@ -1,0 +1,28 @@
+15 20                  
+NORMAL_LEVEL                   
+CAVE 
+                  
+read_board                   
+b b b b b b b b b b b b b b b b b b b b
+b ` ` ` ` ` ` ` sh ` ` ` ` ` ` ` ` ` ` b
+b ` b b b b b ` b ` b b b b ` b b b b b
+b ` ` ` ` ` ` ` b ` b ` ` ` ` ` ` ` ` b
+b ` b b b b b b b ` b ` ` ` ` ` ` ` sh b
+b sh ` ` ` ` ` ` b ` b ` ` ` ` ` ` ` ` b
+b ` b b b b b b b ` b b b b b b b ` b b
+b ` ` ` ` ` ` ` b s b ` ` ` ` ` ` ` ` b
+b b b b b b b ` b b b sh ` ` ` ` ` ` ` b
+b ` ` ` sh ` ` ` b e b ` ` ` ` ` ` ` ` b
+b ` b b b b b ` b ` b b ` b b b b b b b
+b ` ` ` ` ` ` ` b ` b ` ` ` ` ` ` ` ` b
+b b b b b ` b b b ` b ` ` ` ` ` ` ` sh b
+b ` ` ` ` sh ` ` ` ` b ` ` ` ec ` ` ` ` b
+b b b b b b b b b b b b b b b b b b b b
+                   
+start  7 9                
+                   
+exit  9 9                
+                  
+spider   1 8 H  spider   4 18 H  spider   5 1 H
+spider   8 11 H  spider   9 4 H  spider   12 19 H
+spider   13 5 H              

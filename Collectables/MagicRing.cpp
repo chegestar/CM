@@ -3,7 +3,13 @@
 
 MagicRing::MagicRing(Level* l, float x_, float y_) : 
   Collectable(l,x_,y_,l->getWidth(),l->getHeight()) {
-  texture_keys.push_back("magic_ring");
+  std::vector<std::string> keys;
+  for (int i=0;i<32;i++) {
+    char key[20];
+    sprintf(key,"magic_ring_%d",i);
+    
+  }
+  texture_keys.push_back(keys);
 
 }
 

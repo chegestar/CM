@@ -12,9 +12,11 @@ class Spider : public Enemy {
  public:
   Spider(Level* l, float x, float y, bool d);
 
-  virtual void act();
   virtual int getSpeed() { return 2; }
+  
+  void flip(bool isR) {isVert=isR;  texture_set=isVert;}
 
+  virtual void act();
   virtual void render(sf::RenderWindow& window);
 };
 

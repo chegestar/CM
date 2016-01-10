@@ -5,45 +5,74 @@
 Block::Block(Level* l,float x_,float y_) : 
   Actor(l,x_,y_,l->getWidth(),l->getHeight()) {
   isL=isR=isU=isD=true;
-
-  if (l->getZone()==CAVE) {
-    texture_keys.push_back("cave_mid");
-    texture_keys.push_back("cave_horiz");
-    texture_keys.push_back("cave_vert");
+  Z_TYPE z= l->getZone();
+  std::string zone="cave";
+  int num_imgs=0;
+  if (z==HUB) {
+    z = l->getHubZone(x,y);
   }
-  else if (l->getZone()==CRYSTAL) {
-    texture_keys.push_back("crystal_mid");
-    texture_keys.push_back("crystal_horiz");
-    texture_keys.push_back("crystal_vert");
-
+  if (z==CAVE) {
+    num_imgs=0;
+    zone="cave";
   }
-  else if (l->getZone()==LAVA) {
-    texture_keys.push_back("lava_mid");
-    texture_keys.push_back("lava_horiz");
-    texture_keys.push_back("lava_vert");
-
+  else if (z==CRYSTAL) {
+    num_imgs=13;
+    zone="crystal";
   }
-  else if (l->getZone()==PYRAMID) {
-    texture_keys.push_back("pyramid_mid");
-    texture_keys.push_back("pyramid_horiz");
-    texture_keys.push_back("pyramid_vert");
+  else if (z==LAVA) {
+    num_imgs=9;
+    zone="lava";
   }
-  else if (l->getZone()==ICE) {
-    texture_keys.push_back("crystal_mid");
-    texture_keys.push_back("crystal_horiz");
-    texture_keys.push_back("crystal_vert");
+  else if (z==PYRAMID) {
+    num_imgs=0;
+    zone="pyramid";
+  }
+  else if (z==ICE) {
 
   }
-  else if (l->getZone()==DARK) {
+  else if (z==DARK) {
   }
-  else if (l->getZone()==FACTORY) {
+  else if (z==FACTORY) {
   }
-  else if (l->getZone()==SPECIAL) {
+  else if (z==SPECIAL) {
   }
-  else if (l->getZone()==HUB) {
+  if (num_imgs>0) {
+    char key[40];
+    std::vector<std::string> keys;
+    for (int i=0;i<num_imgs;i++) {
+      sprintf(key,"%s_mid_%d",zone.c_str(),i);
+      keys.push_back(key);
+    }
+    texture_keys.push_back(keys);
+    keys.clear();
+    for (int i=0;i<num_imgs;i++) {
+      sprintf(key,"%s_vert_%d",zone.c_str(),i);
+      keys.push_back(key);
+    }
+    texture_keys.push_back(keys);
+    keys.clear();
+    for (int i=0;i<num_imgs;i++) {
+      sprintf(key,"%s_horiz_%d",zone.c_str(),i);
+      keys.push_back(key);
+    }
+    texture_keys.push_back(keys);
+    keys.clear();    
   }
-
-
+  else {
+    char key[40];
+    std::vector<std::string> keys;
+    sprintf(key,"%s_mid",zone.c_str());
+    keys.push_back(key);
+    texture_keys.push_back(keys);
+    keys.clear();
+    sprintf(key,"%s_vert",zone.c_str());
+    keys.push_back(key);
+    texture_keys.push_back(keys);
+    keys.clear();
+    sprintf(key,"%s_horiz",zone.c_str());
+    keys.push_back(key);
+    texture_keys.push_back(keys);
+  }
 }
 
 void Block::push_back(Actor* actor, int dir) {
@@ -66,9 +95,9 @@ void Block::setDirs(bool u,bool r, bool d, bool l) {
   texture_set=0;
   if (isL+isR+isU+isD==2) {
     if (isL&&isR)
-      texture_set=2;
-    if (isU&&isD)
       texture_set=1;
+    if (isU&&isD)
+      texture_set=2;
   }
 }
 

@@ -11,6 +11,15 @@ ShooterSpider::ShooterSpider(Level* l, float level_width,float screen_width):
   timer=0;
   hp=60*30; //1800
 
+  char key[20];
+  std::vector<std::string> keys;
+  for (int i=0;i<8;i++) {
+    sprintf(key,"Vspider_%d",i);
+    keys.push_back(key);
+  }
+  texture_keys.push_back(keys);
+  
+
   bottom_bar.setSize(sf::Vector2f(100,24));
   bottom_bar.setFillColor(sf::Color(255,0,0));
   bottom_bar.setPosition(screen_width-150,14*32+4);
@@ -66,6 +75,7 @@ void ShooterSpider::act() {
 
   }
   Boss::act();
+  texture_step++;
 }
 
 void ShooterSpider::render(sf::RenderWindow& window) {

@@ -1,0 +1,46 @@
+15 20                                               
+GRID_LEVEL    1 2                                           
+CRYSTAL                                                
+
+start  7 15                                                                                             
+read_board                                                
+b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b         
+b rh 1g ` ` ` ` sh ` w w ` ` ` ` ` ` ` ` ` ` ` b 3 3 3 3 3 3 3 sh 3 3 3 3 3 3 3 3 b         
+b 1g b b b b b b b w w b b b b b b b b b b ` b 3 b b b b b b b b b b b b b b 3 b         
+b 2 2 2 2 2 2 sh 2 w w 2 2 2 2 2 2 3g l b b ` b 3 3 3 3 3 3 3 sh 3 3 3 3 3 3 3 3 b         
+b 2 b b b b b b b b b b b b b 2 b b b b b ` b 2g b b b b b b b b b b b b b b 2g b         
+b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b w w b b ` w w w w ` w w w ` ` ` w ` ` w w ` b         
+b ` b b b b b w w b b b b b ` b b w w b b b 1 w w 1 1 1 w w w sh 1 1 1 w w w w b         
+b ` b l 3 sh w w w w ` ` l b ` s w w 0 w 2 e  b b b b b b b b b b b b b b b b b b         
+b ` b b b b b w w b b b b b ` b b w w b b b 2 w w w w 2 2 w w sh 2 w w 2 2 2 2 b         
+b 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 b w w b b ` ` ` w w ` ` ` w w ` w w w w ` ` ` b         
+b 1 b b b b b b b b b b b b b 1 b b b b b ` b 1g b b b b b b b b b b b b b b 1g b         
+b 1 1 1 1 1 1 sh 1 1 1 1 1 1 1 1 ` 3g ec b b ` b 3 3 3 3 3 3 3 sh 3 3 3 3 3 3 3 3 b         
+b 1g b b b b b b b w w b b b b b b b b b b ` b 3 b b b b b b b b b b b b b b 3 b         
+b bh 1g ` ` ` ` sh w w w w ` ` ` ` ` ` ` ` ` ` b 3 3 3 3 3 3 3 sh 3 3 3 3 3 3 3 3 b         
+b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b         
+                                                
+
+
+exit  7 21                                             
+h 1 1 R h 13 1 B                                         
+                                                
+spider 7 5 V                                             
+spider 1 7 H  spider 3 7 H  spider 13 7 H  spider 11 7 H  spider 1 30 H  spider 3 30 H  spider 13 30 H  spider 11 30 H  spider 6 31 H  spider 8 31 H
+                                                
+read_gems 3 BLUE 6 1 2 2 1 12 1 13 2 10 38 10 23 RED 3 7 18 4 38 4 23 COIN 2 3 17 11 17                   
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0         
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 0         
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 0         
+0 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 0 0 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 0         
+0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0         
+0 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0         
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0         
+0 0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0         
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0         
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0         
+0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0         
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 0         
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 0         
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 0         
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0         

@@ -8,9 +8,20 @@
 Ghost::Ghost(Level* l, float x, float y) : 
   Actor(l,x,y,32,32), Enemy(l,x,y,width,height) {
   angle = getRand(0,M_PI*2);
-
-  texture_keys.push_back("ghost");
-  texture_keys.push_back("weak_ghost");
+  char key[20];
+  std::vector<std::string> keys;
+  for (int i=0;i<8;i++) {
+    sprintf(key,"ghost_%d",i);
+    keys.push_back(key);
+  }
+  texture_keys.push_back(keys);
+  keys.clear();
+  for (int i=0;i<8;i++) {
+    sprintf(key,"weak_ghost_%d",i);
+    keys.push_back(key);
+  }
+  texture_keys.push_back(keys);
+  
 };
 
 

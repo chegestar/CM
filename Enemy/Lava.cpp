@@ -8,7 +8,13 @@
 Lava::Lava(Level* l, float x, float y) : 
   Actor(l,x,y,l->getWidth(),l->getHeight()), Die(l,x,y,width,height) {
   isPath=false;
-  texture_keys.push_back("fire");
+  char key[20];
+  std::vector<std::string> keys;
+  for (int i=0;i<5;i++) {
+    sprintf(key,"fire_%d",i);
+    keys.push_back(key);
+  }
+  texture_keys.push_back(keys);
   light=NULL;
   if (l->getZone()==ICE) {
 

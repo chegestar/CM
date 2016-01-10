@@ -1,5 +1,81 @@
 #include "Codes.h"
 
+Z_TYPE getZoneType(std::string key) {
+  if (key=="CAVE")  {
+    return CAVE;
+  }
+  else if (key=="CRYSTAL") {
+    return CRYSTAL;
+  }
+  else if (key=="LAVA") {
+    return LAVA;
+  }
+  else if (key=="PYRAMID") {
+    return PYRAMID;
+  }
+  else if (key=="ICE") {
+    return ICE;
+  }
+  else if (key=="DARK") {
+    return DARK;
+  }
+  else if (key=="FACTORY") {
+    return FACTORY;
+  }
+  else if (key=="SPECIAL") {
+    return SPECIAL;
+  }
+  return HUB;
+}
+
+std::string getZoneString(Z_TYPE key) {
+  if (key==CAVE)  {
+    return "cave";
+  }
+  else if (key==CRYSTAL) {
+    return "crystal";
+  }
+  else if (key==LAVA) {
+    return "lava";
+  }
+  else if (key==PYRAMID) {
+    return "sand";
+  }
+  else if (key==ICE) {
+    return "ice";
+  }
+  else if (key==DARK) {
+    return "dark";
+  }
+  else if (key==FACTORY) {
+    return "factory";
+  }
+  else if (key==SPECIAL) {
+    return "special";
+  }
+  return "";
+}
+
+void getNextColor(C_CODE& color) {
+  if (color==COIN)
+    color = RED;
+  else if (color==RED)
+    color =BLUE;
+  else if (color==BLUE)
+    color =GREEN;
+  else if (color==GREEN)
+    color =YELLOW;
+  else if (color==YELLOW)
+    color =PURPLE;
+  else if (color==PURPLE)
+    color =BLACK;
+  else if (color==BLACK)
+    color =WHITE;
+  else
+    color =COIN;
+    
+}
+
 C_CODE getColor(std::string color) {
   if (color=="RED")
     return RED;

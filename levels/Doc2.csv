@@ -1,0 +1,60 @@
+15 20                  
+NORMAL_LEVEL                   
+start  14 9                
+read_board                   
+b b b b b b b b b b b b b b b b b b b b
+b O O O O O O O O O O O O b O O O O O b
+b O b b b b b O b b b b O b O b O b O b
+b O b ec O O b O b O O O O O O b O b O b
+b O b O b O b O b O b O b b b b O b O b
+b O b O b O O O b O b O b O O O O b O b
+b O b O O O b O b O O O O O b b b b O b
+b O O O b O b O b O b O b O b O O O O b
+b O b O b b b b b O b O b O b O b O b b
+b O b O b O O O O O exit O O O b O b O b b
+b O b O b O b b b b O b b O b O b O b b
+b O b O O O O O O O O O O O O O b O b b
+b O b b b b b b b b b b b O b O b O b b
+b O O O O O O O O O O O O O O O O O O b
+b b b b b b b b b O O b b b b b b b b b
+gemdoor   7  4 2 2 7 2 12 2 14 2 16 11 14 12 13 
+c   10 1               
+c  13 1                
+c 7 15                 
+c  12 15                
+c  9 17                
+c  11 17                
+c  7 18                
+c  13 18                
+;                   
+                   
+gemdoor    5  9 9 10 10 9 11 5 3 5 5    
+c  1 1                
+c  4 1                
+c  1 4                
+c  1 10                
+c  1 12                
+c  1 14                
+c  1 18                
+c  3 9  c  3 14           
+c  6 9                
+c  7 7                
+c  10 3                
+c  11 5                
+c  9 7                
+c  8 11                
+c  11 13                
+c  5 13  c  5 16           
+;                   
+                   
+spider   1 7 H              
+spider   3 12 H              
+spider   3 4 H              
+spider   13 6 H              
+spider   11 8 H              
+spider   4 3 V              
+spider   4 5 V              
+spider   4 18 V              
+spider   7 1 V              
+spider   7 13 V              
+spider   11 15 V              

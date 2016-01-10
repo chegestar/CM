@@ -5,7 +5,18 @@
 
 EpCrystal::EpCrystal(Level* l, float x_, float y_) : 
   Collectable(l,x_,y_,l->getWidth(),l->getHeight()) {
-  texture_keys.push_back("Ep_gem");
+  std::vector<std::string> keys;
+  int i=0;
+  for (C_CODE col=RED;i<32;getNextColor(col)) {
+    if (col==COIN)
+      col=RED;
+    char key[15];
+    sprintf(key,"%s_gem_%d",getColorString(col),i);
+    keys.push_back(key);
+    i++;
+  }
+  texture_keys.clear();
+  texture_keys.push_back(keys);
 }
 
 int EpCrystal::activate() {

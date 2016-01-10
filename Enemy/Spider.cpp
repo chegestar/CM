@@ -10,8 +10,19 @@ Spider::Spider(Level* l, float x, float y,bool d) :
 
   isVert=d;
   dir=getRandInt(0,1)*2-1;
-  texture_keys.push_back("Hspider");
-  texture_keys.push_back("Vspider");
+  char key[20];
+  std::vector<std::string> keys;
+  for (int i=0;i<8;i++) {
+    sprintf(key,"Hspider_%d",i);
+    keys.push_back(key);
+  }
+  texture_keys.push_back(keys);
+  keys.clear();
+  for (int i=0;i<8;i++) {
+    sprintf(key,"Vspider_%d",i);
+    keys.push_back(key);
+  }
+  texture_keys.push_back(keys);
   texture_set=isVert;
 };
 
@@ -28,10 +39,13 @@ void Spider::act() {
   for (unsigned int i=0;i<hits.size();i++) {
     if (dynamic_cast<Block*>(hits[i])) {
       int d = getApproachDir(this,hits[i]);
-      if (d%2 || (d>>3)%2)
+      if (d%2 || (d>>3)%2) 
         dir = 1;
+        
       else if ((d>>1)%2 || (d>>2)%2)
         dir=-1;
+      dynamic_cast<Block*>(hits[i])->push_back(this,d);
+      
     }
   }
   Enemy::act();

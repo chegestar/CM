@@ -4,6 +4,7 @@ set (COLLECTABLE_SRC
   Coin.cpp
   EpCrystal.cpp
   Life.cpp
+  HourGlass.cpp
   MagicRing.cpp
   Item.cpp
   FireBoot.cpp

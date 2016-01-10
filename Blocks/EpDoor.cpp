@@ -6,7 +6,15 @@ EpDoor::EpDoor(Level* l,int x,int y,int tot_levels) : Actor(l,x,y,l->getWidth(),
   num_gems=tot_levels;
 
   texture_keys.clear();
-  texture_keys.push_back("Ep_gate");
+  std::vector<std::string> keys;
+  for (C_CODE col=RED;col<COIN;getNextColor(col)) {
+    char key[15];
+    sprintf(key,"%s_gate",getColorString(col));
+    std::cout<<key<<"\n";
+    keys.push_back(key);
+  }
+  texture_keys.clear();
+  texture_keys.push_back(keys);
 
 }
 

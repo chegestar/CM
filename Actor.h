@@ -69,8 +69,13 @@ protected:
 
   sf::Drawable* shape;
   sf::Sprite sprite;
-  std::vector<std::string > texture_keys;
+  std::vector<std::vector<std::string> > texture_keys;
   int texture_set,texture_step;
+  int old_set,old_step;
+ private:
+  bool has_changed_set() const {return old_set!=texture_set;}
+  bool has_changed_step() const {return old_step!=texture_step;}
+
 
 };
 

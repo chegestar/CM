@@ -10,9 +10,13 @@ Crystal::Crystal(Level* l, float x_, float y_, C_CODE col,std::vector<GemDoor*>*
   for (unsigned int i=0;i<doors->size();i++)
     (*doors)[i]->addCrystal();
 
-  char key[15];
-  sprintf(key,"%s_gem",getColorString(c));
-  texture_keys.push_back(std::string(key));
+ std::vector<std::string> keys;
+  char key[20];
+  for (int i=0;i<32;i++) {
+    sprintf(key,"%s_gem_%d",getColorString(c),i);
+    keys.push_back(std::string(key));
+  }
+  texture_keys.push_back(keys);
 }
 
 int Crystal::activate() {
