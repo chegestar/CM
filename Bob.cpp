@@ -15,11 +15,11 @@ Bob::Bob(Level* l,float x_,float y_) :
   startx(x), starty(y){
   isExit=isSpecial=false;
   num_lives=3;
-  score=0;
-  specials=0;
+  score=specials=num_coins=0;
+  old_score=old_specials=old_coins=0;
   hp=100;
 
-  isInvincible=0;
+  justDied=isInvincible=0;
 
   has_item = new unsigned int[MAX_INVENTORY];
   for (unsigned int i=0;i<MAX_INVENTORY;i++)
@@ -121,11 +121,14 @@ void Bob::warmup() {
 bool Bob::die() {
   if (isInvincible>0)
     return false;
+  if (justDied>0)
+    return true;
   x = startx; 
   y = starty; 
   num_lives--; 
   hp=100;
   warmth=100;
+  justDied=60*1.5;
   return true;
 }
 
@@ -138,6 +141,8 @@ void Bob::act() {
   isDrain=false;
   if (isInvincible>0)
     isInvincible--;
+  if (justDied>0)
+    justDied--;
   if (level->getZone()==ICE) {
     drainWarmth();
     if (!has_item[JACKET])
@@ -261,6 +266,7 @@ void Bob::render(sf::RenderWindow& window) {
     window.draw(bottom_bar);
     window.draw(top_warmth);
   }
+  sprite.setColor(sf::Color(255,255,255,(1-(justDied/4)%2)*255));
   Actor::render(window);
 }
 

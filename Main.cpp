@@ -79,7 +79,19 @@ int main(int argc, char* argv[]) {
       if (event.type==sf::Event::KeyPressed&&
           event.key.code == sf::Keyboard::N)
         level->getBob()->setExit();
+      if (event.type==sf::Event::KeyPressed&&
+          event.key.code == sf::Keyboard::R) {
+        Bob* b = level->getBob();
+        score = b->getOldScore();
+        lives = b->getLives();
+        num_spe = b->getOldSpecials();
+        num_coins = b->getOldCoins();
 
+        delete level;
+        level = new Level(worlds[world_index][level_index],window,worlds[world_index].size()-1);
+        Bob* b2 = level->getBob();
+        b2->setStats(score,lives,num_spe,num_coins);
+      }
     }
     if (!isPause)
       level->act();
