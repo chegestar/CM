@@ -451,6 +451,21 @@ Z_TYPE Level::getHubZone(int x,int y) const {
   return hub_grid[r*gcols+c];
 }
 void Level::act() {
+  //Spider Boss reset
+  if (chase_indices.size()) {
+    int index=0;
+    for (int i=0;i<5;i++) {
+      if (chase_indices[index]!=i) {
+        insert(new ChaseSpider(this,i),monster_depth);
+      }
+      else
+        index++;
+    }
+    bob->resetPosition();
+    chase_indices.clear();
+  }
+
+
   if (zone==HUB) {
     std::string key = getZoneString(getHubZone(x_,y_));
     background.setTexture(getGraphic(key));
@@ -682,6 +697,12 @@ void Level::setSpiders(bool isR) {
   }
 }
 
+void Level::resetSpiderBoss(int index) {
+  halt();
+  x_=0;
+  std::cout<<index<<'\n';
+  chase_indices.push_back(index);
+}
 void Level::addStationary(Actor* actor,int r, int c,bool needs_adding) {
   if (!stationary[r][c]) {
     stationary[r][c] = actor;
@@ -697,7 +718,8 @@ void Level::addStationary(Actor* actor,int r, int c,bool needs_adding) {
         insert(stationary[r][c],stationary_depth);
       else if (dynamic_cast<Block*>(actor))
         insert(stationary[r][c],wall_depth);
-
+      else
+        insert(stationary[r][c],min_depth);
     }
   }
   else

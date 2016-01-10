@@ -68,6 +68,7 @@ class Bob : public Mover{
   void earnCoin() {num_coins++; if (num_coins>=100) {num_coins=0;num_lives++;}}
   void earnMagicRing() {isInvincible=60*10;}
   bool die();
+  void resetPosition() {x=startx;y=starty;}
   void setStats(int s,int l, int spe, int c) {old_specials=spe; old_lives=l;
     old_score=s; old_coins=c;}
   void setCheckPoint(float x_,float y_) {startx = x_;starty= y_;}

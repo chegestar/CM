@@ -54,6 +54,9 @@ class Level {
   int min_depth;
   int wall_depth,monster_depth,door_depth,gem_depth,stationary_depth;
 
+  //SpiderBoss variables
+  std::vector<int> chase_indices;
+
   Actor* getStationary(std::string key,int x, int y,std::ifstream& in_str);
   void addGem(Crystal* g, int r, int c) ;
   void insert(Actor* actor,int& depth);
@@ -90,6 +93,9 @@ class Level {
   void addActor(Actor* actor) {insert(actor,min_depth);}
   void addStationary(Actor* actor,int r, int c, bool needs_adding=true);
   void setSpiders(bool isR);
+
+  //SpiderBoss functions
+  void resetSpiderBoss(int index);
 
   void act();
   void render(sf::RenderWindow& window);
