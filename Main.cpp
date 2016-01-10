@@ -79,11 +79,12 @@ int main(int argc, char* argv[]) {
       if (event.type==sf::Event::KeyPressed&&
           event.key.code == sf::Keyboard::N)
         level->getBob()->setExit();
+      Bob* b = level->getBob();
       if (event.type==sf::Event::KeyPressed&&
-          event.key.code == sf::Keyboard::R) {
-        Bob* b = level->getBob();
+          event.key.code == sf::Keyboard::R&&b->getOldLives()) {
+
         score = b->getOldScore();
-        lives = b->getLives();
+        lives = b->getOldLives();
         num_spe = b->getOldSpecials();
         num_coins = b->getOldCoins();
 

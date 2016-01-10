@@ -14,7 +14,8 @@ Bob::Bob(Level* l,float x_,float y_) :
   Mover(l,x,y,width,height),
   startx(x), starty(y){
   isExit=isSpecial=false;
-  num_lives=3;
+  num_lives=0;
+  old_lives=3;
   score=specials=num_coins=0;
   old_score=old_specials=old_coins=0;
   hp=100;
@@ -125,7 +126,10 @@ bool Bob::die() {
     return true;
   x = startx; 
   y = starty; 
-  num_lives--; 
+  if (old_lives>0)
+    old_lives--; 
+  else
+    num_lives--;
   hp=100;
   warmth=100;
   justDied=60*1.5;

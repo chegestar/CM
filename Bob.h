@@ -14,7 +14,7 @@ class Bob : public Mover{
  private:
   float startx,starty; //The current Checkpoint location
   bool isExit,isSpecial; //if hit exit, if hit special exit respectively
-  int old_coins,old_score,old_specials; //values of each stat going into stage
+  int old_lives,old_coins,old_score,old_specials; //values of each stat going into stage
   int num_lives;// lives left
   int num_coins; // coins earned in this level
   int score; //score in this level
@@ -48,10 +48,11 @@ class Bob : public Mover{
   void getStart(float& sx,float& sy) const {sx = startx;sy=starty;}
   bool getExit() const {return isExit;}
   bool getSpecialExit() const {return isSpecial;}
-  int getLives() const {return num_lives;}
+  int getLives() const {return old_lives+num_lives;}
   int getScore() const {return old_score+score;}
   int getSpecials() const {return old_specials+specials;}
   int getCoins() const {return old_coins+num_coins;}
+  int getOldLives() const {return old_lives;}
   int getOldScore() const {return old_score;}
   int getOldSpecials() const {return old_specials;}
   int getOldCoins() const {return old_coins;}
@@ -67,7 +68,7 @@ class Bob : public Mover{
   void earnCoin() {num_coins++; if (num_coins>=100) {num_coins=0;num_lives++;}}
   void earnMagicRing() {isInvincible=60*10;}
   bool die();
-  void setStats(int s,int l, int spe, int c) {old_specials=spe; num_lives=l;
+  void setStats(int s,int l, int spe, int c) {old_specials=spe; old_lives=l;
     old_score=s; old_coins=c;}
   void setCheckPoint(float x_,float y_) {startx = x_;starty= y_;}
   void setExit() {isExit=true;}
