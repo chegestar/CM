@@ -5,11 +5,13 @@
 #include <Block.h>
 
 
-Spider::Spider(Level* l, float x, float y,bool d) :
+Spider::Spider(Level* l, float x, float y,bool d, int di) :
   Actor(l,x,y,32*4.0/5,32*4.0/5), Enemy(l,x,y,width,height) {
 
   isVert=d;
-  dir=getRandInt(0,1)*2-1;
+  dir=di;
+  if (dir==0)
+    dir=getRandInt(0,1)*2-1;
   char key[20];
   std::vector<std::string> keys;
   for (int i=0;i<8;i++) {

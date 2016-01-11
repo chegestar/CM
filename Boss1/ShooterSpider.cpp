@@ -34,13 +34,15 @@ ShooterSpider::ShooterSpider(Level* l, float level_width,float screen_width):
 }
 
 void ShooterSpider::reset() {
-  hp=60*30;
-  isMove=1;
-  timer=0;
-  x=startx;
-  y = -32*3;
-  bullets.clear();
-  spiders.clear();
+  if (isMove!=0) {
+    hp=60*30;
+    isMove=1;
+    timer=0;
+    x=startx;
+    y = -32*3;
+    bullets.clear();
+    spiders.clear();
+  }
 }
 
 void ShooterSpider::start() {

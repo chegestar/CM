@@ -248,6 +248,12 @@ Level::Level(std::string filename,sf::RenderWindow& window, int tot_levels,bool 
       in_str>>y>>x>>c;
       insert(new Spider(this,(x)*width,(y)*height,c=='V'),monster_depth);
     }
+    else if (key=="spiders"||key=="ss") {
+      char c;
+      in_str>>y>>x>>c>>dir;
+      insert(new Spider(this,(x)*width,(y)*height,c=='V',dir),monster_depth);
+    }
+
     else if (key=="fireball"||key=="fb") {
       char c;
       in_str>>y>>x>>c;
@@ -700,7 +706,6 @@ void Level::setSpiders(bool isR) {
 void Level::resetSpiderBoss(int index) {
   halt();
   x_=0;
-  std::cout<<index<<'\n';
   chase_indices.push_back(index);
 }
 void Level::addStationary(Actor* actor,int r, int c,bool needs_adding) {
