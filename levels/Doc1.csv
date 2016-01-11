@@ -19,6 +19,7 @@ b O b b b b b b b b b b b O b O b O b b
 b O O O O O O O O O O O O O O O O O O b
 b b b b b b b b b O O b b b b b b b b b
 
+check 7 2
 exit 9 10
 read_gems 2 BLUE  8 7 2 4 2 2 7 2 12 2 14 2 16 11 14 12 13 RED 5  9 9 10 10 9 11 5 3 5 5    
 

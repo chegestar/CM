@@ -19,7 +19,7 @@ b 2 2 2 2 2 2 2 2 2 2 2 2 2 2 b ` b ` b b 3 3 2g 3 3g 3 2g 3 3 3g 3 3 2g 3 3g 3 
 b 2 2 2 2 2 2 2 2 2 2 2 2 2 bh ` ` b ` ` ` 3 3 3 3 3g 3 3 3 3 3 3 3 3 3 3g 3 3 3 b                                                                              
 b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b                                                                              
                                                                                                                      
-start  9 17                                                                                                                  
+start  9 17                                                                                check 13 19                                  
 exit  1 30                                                                                                                  
 h 1 18 R h 13 14 B                                                                                                               
                                                                                                                      

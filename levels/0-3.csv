@@ -19,7 +19,8 @@ b c b b b b b b ` b b b b b b b c b c b
 b ` ` ` ` ` ` ` sh ` ` ` ` ` ` ` c c c b        
 b b b b b b b b b b b b b b b b b b b b        
                            
-start  6 18                        
+start  6 18   
+check 8 8                     
 exit  8 18                        
                            
 spider  1 8 H  spider   18 8 H  spider   4 2 H         
