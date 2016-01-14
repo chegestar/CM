@@ -12,7 +12,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-float getPI();
 
 int getApproachDir(Actor* a1, Actor* a2);
 
@@ -20,16 +19,9 @@ bool isRectangularHit(Actor* a1,Actor* a2);
 
 float getAngleTo(Actor* a1,Actor* a2);
 
-bool isLineHit(Line l1, Line l2);
-
-bool isCircleLineHit(Circle c1,Line l1);
-
-bool testLines(Actor* a1,Actor* a2);
-
-bool testCircles(Actor* circle,Actor* lines);
+bool hitTest(Actor* a1,Actor* a2);
 
 void getObjectCenter(Actor* a,float& cx,float& cy);
-
 
 int getRandInt(int low, int high);
 

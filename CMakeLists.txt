@@ -53,13 +53,13 @@ set(ROOT_SOURCES
 
 add_executable(CM ${ROOT_SOURCES})
 
-target_link_libraries(CM extras)
 target_link_libraries(CM exits)
 target_link_libraries(CM blocks)
 target_link_libraries(CM boss1)
 target_link_libraries(CM collect)
 target_link_libraries(CM enemy)
 target_link_libraries(CM switch)
+target_link_libraries(CM extras)
 
 
 

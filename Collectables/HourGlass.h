@@ -9,6 +9,8 @@ class HourGlass : public Collectable {
  public:
   HourGlass(Level* l, float x_, float y_,bool isR);
 
+  std::vector<Line> getLines() const;
+
   virtual int activate();
 
   void render(sf::RenderWindow& window);

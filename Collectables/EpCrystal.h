@@ -7,6 +7,9 @@ class EpCrystal : public Collectable {
  public:
   EpCrystal(Level* l, float x_, float y_);
 
+  std::vector<Line> getLines() const;
+
+
   virtual int activate();
 
   void render(sf::RenderWindow& window);

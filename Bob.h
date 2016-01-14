@@ -40,11 +40,14 @@ class Bob : public Mover{
   float warmth; //hp for ice stages
   sf::RectangleShape top_warmth;
   sf::RectangleShape bottom_bar;
-  
+
+  std::vector<Line> lines;
  public:
   Bob(Level* l,float x_,float y_);
   ~Bob();
 
+  float getBoundX1() const {return Actor::getBoundX1()+1.5;}
+  float getBoundX2() const {return Actor::getBoundX2()-1.5;}
   void getStart(float& sx,float& sy) const {sx = startx;sy=starty;}
   bool getExit() const {return isExit;}
   bool getSpecialExit() const {return isSpecial;}
@@ -57,8 +60,8 @@ class Bob : public Mover{
   int getOldSpecials() const {return old_specials;}
   int getOldCoins() const {return old_coins;}
   bool isInvuln() const {return isInvincible>0;}
-
-
+  std::vector<Line> getLines() const;
+  
   void web();
   void drain();
   void drainWarmth();

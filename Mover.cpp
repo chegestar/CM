@@ -6,15 +6,15 @@ Mover::Mover(Level* l, float x_,float y_,float w,float h) : Actor(l,x_,y_,w,h) {
   lastx=lasty=0;
 }
 
-float Mover::getLastX1() const {return lastx;}
-float Mover::getLastX2() const {return lastx+width;}
-float Mover::getLastY1() const {return lasty;}
-float Mover::getLastY2() const {return lasty+height;}
+float Mover::getLastX1() const {return getBoundX1()+lastx-x;}
+float Mover::getLastX2() const {return getBoundX2()+lastx-x;}
+float Mover::getLastY1() const {return getBoundY1()+lasty-y;}
+float Mover::getLastY2() const {return getBoundY2()+lasty-y;}
 
 
 void Mover::act() {
-  lastx = getX1();
-  lasty = getY1();
+  lastx = x;
+  lasty = y;
 }
 
 float Mover::getMovementCorrectionX(float speed) {return speed*level->getWidth()/32;}

@@ -25,7 +25,11 @@ int main(int argc, char* argv[]) {
   //Definition of Window
   int width = 20*32;
   int height = 15*32;
-  sf::RenderWindow window(sf::VideoMode(width, height), "CM Version 0.0");
+  sf::Uint32 style=sf::Style::Default;
+#ifndef COMPILE_DEBUG
+  style = sf::Style::Fullscreen;
+#endif
+  sf::RenderWindow window(sf::VideoMode(width, height), "CM Version 0.0",style);
   window.setFramerateLimit(60);
   sf::Text score_box, lives_box, ep_box;
   sf::Font f;

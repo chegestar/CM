@@ -14,3 +14,7 @@ int Life::activate() {
   level->getBob()->earnLife();
   return 10;
 }
+
+std::vector<Circle> Life::getCircles() const {
+  return std::vector<Circle>(1,Circle(getX1()+width/2,getY1()+height/2,width/3));
+}

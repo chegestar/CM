@@ -479,10 +479,12 @@ void Level::act() {
 
 
   }
+  bob->act();
   ACTORS::iterator itr=actors.begin();
   bool is_block_gone=false;
   while(itr!=actors.end()) {
-    itr->second->act();
+    if (itr->second!=bob)
+      itr->second->act();
     if (itr->second->getDead()) {
       std::list<Rock*>::iterator* rock_itr = itr->second->removePosition();
       if (rock_itr) rocks.erase(*rock_itr);
@@ -603,13 +605,6 @@ void Level::act() {
 
 void Level::render(sf::RenderWindow& window) {
   window.draw(background);
-
-  ACTORS::iterator itr;
-  for (itr=actors.begin();itr!=actors.end();itr++) {
-    if (!(dynamic_cast<Bob*>(itr->second))&&!isOutOfBounds(itr->second))
-      itr->second->render(window);
-  }
-  bob->render(window);
 #ifdef COMPILE_DEBUG
   //render row lines
   for (int i=1;i<15;i++) {
@@ -629,6 +624,13 @@ void Level::render(sf::RenderWindow& window) {
 
   }
 #endif
+
+  ACTORS::iterator itr;
+  for (itr=actors.begin();itr!=actors.end();itr++) {
+    if (bob!=itr->second&&!isOutOfBounds(itr->second))
+      itr->second->render(window);
+  }
+  bob->render(window);
 }
 
 void Level::testHitStationary(Actor* actor, std::vector<Actor*>& hits) {
@@ -639,12 +641,12 @@ void Level::testHitStationary(Actor* actor, std::vector<Actor*>& hits) {
   for (int ri = r;ri<=r+nr;ri++)
     for (int ci = c;ci<=c+nc;ci++) {
       if (ri>=0&&ci>=0&&ri<max_rows&&ci<max_cols&&
-          stationary[ri][ci] && isRectangularHit(actor,stationary[ri][ci]))
+          stationary[ri][ci] && hitTest(actor,stationary[ri][ci]))
         hits.push_back(stationary[ri][ci]);
     }
   std::list<Rock*>::iterator itr;
   for (itr=rocks.begin();itr!=rocks.end();itr++) {
-    if (isRectangularHit(actor,*itr)) {
+    if (hitTest(actor,*itr)) {
       hits.push_back(*itr);
     }
   }
@@ -659,7 +661,7 @@ void Level::testHitCollectable(Actor* actor,std::vector<Collectable*>& hits) {
   for (int ri = r;ri<=r+nr;ri++)
     for (int ci = c;ci<=c+nc;ci++)
       if (ri>=0&&ci>=0&&ri<max_rows&&ci<max_cols&&
-          gems[ri][ci] && isRectangularHit(actor,gems[ri][ci]))
+          gems[ri][ci] && hitTest(actor,gems[ri][ci]))
         hits.push_back(gems[ri][ci]);
 }
 
@@ -766,9 +768,13 @@ void Level::setBlocks() {
       Block* b;
       if (stationary[i][j]&&(b=dynamic_cast<Block*>(stationary[i][j]))) {
         b->setDirs(i-1>=0&&isBlock(i-1,j),
+                   i-1>=0&&dynamic_cast<GemDoor*>(stationary[i-1][j])!=NULL,
                    j+1<max_cols&&isBlock(i,j+1),
+                   j+1<max_cols&&dynamic_cast<GemDoor*>(stationary[i][j+1])!=NULL,
                    i+1<max_rows&&isBlock(i+1,j),
-                   j-1>=0&&isBlock(i,j-1));
+                   i+1<max_rows&&dynamic_cast<GemDoor*>(stationary[i+1][j])!=NULL,
+                   j-1>=0&&isBlock(i,j-1),
+                   j-1>=0&&dynamic_cast<GemDoor*>(stationary[i][j-1])!=NULL);
 
       }
     }

@@ -91,8 +91,8 @@ Bob::~Bob() {
 
 void Bob::web() {
   if (!isWeb) {
-    shiftX(-(getX1()-getLastX1())*3.5/5);
-    shiftY(-(getY1()-getLastY1())*3.5/5);
+    shiftX(-(getX1()-lastx)*3.5/5);
+    shiftY(-(getY1()-lasty)*3.5/5);
   }
   isWeb=true;
 }
@@ -134,6 +134,10 @@ bool Bob::die() {
   warmth=100;
   justDied=60*1.5;
   return true;
+}
+
+std::vector<Line> Bob::getLines() const {
+  return lines;
 }
 
 void Bob::act() {
@@ -204,6 +208,12 @@ void Bob::act() {
   else {
     has_dropped=false;
   }
+
+  lines.clear();
+  lines.push_back(Line(getBoundX1(),getBoundY1(),getBoundX2(),getBoundY1()));
+  lines.push_back(Line(getBoundX2(),getBoundY1(),getBoundX2(),getBoundY2()));
+  lines.push_back(Line(getBoundX1(),getBoundY2(),getBoundX2(),getBoundY2()));
+  lines.push_back(Line(getBoundX1(),getBoundY1(),getBoundX1(),getBoundY2()));
     
   std::set<Item*> new_drops;
   std::vector<Actor*> stationary;
@@ -223,7 +233,6 @@ void Bob::act() {
         actor->shiftX(getX1()-actor->getX2());
     }
     else if (dynamic_cast<Block*>(actor)) {
-      int dir = getApproachDir(this,actor);
       Block* b = dynamic_cast<Block*>(actor);
       b->push_back(this,dir);
     }
@@ -258,7 +267,6 @@ void Bob::act() {
     int s = collect->activate();
     score+=s;
   }
-
 
 }
 

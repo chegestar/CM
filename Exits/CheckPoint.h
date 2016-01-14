@@ -7,6 +7,8 @@
 class CheckPoint : public Actor {
  public:
   CheckPoint(Level* l, float x_,float y_);
+
+  std::vector<Circle> getCircles() const;
   
   int activate() {level->getBob()->setCheckPoint(x,y);return 0;}
 

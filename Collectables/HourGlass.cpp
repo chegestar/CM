@@ -17,6 +17,19 @@ HourGlass::HourGlass(Level* l, float x_, float y_,bool isR) :
 
 }
 
+std::vector<Line> HourGlass::getLines() const {
+  std::vector<Line> lines;
+  float x1 = getX1()+2;
+  float x2 = getX2()-2;
+  float y1 = getY1()+2;
+  float y2 = getY2()-2;
+  lines.push_back(Line(x1,y1,x2,y2));
+  lines.push_back(Line(x2,y1,x1,y2));
+  lines.push_back(Line(x1,y1,x2,y1));
+  lines.push_back(Line(x1,y2,x2,y2));
+  return lines;
+}
+
 int HourGlass::activate() {
   Collectable::activate();
   level->setSpiders(isRed);

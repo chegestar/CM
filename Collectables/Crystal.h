@@ -10,6 +10,9 @@ class Crystal : public Collectable {
  public:
   Crystal(Level* l, float x_, float y_, C_CODE col, std::vector<GemDoor*>* ds);
 
+  std::vector<Line> getLines() const;
+  std::vector<Circle> getCircles() const;
+
   virtual int activate();
 
   void render(sf::RenderWindow& window);

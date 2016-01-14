@@ -28,6 +28,15 @@ Spider::Spider(Level* l, float x, float y,bool d, int di) :
   texture_set=isVert;
 };
 
+std::vector<Line> Spider::getLines() const {
+  std::vector<Line> lines;
+  lines.push_back(Line(getX1(),getBoundY1(),getX2(),getBoundY1()));
+  lines.push_back(Line(getX1(),getBoundY1(),getX1(),getBoundY2()));
+  lines.push_back(Line(getX2(),getBoundY1(),getX2(),getBoundY2()));
+  lines.push_back(Line(getX1(),getBoundY2(),getX2(),getBoundY2()));
+  return lines;
+}
+
 void Spider::act() {
   Mover::act();
   const int speed = getSpeed();

@@ -9,15 +9,21 @@ Die::Die(Level* l, float x, float y, float w, float h) :
 
 }
 bool Die::hitBob(Bob* b) {
-  return isRectangularHit(b,this);
+  return hitTest(b,this);
     
 }
 
 void Die::act() {
-  if (hitBob(level->getBob())) {
-    
-    if (!level->getBob()->die()&&dynamic_cast<Enemy*>(this))
-      setDead();
-  }
+  Bob* b = level->getBob();
+  int posc = getX1()/level->getWidth();
+  int posr = getY1()/level->getHeight();
+  int bobc = b->getX1()/level->getWidth();
+  int bobr = b->getY1()/level->getHeight();
+  if (abs(posc-bobc)<4&&abs(posr-bobr)<4)
+    if (hitBob(b)) {
+      
+      if (!level->getBob()->die()&&dynamic_cast<Enemy*>(this))
+        setDead();
+    }
 }
 

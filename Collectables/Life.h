@@ -9,6 +9,7 @@ class Life : public Collectable {
 
   virtual int activate();
 
+  std::vector<Circle> getCircles() const;
 };
 
 #endif

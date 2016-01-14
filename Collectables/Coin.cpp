@@ -14,6 +14,13 @@ Coin::Coin(Level* l, float x_, float y_) :
 
 }
 
+std::vector<Circle> Coin::getCircles() const {
+  std::vector<Circle> circles;
+  circles.push_back(Circle(getX1()+width/2,getY1()+height/2,width/5+3));
+  return circles;
+}
+
+
 int Coin::activate() {
   Collectable::activate();
   level->getBob()->earnCoin();

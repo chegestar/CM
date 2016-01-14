@@ -24,14 +24,19 @@ class Actor {
   virtual float getY2() const;
   virtual float getWidth() const {return width;}
   virtual float getHeight() const {return height;}
-  virtual float getLastX1() const {return getX1();}
-  virtual float getLastX2() const {return getX2();}
-  virtual float getLastY1() const {return getY1();}
-  virtual float getLastY2() const {return getY2();}
-    virtual std::vector<Line> getLines() const
-    {throw std::runtime_error("NOT IMPLEMENTED");}
+  virtual float getBoundX1() const;
+  virtual float getBoundX2() const;
+  virtual float getBoundY1() const;
+  virtual float getBoundY2() const;
+  virtual float getLastX1() const {return getBoundX1();}
+  virtual float getLastX2() const {return getBoundX2();}
+  virtual float getLastY1() const {return getBoundY1();}
+  virtual float getLastY2() const {return getBoundY2();}
+  
+  virtual std::vector<Line> getLines() const
+    {return std::vector<Line>();}
   virtual std::vector<Circle> getCircles() const
-    {throw std::runtime_error("NOT IMPLEMENTED");}
+    {return std::vector<Circle>();}
   bool getDead() const {return isDead;}
   virtual bool isStationary() const {return true;}
   virtual bool doesPause() const {return true;} 
@@ -72,6 +77,7 @@ protected:
   std::vector<std::vector<std::string> > texture_keys;
   int texture_set,texture_step;
   int old_set,old_step;
+
  private:
   bool has_changed_set() const {return old_set!=texture_set;}
   bool has_changed_step() const {return old_step!=texture_step;}

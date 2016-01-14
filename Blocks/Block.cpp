@@ -75,28 +75,43 @@ Block::Block(Level* l,float x_,float y_) :
   }
 }
 
+std::vector<Line> Block::getLines() const {
+  std::vector<Line> lines;
+  lines.push_back(Line(getX1(),getY1(),getX2(),getY1()));
+  lines.push_back(Line(getX2(),getY1(),getX2(),getY2()));
+  lines.push_back(Line(getX1(),getY2(),getX2(),getY2()));
+  lines.push_back(Line(getX1(),getY1(),getX1(),getY2()));
+  return lines;
+}
+
+
 void Block::push_back(Actor* actor, int dir) {
   if (isD&&dir%2)
     actor->setPosition(actor->getX1(),getY2());
   if (isL&&((dir>>1)%2))
     actor->setPosition(getX1()-actor->getWidth(),actor->getY1());
   if (isU&&((dir>>2)%2))
-    actor->setPosition(actor->getX1(),getY1()-actor->getHeight());
+    actor->setPosition(actor->getX1(),getY1()-actor->getHeight()-.1);
   if (isR&&((dir>>3)%2))
     actor->setPosition(getX2(),actor->getY1());
   
 }
 
-void Block::setDirs(bool u,bool r, bool d, bool l) {
+void Block::setDirs(bool u,bool ugem,bool r,bool rgem, bool d, bool dgem,bool l,bool lgem) {
   isL=!l;
   isR=!r;
   isU=!u;
   isD=!d;
+
+  u = isU||ugem;
+  d = isD||dgem;
+  l = isL||lgem;
+  r = isR||rgem;
   texture_set=0;
-  if (isL+isR+isU+isD==2) {
-    if (isL&&isR)
+  if (l+r+u+d==2) {
+    if (l&&r)
       texture_set=1;
-    if (isU&&isD)
+    if (u&&d)
       texture_set=2;
   }
 }

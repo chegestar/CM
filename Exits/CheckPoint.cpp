@@ -9,6 +9,10 @@ CheckPoint::CheckPoint(Level* l, float x_,float y_) :
   texture_keys.push_back(std::vector<std::string>(1,"checkpoint_hit"));
 };
 
+std::vector<Circle> CheckPoint::getCircles() const {
+  return std::vector<Circle>(1,Circle(getX1()+width/2,getY1()+height/2,width/2-2));
+}
+
 void CheckPoint::act() {
   if (isRectangularHit(this,level->getBob())) {
 
