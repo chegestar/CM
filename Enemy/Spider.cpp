@@ -2,7 +2,7 @@
 #include <Bob.h>
 #include <utilities.h>
 #include <Level.h>
-#include <Block.h>
+#include <Rock.h>
 
 
 Spider::Spider(Level* l, float x, float y,bool d, int di) :
@@ -48,8 +48,9 @@ void Spider::act() {
   std::vector<Actor*> hits;
   level->testHitStationary(this,hits);
   for (unsigned int i=0;i<hits.size();i++) {
+    int d = getApproachDir(this,hits[i]);
     if (dynamic_cast<Block*>(hits[i])) {
-      int d = getApproachDir(this,hits[i]);
+
       if (d%2 || (d>>3)%2) 
         dir = 1;
         
@@ -59,6 +60,14 @@ void Spider::act() {
       
     }
   }
+  hits.clear();
+  level->testHitStationary(this,hits);
+  for (unsigned int i=0;i<hits.size();i++) {
+    if (dynamic_cast<Block*>(hits[i])) {
+      setDead();
+    }
+  }
+  
   Enemy::act();
 }
 

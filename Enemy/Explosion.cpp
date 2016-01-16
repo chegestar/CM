@@ -1,7 +1,7 @@
 #include "Explosion.h"
 #include <Level.h>
 #include <Item.h>
-#include <Block.h>
+#include <EpDoor.h>
 #include <Enemy.h>
 #include <utilities.h>
 
@@ -20,7 +20,7 @@ Explosion::Explosion(Level* l, float x_, float y_) :
 
 bool isExplodable(Actor* actor) {
   Bob* b;
-  return dynamic_cast<Block*>(actor)||dynamic_cast<Item*>(actor)||
+  return (dynamic_cast<Block*>(actor)&&!dynamic_cast<EpDoor*>(actor))||dynamic_cast<Item*>(actor)||
     ((b=dynamic_cast<Bob*>(actor))&&!b->isInvuln())||dynamic_cast<Enemy*>(actor);
 }
 
