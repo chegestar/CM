@@ -50,7 +50,6 @@ void Spider::act() {
   for (unsigned int i=0;i<hits.size();i++) {
     int d = getApproachDir(this,hits[i]);
     if (dynamic_cast<Block*>(hits[i])) {
-
       if (d%2 || (d>>3)%2) 
         dir = 1;
         

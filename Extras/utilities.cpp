@@ -2,7 +2,7 @@
 #include <fstream>
 #include <cmath>
 #include "MersenneTwister.h"
-
+#include <Spider.h>
 bool isRectangularHit(Actor* a1,Actor* a2) {
   return (a1->getX1()<=a2->getX2() && 
           a1->getX2()>=a2->getX1() &&
@@ -131,14 +131,13 @@ bool hitTest(Actor* a1,Actor* a2) {
 
 int getApproachDir(Actor* a1, Actor* a2) {
   int dir=0;
-  if (a1->getLastY2()<=a2->getLastY1() && a1->getBoundY2()>a2->getBoundY1()&&a1->getBoundY1()>a1->getLastY1()) //Landing
+  if (a1->getLastY2()<=a2->getLastY1() && a1->getBoundY2()>=a2->getBoundY1()&&a1->getBoundY1()>a1->getLastY1()) //Landing
     dir+=4;
-  if (a1->getLastY1()>=a2->getLastY2() && a1->getBoundY1()<a2->getBoundY2()&&a1->getBoundY1()<a1->getLastY1()) //Ceiling
+  if (a1->getLastY1()>=a2->getLastY2() && a1->getBoundY1()<=a2->getBoundY2()&&a1->getBoundY1()<a1->getLastY1()) //Ceiling
     dir+=1;
-  if (a1->getLastX2() <= a2->getLastX1() && a1->getBoundX2()>a2->getBoundX1()&&a1->getBoundX1()>a1->getLastX1()) {//Right wall
+  if (a1->getLastX2() <= a2->getLastX1() && a1->getBoundX2()>=a2->getBoundX1()&&a1->getBoundX1()>a1->getLastX1()) //Right wall
     dir+=2;
-  }
-  if (a1->getLastX1() >= a2->getLastX2() && a1->getBoundX1()<a2->getBoundX2()&&a1->getBoundX1()<a1->getLastX1()) //Left wall
+  if (a1->getLastX1() >= a2->getLastX2() && a1->getBoundX1()<=a2->getBoundX2()&&a1->getBoundX1()<a1->getLastX1()) //Left wall
     dir+=8;
   return dir;
 }
