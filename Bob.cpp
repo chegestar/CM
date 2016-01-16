@@ -240,6 +240,7 @@ void Bob::act() {
         actor->shiftY(getY2()-actor->getY1());
       if ((dir>>3)%2)
         actor->shiftX(getX1()-actor->getX2());
+      dynamic_cast<Block*>(actor)->push_back(this,dir);
     }
     else if (dynamic_cast<Block*>(actor)) {
       Block* b = dynamic_cast<Block*>(actor);
