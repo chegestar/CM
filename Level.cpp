@@ -570,20 +570,24 @@ void Level::act() {
       bob->setX(x_+window_width-bob->getWidth());
   }
   if (isWrapped) {
-    if (bob->getY1()>window_height) {
+    if (bob->getY1()>=window_height*.99) {
       bob->shiftY(-max_rows*height);
+      bob->preX();
       y_=0;
     }
-    if (bob->getY2()<0) {
+    if (bob->getY2()<=.01) {
       bob->shiftY(max_rows*height);
+      bob->preX();
       y_ = height*max_rows-window_height;
     }
-    if (bob->getX1()>window_width) {
+    if (bob->getX1()>=window_width*.99) {
       bob->shiftX(-max_cols*width);
+      bob->preY();
       x_=0;
     }
-    if (bob->getX2()<0) {
+    if (bob->getX2()<=.01) {
       bob->shiftX(window_width);
+      bob->preY();
       x_ = width*max_cols-window_width;
     }
   }

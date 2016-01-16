@@ -12,11 +12,14 @@ class Mover : virtual public Actor {
   float getLastX2() const;
   float getLastY1() const;
   float getLastY2() const;
-  
   bool isStationary() const {return false;}
-  void act();
   float getMovementCorrectionX(float speed);
   float getMovementCorrectionY(float speed);
+  
+  void preX() {x = lastx;}
+  void preY() {y = lasty;}
+  void act();
+  
  protected:
   float lastx,lasty;
 };
