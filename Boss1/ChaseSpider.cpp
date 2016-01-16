@@ -22,6 +22,7 @@ void ChaseSpider::reset() {
   isMove=false;
   x = -100;
   level->resetSpiderBoss((y-33)/(height));
+  level->setSong(false);
 }
 
 void ChaseSpider::act() {
@@ -38,6 +39,7 @@ void ChaseSpider::act() {
   }
   else if (level->getBob()->getX2()>level->getWindowWidth()-level->getWidth()*2) {
     isMove=true;
+    level->setSong(true);
   }
   
   texture_step++;

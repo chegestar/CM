@@ -23,7 +23,7 @@ start  6 18
 check 8 8                     
 exit  8 18                        
                            
-spider  1 8 H  spider   18 8 H  spider   4 2 H         
+spider  1 8 H  spider   13 8 H  spider   4 2 H         
 spider  8 4 V  spider   8 10 V  spider   8 14 V  spider 6 12 V spider 10 12 V
                            
 read_gems   1 BLUE  2 8 17 8 7                 

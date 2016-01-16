@@ -33,6 +33,7 @@ int main(int argc, char* argv[]) {
   window.setFramerateLimit(60);
   sf::Text score_box, lives_box, ep_box;
   sf::Font f;
+  sf::Music* song = NULL;
   f.loadFromFile("Fonts/arial.ttf");
   int size=18;
   int color=200;
@@ -84,6 +85,16 @@ int main(int argc, char* argv[]) {
           event.key.code == sf::Keyboard::N)
         level->getBob()->setExit();
       Bob* b = level->getBob();
+#ifdef COMPILE_DEBUG
+      if (event.type==sf::Event::KeyPressed&&
+          event.key.code == sf::Keyboard::Equal) 
+        level->getBob()->glitch();
+          
+      if (event.type==sf::Event::KeyPressed&&
+          event.key.code == sf::Keyboard::Dash)
+        level->getBob()->unglitch();
+      
+#endif
       if (event.type==sf::Event::KeyPressed&&
           event.key.code == sf::Keyboard::R&&b->getOldLives()) {
 
@@ -141,7 +152,17 @@ int main(int argc, char* argv[]) {
           level = new Level(worlds[world_index][level_index],window,worlds[world_index].size()-1);
           Bob* b2 = level->getBob();
           b2->setStats(score,lives,num_spe,num_coins);
+          if (song) {
+            song->stop();
+            song=NULL;
+          }
+          if (level_index==worlds[world_index].size()-2&&level->playSong()) {
+            song = getSong("meglovania");
+            song->setVolume(50);
+            song->play();
+          }
         }
+        
       }
     }
     else if (b->getSpecialExit()) {
@@ -164,6 +185,7 @@ int main(int argc, char* argv[]) {
 
 
   }
+  destroySongs();
   delete level;
   return 0;
 }
@@ -258,4 +280,7 @@ void loadInFiles() {
   addGraphic("pyramid_mid","graphics/walls/pyramid cent.png");
   addGraphic("pyramid_horiz","graphics/walls/pyramid horiz.png");
   addGraphic("pyramid_vert","graphics/walls/pyramid vert.png");
+
+  addSong("meglovania","Music/meglovania.wav",true);
+
 }

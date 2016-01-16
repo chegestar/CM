@@ -64,7 +64,8 @@ class Level {
   void setBlocks();
   int getRow() {return ceil(y_/window_height);}
   int getCol() {return ceil(x_/window_width);}
-
+  
+  bool isSong;
  public:
   Level();
   Level(std::string filename,sf::RenderWindow& window, int tot_levels,bool isS=false);
@@ -96,6 +97,8 @@ class Level {
 
   //SpiderBoss functions
   void resetSpiderBoss(int index);
+  void setSong(bool isS) {isSong=isS;}
+  bool playSong() {return isSong;}
 
   void act();
   void render(sf::RenderWindow& window);

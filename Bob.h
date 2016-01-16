@@ -42,6 +42,9 @@ class Bob : public Mover{
   sf::RectangleShape bottom_bar;
 
   std::vector<Line> lines;
+#ifdef COMPILE_DEBUG
+  bool glitch_everythang;
+#endif
  public:
   Bob(Level* l,float x_,float y_);
   ~Bob();
@@ -77,7 +80,10 @@ class Bob : public Mover{
   void setCheckPoint(float x_,float y_) {startx = x_;starty= y_;}
   void setExit() {isExit=true;}
   void setSpecialExit() {isSpecial=true;}
-
+#ifdef COMPILE_DEBUG
+  void glitch() {glitch_everythang=true;}
+  void unglitch() {glitch_everythang=false;}
+#endif
   void act();
   void render(sf::RenderWindow& window);
 

@@ -87,13 +87,13 @@ std::vector<Line> Block::getLines() const {
 
 void Block::push_back(Actor* actor, int dir) {
   if (isD&&dir%2)
-    actor->setPosition(actor->getX1(),getY2());
+    actor->setPosition(actor->getX1(),getY2()+.1);
   if (isL&&((dir>>1)%2))
-    actor->setPosition(getX1()-actor->getWidth(),actor->getY1());
+    actor->setPosition(getX1()-actor->getWidth()-.1,actor->getY1());
   if (isU&&((dir>>2)%2))
     actor->setPosition(actor->getX1(),getY1()-actor->getHeight()-.1);
   if (isR&&((dir>>3)%2))
-    actor->setPosition(getX2(),actor->getY1());
+    actor->setPosition(getX2()+.1,actor->getY1());
   
 }
 

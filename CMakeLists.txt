@@ -15,6 +15,7 @@ find_package(SFML COMPONENTS system window graphics audio)
 
 file(COPY Fonts DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY graphics DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY Music DESTINATION ${CMAKE_BINARY_DIR})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(Blocks)

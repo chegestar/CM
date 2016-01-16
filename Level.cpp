@@ -98,6 +98,7 @@ Level::Level(std::string filename,sf::RenderWindow& window, int tot_levels,bool 
   if (!in_str) {
     throw 1;
   }
+  isSong=false;
   num_levels=tot_levels;
   x_=y_=0;
   level_type=NORMAL;

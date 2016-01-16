@@ -19,7 +19,9 @@ Bob::Bob(Level* l,float x_,float y_) :
   score=specials=num_coins=0;
   old_score=old_specials=old_coins=0;
   hp=100;
-
+#ifdef COMPILE_DEBUG
+  glitch_everythang=false;
+#endif 
   justDied=isInvincible=0;
 
   has_item = new unsigned int[MAX_INVENTORY];
@@ -91,8 +93,8 @@ Bob::~Bob() {
 
 void Bob::web() {
   if (!isWeb) {
-    shiftX(-(getX1()-lastx)*3.5/5);
-    shiftY(-(getY1()-lasty)*3.5/5);
+    shiftX(-(x-lastx)*3.5/5);
+    shiftY(-(y-lasty)*3.5/5);
   }
   isWeb=true;
 }
@@ -120,6 +122,10 @@ void Bob::warmup() {
 }
 
 bool Bob::die() {
+#ifdef COMPILE_DEBUG
+  if (glitch_everythang)
+    return true;
+#endif
   if (isInvincible>0)
     return false;
   if (justDied>0)
@@ -216,6 +222,9 @@ void Bob::act() {
   lines.push_back(Line(getBoundX1(),getBoundY1(),getBoundX1(),getBoundY2()));
     
   std::set<Item*> new_drops;
+#ifdef COMPILE_DEBUG
+  if (!glitch_everythang) {
+#endif
   std::vector<Actor*> stationary;
   level->testHitStationary(this,stationary);
   for (unsigned int i=0;i<stationary.size();i++) {
@@ -257,7 +266,9 @@ void Bob::act() {
     }
   }
   recent_drops=new_drops;
-
+#ifdef COMPILE_DEBUG
+  }
+#endif
   std::vector<Collectable*> collects;
   level->testHitCollectable(this,collects);
   
