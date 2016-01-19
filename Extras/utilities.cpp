@@ -3,6 +3,9 @@
 #include <cmath>
 #include "MersenneTwister.h"
 #include <Spider.h>
+
+float getPi() {return 3.141592653589793238;}
+
 bool isRectangularHit(Actor* a1,Actor* a2) {
   return (a1->getX1()<=a2->getX2() && 
           a1->getX2()>=a2->getX1() &&
@@ -18,7 +21,7 @@ float getAngleTo(Actor* a1,Actor* a2) {
   float diffx = c2x-c1x;
   float angle = atan(diffy/diffx);
   if (diffx<0) {
-    angle+=M_PI;
+    angle+=getPi();
   }
   return angle;
 }

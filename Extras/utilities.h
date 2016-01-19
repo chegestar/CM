@@ -12,6 +12,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
+float getPi();
 
 int getApproachDir(Actor* a1, Actor* a2);
 

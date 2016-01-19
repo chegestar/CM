@@ -755,9 +755,9 @@ bool Level::isOutOfBounds(Actor* actor) const {
     return true;
   if (actor->getY2()<0)
     return true;
-  if (actor->getX1()>getLevelWidth())
+  if (actor->getX1()>window_width)
     return true;
-  if (actor->getY1()>getLevelHeight())
+  if (actor->getY1()>window_height)
     return true;
   return false;
 }

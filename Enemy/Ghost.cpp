@@ -4,10 +4,9 @@
 #include <Level.h>
 #include <Block.h>
 
-
 Ghost::Ghost(Level* l, float x, float y) : 
   Actor(l,x,y,32,32), Enemy(l,x,y,width,height) {
-  angle = getRand(0,M_PI*2);
+  angle = getRand(0,getPi()*2);
   char key[20];
   std::vector<std::string> keys;
   for (int i=0;i<8;i++) {
@@ -39,7 +38,7 @@ void Ghost::act() {
     texture_set=0;
   float rand = getRand(0,1);
   if (rand<.55/60) 
-    angle = getRand(0,M_PI*2);
+    angle = getRand(0,getPi()*2);
 
   std::vector<Actor*> hits;
   level->testHitStationary(this,hits);
@@ -49,7 +48,7 @@ void Ghost::act() {
       Block* b = dynamic_cast<Block*>(hits[i]);
       b->push_back(this,dir);
 
-      angle = getRand(0,M_PI*2);
+      angle = getRand(0,getPi()*2);
     }
   }
   Enemy::act();

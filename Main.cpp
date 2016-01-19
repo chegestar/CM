@@ -27,11 +27,11 @@ int main(int argc, char* argv[]) {
   int height = 15*32;
   sf::Uint32 style=sf::Style::Default;
 #ifndef COMPILE_DEBUG
-  style = sf::Style::Fullscreen;
+  //style = sf::Style::Fullscreen;
 #endif
   sf::RenderWindow window(sf::VideoMode(width, height), "CM Version 0.0",style);
   window.setFramerateLimit(60);
-  sf::Text score_box, lives_box, ep_box;
+  sf::Text score_box, lives_box, ep_box,fps_box;
   sf::Font f;
   sf::Music* song = NULL;
   f.loadFromFile("Fonts/arial.ttf");
@@ -40,6 +40,7 @@ int main(int argc, char* argv[]) {
   setupText(score_box,f,"Score: 0",size,sf::Color(color,color,color),5,5);
   setupText(lives_box,f,"Lives: 0",size,sf::Color(color,color,color),width/2-70,5);
   setupText(ep_box,f,"Special: 0",size,sf::Color(color,color,color),width-150,5);
+  setupText(fps_box, f, "60fps", size, sf::Color(color, color, color), width - 150, 32*15-32);
 
   std::vector<std::vector<std::string> > worlds;
   Level* level;
@@ -67,20 +68,24 @@ int main(int argc, char* argv[]) {
   //Global Bob stats
   int score,lives,num_spe,num_coins;
   bool isPause=false;
+
+  sf::Clock clock;
+  
   while (window.isOpen()) {
     sf::Event event;
+	bool isKill = false;
     while (window.pollEvent(event)) {
-      if (event.type == sf::Event::Closed)
-        window.close();
-      if (event.type == sf::Event::LostFocus) {
+		if (event.type == sf::Event::Closed)
+		  isKill = true;
+      if (event.type ==	sf::Event::LostFocus) {
         isPause=true;
       }
       if (event.type== sf::Event::GainedFocus) {
         isPause=false;
       }
-      if (event.type==sf::Event::KeyPressed&&
-          event.key.code == sf::Keyboard::Escape)
-        window.close();
+	  if (event.type == sf::Event::KeyPressed&&
+		  event.key.code == sf::Keyboard::Escape)
+		  isKill = true;
       if (event.type==sf::Event::KeyPressed&&
           event.key.code == sf::Keyboard::N)
         level->getBob()->setExit();
@@ -109,6 +114,8 @@ int main(int argc, char* argv[]) {
         b2->setStats(score,lives,num_spe,num_coins);
       }
     }
+	if (isKill)
+      break;
     if (!isPause)
       level->act();
     level->render(window);
@@ -125,14 +132,23 @@ int main(int argc, char* argv[]) {
     window.draw(score_box);
     window.draw(lives_box);
     window.draw(ep_box);
+	sf::Time time = clock.getElapsedTime();
+	float usec = time.asMilliseconds()*pow(10,-3);
+	int fps = floor(1 / usec);
+	std::cout << fps << '\n';
+	char fps_text[10];
+	sprintf(fps_text, "%d fps", fps);
+	fps_box.setString(std::string(fps_text));
+	window.draw(fps_box);
     window.display();
+	clock.restart();
     window.clear(sf::Color(200,200,200));
     if (b->getLives()<=0) {
-      window.close();
+      break;
     }
     if (b->getExit()) {
       if (worlds.size()==0) {
-        window.close();
+        break;
       }
       else {
         score = b->getScore();
@@ -145,7 +161,7 @@ int main(int argc, char* argv[]) {
           world_index++;
         }
         if (world_index>=worlds.size()) {
-          window.close();
+          break;
         }
         else {
           delete level;
@@ -167,7 +183,7 @@ int main(int argc, char* argv[]) {
     }
     else if (b->getSpecialExit()) {
       if (worlds.size()==0) {
-        window.close();
+        break;
       }
       else {
         score = b->getScore();
@@ -183,9 +199,11 @@ int main(int argc, char* argv[]) {
         
     }
 
+	
 
   }
   destroySongs();
+  window.close();
   delete level;
   return 0;
 }
