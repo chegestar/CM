@@ -28,13 +28,20 @@ Block::Block(Level* l,float x_,float y_) :
     zone="pyramid";
   }
   else if (z==ICE) {
-
+    num_imgs=0;
+    zone="cave";
   }
   else if (z==DARK) {
+    num_imgs=0;
+    zone="cave";
   }
-  else if (z==FACTORY) {
+  else if (z==FACTORY) {    
+    num_imgs=0;
+    zone="cave";
   }
   else if (z==SPECIAL) {
+    num_imgs=0;
+    zone="cave";
   }
   if (num_imgs>0) {
     char key[40];

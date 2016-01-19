@@ -12,6 +12,7 @@ class Light : public Switch {
   virtual int activate();
 
   void render(sf::RenderWindow&);
+  void addLights(sf::RenderTexture& darkness);
 };
 
 #endif

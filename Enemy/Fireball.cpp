@@ -6,7 +6,7 @@ Fireball::Fireball(Level* l, float x, float y,bool d) :
   texture_keys.clear();
 
   light=NULL;
-  if (l->getZone()==ICE) {
+  if (l->getZone()==ICE||l->getZone()==DARK) {
 
     float rad = l->getWidth()*3/2;
     light = new Light(level,x,y,rad);
@@ -60,4 +60,8 @@ void Fireball::render(sf::RenderWindow& window) {
   }
   texture_set=1+isVert-dir;
   Actor::render(window);
+}
+
+void Fireball::addLights(sf::RenderTexture& darkness) {
+  light->addLights(darkness);
 }

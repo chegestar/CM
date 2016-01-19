@@ -1,6 +1,7 @@
 
 #include <Actor.h>
 #include <Mover.h>
+#include <Light.h>
 #include <queue>
 #include <set>
 #include <Codes.h>
@@ -40,6 +41,8 @@ class Bob : public Mover{
   float warmth; //hp for ice stages
   sf::RectangleShape top_warmth;
   sf::RectangleShape bottom_bar;
+
+  Light* light;
 
   std::vector<Line> lines;
 #ifdef COMPILE_DEBUG
@@ -86,6 +89,7 @@ class Bob : public Mover{
 #endif
   void act();
   void render(sf::RenderWindow& window);
+  void addLights(sf::RenderTexture& darkness);
 
   bool hasItem(I_CODE c);
   void removeDynamite(C_CODE color);

@@ -16,7 +16,7 @@ Lava::Lava(Level* l, float x, float y) :
   }
   texture_keys.push_back(keys);
   light=NULL;
-  if (l->getZone()==ICE) {
+  if (l->getZone()==ICE||l->getZone()==DARK) {
 
     float rad = l->getWidth()*3.5/2;
     light = new Light(level,x,y,rad);
@@ -61,4 +61,8 @@ void Lava::render(sf::RenderWindow& window) {
   }
   Actor::render(window);
 
+}
+
+void Lava::addLights(sf::RenderTexture& darkness) {
+  light->addLights(darkness);
 }

@@ -33,6 +33,11 @@ Bob::Bob(Level* l,float x_,float y_) :
   top_warmth.setFillColor(sf::Color(0,255,0));
   bottom_bar.setFillColor(sf::Color(255,0,0));
   bottom_bar.setSize(sf::Vector2f(width,5));
+
+  if (level->getZone()==DARK) {
+    float rad = l->getWidth()*4/3;
+    light = new Light(level,x,y,rad);
+  }
   std::vector<std::string> keys;
   char key[30];
   for (int i=0;i<8;i++) {
@@ -279,6 +284,9 @@ void Bob::act() {
     int s = collect->activate();
     score+=s;
   }
+  
+  if (light)
+    light->setPosition(x,y);
 
 }
 
@@ -293,6 +301,13 @@ void Bob::render(sf::RenderWindow& window) {
   sprite.setColor(sf::Color(255,255,255,(1-(justDied/4)%2)*255));
   Actor::render(window);
 }
+
+void Bob::addLights(sf::RenderTexture& darkness) {
+  std::cout<<"hi\n";
+  
+  light->addLights(darkness);
+}
+
 
 I_CODE Bob::convertItemToIndex(Item* item) {
   if (dynamic_cast<FireBoot*>(item)) 

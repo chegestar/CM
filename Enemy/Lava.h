@@ -18,6 +18,7 @@ class Lava : public Die {
 
   void act();
   void render(sf::RenderWindow& window);
+  void addLights(sf::RenderTexture& darkness);
 };
 
 #endif

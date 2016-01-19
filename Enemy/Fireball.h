@@ -16,5 +16,6 @@ class Fireball : public Spider {
 
   void act();
   void render(sf::RenderWindow& window);
+  void addLights(sf::RenderTexture& darkness);
 };
 #endif

@@ -154,10 +154,13 @@ Level::Level(std::string filename,sf::RenderWindow& window, int tot_levels,bool 
     background.setTexture(getGraphic("crystal"));
   }
   else if (zone==DARK) {
+    background.setTexture(getGraphic("cave"));
   }
   else if (zone==FACTORY) {
+    background.setTexture(getGraphic("cave"));
   }
   else if (zone==SPECIAL) {
+    background.setTexture(getGraphic("cave"));
   }
   else {
     background.setTexture(getGraphic("cave"));
@@ -629,13 +632,27 @@ void Level::render(sf::RenderWindow& window) {
 
   }
 #endif
-
+  sf::RenderTexture dark;
+  if (zone==DARK)
+    if (!dark.create(window_width,window_height)) throw 1;
+    dark.clear(sf::Color(0,0,0,225));
   ACTORS::iterator itr;
   for (itr=actors.begin();itr!=actors.end();itr++) {
-    if (bob!=itr->second&&!isOutOfBounds(itr->second))
+    if (bob!=itr->second&&!isOutOfBounds(itr->second)) {
       itr->second->render(window);
+      if (zone==DARK) {
+        itr->second->addLights(dark);
+      }
+    }
   }
   bob->render(window);
+  if (zone==DARK) {
+    dark.setRepeated(true);
+    sf::Sprite darkness;
+    darkness.setTexture(dark.getTexture());
+    window.draw(darkness);
+  }
+  
 }
 
 void Level::testHitStationary(Actor* actor, std::vector<Actor*>& hits) {

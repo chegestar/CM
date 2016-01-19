@@ -54,11 +54,12 @@ class Actor {
   void linkPosition(Collectable** location) {pointer_to_gem=location;}
   void linkPosition(std::list<Rock*>::iterator& itr) {pointer_to_rock = new std::list<Rock*>::iterator(itr);}
   virtual std::list<Rock*>::iterator* removePosition();
-  virtual void act() {}
   virtual int activate() {return 0;}  
+
+  virtual void act() {}
   virtual void windowEvent(sf::Event& event) {}
   virtual void render(sf::RenderWindow& window);
-
+  virtual void addLights(sf::RenderTexture& darkness) {}
   friend bool operator==(const Actor& a1, const Actor& a2) {
     return a1.x==a2.x && a1.y == a2.y && a1.width==a2.width && a1.height==a2.height; 
   }
